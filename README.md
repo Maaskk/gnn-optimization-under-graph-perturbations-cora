@@ -55,6 +55,28 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+For notebook work only:
+
+```bash
+pip install -r requirements-notebooks.txt
+```
+
+## Run Ossama's Track
+
+This runs the clean Cora GCN optimizer comparison and feature-noise robustness experiments:
+
+```bash
+python scripts/run_ossama_track.py --epochs 200
+```
+
+Outputs are written to `results/`:
+
+- `ossama_clean_results.csv`
+- `ossama_feature_noise_results.csv`
+- `ossama_loss_history.csv`
+- `cora_dataset_summary.csv`
+- plots under `results/figures/`
+
 ## First Milestone
 
 1. Load Cora with PyTorch Geometric.
@@ -62,4 +84,3 @@ pip install -r requirements.txt
 3. Compare the five optimizers with fixed hyperparameters.
 4. Add graph perturbations and evaluate robustness.
 5. Produce final plots, tables, and project report.
-
