@@ -41,7 +41,7 @@ def run_structural_track(
     config: ExperimentConfig | None = None,
     include_amsgrad: bool = False,
 ) -> dict[str, Path]:
-    """Run teammate structural robustness experiments with shared hyperparameters."""
+    """Run structural graph robustness experiments with shared hyperparameters."""
 
     output_path = Path(output_dir)
     figures_dir = output_path / "figures"
@@ -78,7 +78,7 @@ def run_structural_track(
                         severity=float(severity),
                         seed=seed,
                         edge_index_override=removed_edge_index,
-                        track="teammate",
+                        track="structural",
                     ).result_row
                 )
 
@@ -98,15 +98,15 @@ def run_structural_track(
                         severity=float(severity),
                         seed=seed,
                         edge_index_override=fake_edge_index,
-                        track="teammate",
+                        track="structural",
                     ).result_row
                 )
 
     edge_removal_results = pd.DataFrame(edge_removal_rows)
     fake_edge_results = pd.DataFrame(fake_edge_rows)
 
-    edge_removal_path = output_path / "teammate_edge_removal_results.csv"
-    fake_edge_path = output_path / "teammate_fake_edge_results.csv"
+    edge_removal_path = output_path / "edge_removal_results.csv"
+    fake_edge_path = output_path / "fake_edge_addition_results.csv"
     edge_removal_results.to_csv(edge_removal_path, index=False)
     fake_edge_results.to_csv(fake_edge_path, index=False)
 
@@ -142,4 +142,3 @@ def run_structural_track(
         "fake_edge_results": fake_edge_path,
         "figures": figure_paths,
     }
-

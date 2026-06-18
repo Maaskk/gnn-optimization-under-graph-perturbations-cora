@@ -9,7 +9,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from gnn_robustness.config import ExperimentConfig
-from gnn_robustness.experiments import run_ossama_track
+from gnn_robustness.experiments import run_baseline_track
 
 
 def parse_float_list(value: str) -> tuple[float, ...]:
@@ -22,7 +22,7 @@ def parse_int_list(value: str) -> tuple[int, ...]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Run Ossama's Cora GCN optimizer and feature-noise robustness experiments."
+        description="Run clean Cora GCN optimizer and feature-noise robustness experiments."
     )
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--hidden-channels", type=int, default=16)
@@ -47,7 +47,7 @@ def main() -> None:
         severities=args.severities,
         device=args.device,
     )
-    outputs = run_ossama_track(
+    outputs = run_baseline_track(
         output_dir=Path(args.output_dir),
         data_root=Path(args.data_root),
         config=config,

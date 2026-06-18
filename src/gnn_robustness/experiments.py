@@ -16,7 +16,7 @@ def optimizer_names(include_amsgrad: bool = False) -> list[str]:
     return names
 
 
-def run_ossama_track(
+def run_baseline_track(
     output_dir: str | Path = "results",
     data_root: str | Path = "data",
     config: ExperimentConfig | None = None,
@@ -72,9 +72,9 @@ def run_ossama_track(
     noise_results = pd.DataFrame(noise_rows)
     history = pd.DataFrame(history_rows)
 
-    clean_path = output_path / "ossama_clean_results.csv"
-    noise_path = output_path / "ossama_feature_noise_results.csv"
-    history_path = output_path / "ossama_loss_history.csv"
+    clean_path = output_path / "clean_optimizer_results.csv"
+    noise_path = output_path / "feature_noise_results.csv"
+    history_path = output_path / "clean_loss_history.csv"
     summary_path = output_path / "cora_dataset_summary.csv"
 
     clean_results.to_csv(clean_path, index=False)

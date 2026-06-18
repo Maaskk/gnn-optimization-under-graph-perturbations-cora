@@ -20,7 +20,7 @@ from gnn_robustness.data import load_cora  # noqa: E402
 CSV_FILES = [
     "all_results.csv",
     "final_optimizer_summary.csv",
-    "ossama_loss_history.csv",
+    "clean_loss_history.csv",
     "cora_dataset_summary.csv",
 ]
 

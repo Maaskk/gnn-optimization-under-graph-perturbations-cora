@@ -25,7 +25,7 @@ def plot_loss_convergence(history: pd.DataFrame, output_dir: Path) -> Path:
     ax.set_ylabel("Training loss")
     ax.legend()
     ax.grid(alpha=0.25)
-    path = figures_dir / "ossama_clean_loss_convergence.png"
+    path = figures_dir / "clean_loss_convergence.png"
     fig.tight_layout()
     fig.savefig(path, dpi=180)
     plt.close(fig)
@@ -47,7 +47,7 @@ def plot_clean_bars(clean_results: pd.DataFrame, output_dir: Path) -> Path:
     ax.set_ylabel("Score")
     ax.legend()
     ax.grid(axis="y", alpha=0.25)
-    path = figures_dir / "ossama_clean_accuracy_macro_f1.png"
+    path = figures_dir / "clean_accuracy_macro_f1.png"
     fig.tight_layout()
     fig.savefig(path, dpi=180)
     plt.close(fig)
@@ -66,7 +66,7 @@ def plot_feature_noise_lines(noise_results: pd.DataFrame, output_dir: Path, metr
     ax.set_ylabel(metric.replace("_", " ").title())
     ax.legend()
     ax.grid(alpha=0.25)
-    path = figures_dir / f"ossama_feature_noise_{metric}.png"
+    path = figures_dir / f"feature_noise_{metric}.png"
     fig.tight_layout()
     fig.savefig(path, dpi=180)
     plt.close(fig)

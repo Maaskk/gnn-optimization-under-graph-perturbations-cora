@@ -25,11 +25,33 @@ def test_all_results_contains_all_project_perturbations():
     assert len(df[df["perturbation_type"] == "edge_removal"]) == 20
     assert len(df[df["perturbation_type"] == "fake_edge_addition"]) == 20
     assert set(df["hidden_channels"]) == {16}
+    assert set(df["track"]) == {"baseline", "structural"}
 
 
 def test_final_report_and_summary_exist():
     assert Path("reports/final_report.md").exists()
     assert Path("results/final_optimizer_summary.csv").exists()
+
+
+def test_public_result_filenames_are_neutral():
+    expected = {
+        "clean_optimizer_results.csv",
+        "feature_noise_results.csv",
+        "edge_removal_results.csv",
+        "fake_edge_addition_results.csv",
+        "clean_loss_history.csv",
+    }
+    result_files = {path.name for path in Path("results").glob("*.csv")}
+    assert expected.issubset(result_files)
+
+    forbidden = {
+        "ossama_clean_results.csv",
+        "ossama_feature_noise_results.csv",
+        "ossama_loss_history.csv",
+        "teammate_edge_removal_results.csv",
+        "teammate_fake_edge_results.csv",
+    }
+    assert forbidden.isdisjoint(result_files)
 
 
 def test_frontend_bundle_exists_and_uses_project_results():

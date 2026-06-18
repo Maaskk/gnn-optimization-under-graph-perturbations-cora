@@ -71,26 +71,12 @@ Across all result rows, the best overall optimizer by mean test accuracy is **Ad
 
 The main pattern is that adaptive optimizers are much stronger than SGD for this Cora GCN setup. Adam, AdamW, and RMSProp are the most competitive optimizers. Perturbations reduce performance compared with the clean graph, but the adaptive methods remain more stable than SGD.
 
-## Reproducibility
+## Reproducibility Package
 
-Run the project tracks with:
-
-```bash
-python scripts/run_ossama_track.py --epochs 200
-python scripts/run_structural_track.py --epochs 200
-python scripts/finalize_project.py
-```
-
-Run tests with:
-
-```bash
-python -m pytest tests -q
-```
-
-Generated final files:
+The repository contains the experiment scripts, source modules, generated tables, figures, and tests needed to reproduce and inspect the study. Key generated files:
 
 - `results/all_results.csv`
 - `results/final_optimizer_summary.csv`
 - `reports/final_report.md`
-- `reports/ossama_section.md`
+- `reports/baseline_feature_noise_analysis.md`
 - figures in `results/figures/`

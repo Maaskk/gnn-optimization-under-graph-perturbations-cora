@@ -22,7 +22,7 @@ def test_result_columns_match_shared_contract():
 
 def test_build_result_row_orders_values_for_csv_writer():
     row = build_result_row(
-        track="ossama",
+        track="baseline",
         optimizer="Adam",
         perturbation_type="clean",
         severity=0.0,
@@ -42,4 +42,3 @@ def test_build_result_row_orders_values_for_csv_writer():
     assert row["optimizer"] == "Adam"
     assert row["perturbation_type"] == "clean"
     assert row["test_accuracy"] == 0.81
-

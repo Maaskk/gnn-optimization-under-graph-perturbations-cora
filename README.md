@@ -1,16 +1,8 @@
 # Optimization of Graph Neural Networks under Graph Perturbations
 
-Project 13 - Option 4: Robustesse des GNN face au bruit dans le graphe
+**Project 13 - Option 4: Robustesse des GNN face au bruit dans le graphe**
 
-## Full Title
-
-Optimization of Graph Neural Networks under Graph Perturbations: Adam vs AdamW vs RMSProp vs AdaGrad vs SGD on the Cora Citation Network
-
-## Objective
-
-This project studies how optimization algorithms affect the training stability and robustness of Graph Neural Networks under graph perturbations.
-
-We train a Graph Convolutional Network (GCN) on the Cora citation network and compare:
+This repository presents an experimental study of optimizer robustness for Graph Neural Networks on the Cora citation network. A two-layer Graph Convolutional Network is trained under a fixed protocol and evaluated with five optimizers:
 
 - Adam
 - AdamW
@@ -18,115 +10,69 @@ We train a Graph Convolutional Network (GCN) on the Cora citation network and co
 - AdaGrad
 - SGD
 
-The comparison uses accuracy, macro F1-score, loss convergence, training time, and robustness under perturbations.
+The study compares accuracy, macro F1-score, loss convergence, training time, and robustness under graph perturbations.
 
 ## Dataset
 
-Cora Citation Network
+The experiments use the Cora Citation Network from the PyTorch Geometric Planetoid dataset.
 
-## Perturbations
+| Property | Value |
+| --- | ---: |
+| Nodes | 2,708 |
+| Directed citation edges | 10,556 |
+| Node features | 1,433 |
+| Classes | 7 |
+| Training nodes | 140 |
+| Validation nodes | 500 |
+| Test nodes | 1,000 |
 
-- Edge removal
-- Fake edge addition
-- Feature noise
+## Experimental Protocol
 
-## Suggested Repository Structure
+All optimizer comparisons use the same model and hyperparameters:
 
-```text
-.
-├── data/                 # Optional cached dataset files
-├── notebooks/            # Exploratory notebooks and plots
-├── results/              # Metrics, figures, and exported tables
-├── src/
-│   ├── data.py           # Dataset loading and preprocessing
-│   ├── model.py          # GCN architecture
-│   ├── perturbations.py  # Graph and feature perturbation functions
-│   ├── train.py          # Training and evaluation loop
-│   └── experiments.py    # Optimizer comparison experiments
-├── TASKS.md              # Work division and step-by-step roadmap
-└── requirements.txt
-```
+| Component | Setting |
+| --- | --- |
+| Model | 2-layer GCN |
+| Hidden channels | 16 |
+| Dropout | 0.5 |
+| Learning rate | 0.01 |
+| Weight decay | 0.0005 |
+| Epochs | 200 |
+| Seed | 42 |
 
-## First Setup
+Perturbation settings:
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+- Clean graph baseline
+- Gaussian feature noise at severities 0.05, 0.10, 0.20, 0.30
+- Random edge removal at severities 0.05, 0.10, 0.20, 0.30
+- Fake edge addition at severities 0.05, 0.10, 0.20, 0.30
 
-For notebook work only:
+## Main Result
 
-```bash
-pip install -r requirements-notebooks.txt
-```
+Adam is the strongest optimizer in the final aggregate comparison, with **0.702 mean test accuracy** and **0.694 mean macro F1** across all experiment rows. AdamW and RMSProp are also competitive, while SGD is much less stable under the fixed protocol.
 
-## Run Experiments
+## Repository Contents
 
-Clean Cora optimizer comparison and feature-noise robustness:
+| Path | Purpose |
+| --- | --- |
+| `src/gnn_robustness/` | Dataset loading, GCN model, perturbations, training loop, metrics, plotting, and result aggregation |
+| `scripts/` | Reproducible experiment and frontend data-generation scripts |
+| `results/` | Final CSV result tables and exported figures |
+| `reports/` | Final written report and supporting analysis |
+| `docs/` | Interactive static frontend for visual exploration |
+| `tests/` | Regression checks for metrics, perturbations, optimizers, result schema, and final outputs |
 
-```bash
-python scripts/run_ossama_track.py --epochs 200
-```
+## Key Artifacts
 
-Structural robustness experiments:
-
-```bash
-python scripts/run_structural_track.py --epochs 200
-```
-
-Combine all results and generate the final report:
-
-```bash
-python scripts/finalize_project.py
-```
-
-Outputs are written to `results/`:
-
-- `ossama_clean_results.csv`
-- `ossama_feature_noise_results.csv`
-- `teammate_edge_removal_results.csv`
-- `teammate_fake_edge_results.csv`
-- `all_results.csv`
-- `final_optimizer_summary.csv`
-- `ossama_loss_history.csv`
-- `cora_dataset_summary.csv`
-- plots under `results/figures/`
-
-The final Markdown report is written to:
-
-```text
-reports/final_report.md
-```
+- `reports/final_report.md`
+- `results/all_results.csv`
+- `results/final_optimizer_summary.csv`
+- `results/clean_optimizer_results.csv`
+- `results/feature_noise_results.csv`
+- `results/edge_removal_results.csv`
+- `results/fake_edge_addition_results.csv`
+- `docs/index.html`
 
 ## Interactive Frontend
 
-The project also includes a static visual frontend in `docs/`. It uses the final CSV outputs and a sampled Cora citation graph exported from the real PyTorch Geometric dataset.
-
-Build the frontend data bundle:
-
-```bash
-python scripts/build_frontend_data.py
-```
-
-Run it locally:
-
-```bash
-python -m http.server 4173 --directory docs
-```
-
-Then open:
-
-```text
-http://localhost:4173
-```
-
-The page includes an animated Cora graph, optimizer rankings, robustness curves, and clean-graph loss convergence.
-
-## First Milestone
-
-1. Load Cora with PyTorch Geometric.
-2. Train a baseline GCN without perturbations.
-3. Compare the five optimizers with fixed hyperparameters.
-4. Add graph perturbations and evaluate robustness.
-5. Produce final plots, tables, and project report.
+The static frontend in `docs/` turns the experiment outputs into an interactive visual report. It includes an animated Cora citation-network scene, optimizer ranking views, perturbation robustness curves, and loss convergence analysis.

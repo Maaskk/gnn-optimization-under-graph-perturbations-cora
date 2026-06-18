@@ -1,4 +1,4 @@
-# Ossama Track: Clean GCN Training and Feature-Noise Robustness
+# Baseline and Feature-Noise Analysis
 
 ## Experimental Setup
 
@@ -44,12 +44,11 @@ For this track, Adam is the best overall optimizer because it matches the best c
 
 ## Files Produced
 
-- `results/ossama_clean_results.csv`
-- `results/ossama_feature_noise_results.csv`
-- `results/ossama_loss_history.csv`
+- `results/clean_optimizer_results.csv`
+- `results/feature_noise_results.csv`
+- `results/clean_loss_history.csv`
 - `results/cora_dataset_summary.csv`
-- `results/figures/ossama_clean_loss_convergence.png`
-- `results/figures/ossama_clean_accuracy_macro_f1.png`
-- `results/figures/ossama_feature_noise_test_accuracy.png`
-- `results/figures/ossama_feature_noise_macro_f1.png`
-
+- `results/figures/clean_loss_convergence.png`
+- `results/figures/clean_accuracy_macro_f1.png`
+- `results/figures/feature_noise_test_accuracy.png`
+- `results/figures/feature_noise_macro_f1.png`
