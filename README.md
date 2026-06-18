@@ -61,21 +61,43 @@ For notebook work only:
 pip install -r requirements-notebooks.txt
 ```
 
-## Run Ossama's Track
+## Run Experiments
 
-This runs the clean Cora GCN optimizer comparison and feature-noise robustness experiments:
+Clean Cora optimizer comparison and feature-noise robustness:
 
 ```bash
 python scripts/run_ossama_track.py --epochs 200
+```
+
+Structural robustness experiments:
+
+```bash
+python scripts/run_structural_track.py --epochs 200
+```
+
+Combine all results and generate the final report:
+
+```bash
+python scripts/finalize_project.py
 ```
 
 Outputs are written to `results/`:
 
 - `ossama_clean_results.csv`
 - `ossama_feature_noise_results.csv`
+- `teammate_edge_removal_results.csv`
+- `teammate_fake_edge_results.csv`
+- `all_results.csv`
+- `final_optimizer_summary.csv`
 - `ossama_loss_history.csv`
 - `cora_dataset_summary.csv`
 - plots under `results/figures/`
+
+The final Markdown report is written to:
+
+```text
+reports/final_report.md
+```
 
 ## First Milestone
 

@@ -57,6 +57,8 @@ def run_training(
     perturbation_type: str,
     severity: float,
     seed: int,
+    edge_index_override: torch.Tensor | None = None,
+    track: str = "ossama",
 ) -> TrainingOutcome:
     """Train one GCN run and return result plus convergence history."""
 
@@ -64,8 +66,10 @@ def run_training(
     run_data = data.clone().to(config.device)
     if perturbation_type == "feature_noise":
         run_data.x = add_feature_noise(run_data.x, severity=severity, seed=seed)
-    elif perturbation_type != "clean":
+    elif perturbation_type != "clean" and edge_index_override is None:
         raise ValueError(f"Unsupported perturbation_type for Ossama track: {perturbation_type}")
+    if edge_index_override is not None:
+        run_data.edge_index = edge_index_override.to(config.device)
 
     model = GCN(
         input_channels=num_features,
@@ -104,7 +108,7 @@ def run_training(
     test_metrics = _split_metrics(model, run_data, run_data.test_mask)
 
     result_row = build_result_row(
-        track="ossama",
+        track=track,
         optimizer=optimizer_name,
         perturbation_type=perturbation_type,
         severity=severity,
@@ -120,4 +124,3 @@ def run_training(
         training_time_seconds=training_time,
     )
     return TrainingOutcome(result_row=result_row, history_rows=history_rows)
-
