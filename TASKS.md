@@ -1,87 +1,217 @@
 # Task Division
 
-This plan splits the project into two parallel workstreams: one person owns the reliable baseline and experiment infrastructure, and the other owns perturbations, robustness evaluation, and final analysis. Both people should review each other's pull requests before merging.
+The project is split into two independent experiment tracks. Each person can load Cora, train a GCN, run their assigned experiments, save results, and write their report section without waiting for the other person.
+
+Both tracks compare the same optimizers:
+
+- Adam
+- AdamW
+- RMSProp
+- AdaGrad
+- SGD
+
+## Shared Output Contract
+
+Every result CSV should use these columns so final merging is easy:
+
+```text
+track,optimizer,perturbation_type,severity,seed,epochs,hidden_channels,dropout,learning_rate,weight_decay,test_accuracy,macro_f1,final_loss,training_time_seconds
+```
+
+Use these values for `perturbation_type`:
+
+```text
+clean
+feature_noise
+edge_removal
+fake_edge_addition
+```
 
 ## Person 1: Ossama
 
-### Step 1: Project Setup
+### Track A: Clean Training + Feature Noise
 
-- Create Python virtual environment.
-- Install PyTorch, PyTorch Geometric, scikit-learn, pandas, matplotlib, and tqdm.
-- Create the first runnable script structure under `src/`.
-- Verify that Cora loads correctly.
+Ossama owns the clean optimizer comparison and feature-noise robustness. This is a full standalone part of the project.
 
-### Step 2: Baseline GCN
+### Step 1: Clean GCN Benchmark
 
-- Implement the GCN model in `src/model.py`.
-- Implement training and evaluation loops in `src/train.py`.
-- Track train loss, validation accuracy, test accuracy, macro F1-score, and training time.
-- Run the first baseline with Adam.
+- Load the Cora dataset with PyTorch Geometric.
+- Implement or use a 2-layer GCN.
+- Train the model on the clean graph.
+- Compare Adam, AdamW, RMSProp, AdaGrad, and SGD.
+- Save results to:
 
-### Step 3: Optimizer Comparison
+```text
+results/ossama_clean_results.csv
+```
 
-- Add Adam, AdamW, RMSProp, AdaGrad, and SGD configurations.
-- Keep the same model, seed, train split, hidden size, dropout, learning-rate policy, and epoch budget for fair comparison.
-- Save raw metrics to `results/optimizer_comparison.csv`.
-- Generate plots for loss curves and accuracy/F1 comparison.
+### Step 2: Feature Noise Robustness
 
-### Step 4: Baseline Report Section
+- Add Gaussian noise to node features.
+- Test severity levels:
 
-- Write the dataset description.
-- Explain the GCN architecture.
-- Explain the optimizer comparison protocol.
-- Prepare baseline result tables and figures.
+```text
+0.05, 0.10, 0.20, 0.30
+```
+
+- Run all five optimizers for each noise level.
+- Save results to:
+
+```text
+results/ossama_feature_noise_results.csv
+```
+
+### Step 3: Ossama Figures
+
+Create:
+
+- Clean graph loss convergence plot.
+- Clean graph accuracy and macro F1 comparison.
+- Feature-noise accuracy vs severity plot.
+- Feature-noise macro F1 vs severity plot.
+
+Save figures in:
+
+```text
+results/figures/
+```
+
+### Step 4: Ossama Report Section
+
+Write:
+
+- Dataset description.
+- GCN architecture.
+- Optimizer comparison protocol.
+- Clean graph results.
+- Feature-noise robustness interpretation.
 
 ## Person 2: Teammate
 
-### Step 1: Perturbation Functions
+### Track B: Structural Graph Perturbations
 
-- Implement edge removal in `src/perturbations.py`.
-- Implement fake edge addition in `src/perturbations.py`.
-- Implement feature noise in `src/perturbations.py`.
-- Make perturbation severity configurable, for example `0.05`, `0.10`, `0.20`, and `0.30`.
+The teammate owns structural robustness: edge removal and fake edge addition. This is also a full standalone part of the project.
 
-### Step 2: Robustness Evaluation
+### Step 1: Edge Removal Robustness
 
-- Reuse Ossama's training/evaluation loop.
-- Evaluate every optimizer under every perturbation type and severity.
-- Save raw metrics to `results/robustness_results.csv`.
-- Measure robustness drop compared with the clean graph baseline.
+- Load the Cora dataset with PyTorch Geometric.
+- Implement or use the same 2-layer GCN idea.
+- Randomly remove graph edges.
+- Test severity levels:
 
-### Step 3: Robustness Plots
+```text
+0.05, 0.10, 0.20, 0.30
+```
 
-- Plot accuracy vs perturbation severity.
-- Plot macro F1-score vs perturbation severity.
-- Plot robustness drop for each optimizer.
-- Compare optimizer stability using mean and standard deviation across seeds.
+- Run Adam, AdamW, RMSProp, AdaGrad, and SGD.
+- Save results to:
 
-### Step 4: Final Analysis Section
+```text
+results/teammate_edge_removal_results.csv
+```
 
-- Explain each perturbation method.
-- Interpret which optimizer is most robust.
-- Discuss trade-offs between convergence speed and robustness.
-- Write limitations and possible improvements.
+### Step 2: Fake Edge Addition Robustness
+
+- Add random fake edges between nodes.
+- Avoid duplicate edges when possible.
+- Test severity levels:
+
+```text
+0.05, 0.10, 0.20, 0.30
+```
+
+- Run Adam, AdamW, RMSProp, AdaGrad, and SGD.
+- Save results to:
+
+```text
+results/teammate_fake_edge_results.csv
+```
+
+### Step 3: Teammate Figures
+
+Create:
+
+- Edge-removal accuracy vs severity plot.
+- Edge-removal macro F1 vs severity plot.
+- Fake-edge accuracy vs severity plot.
+- Fake-edge macro F1 vs severity plot.
+
+Save figures in:
+
+```text
+results/figures/
+```
+
+### Step 4: Teammate Report Section
+
+Write:
+
+- Edge-removal method.
+- Fake-edge-addition method.
+- Structural robustness results.
+- Interpretation of which optimizer is most stable under graph structure noise.
+
+## Final Integration Together
+
+This part happens only after both independent tracks are finished.
+
+1. Combine all result CSVs into one table:
+
+```text
+results/all_results.csv
+```
+
+2. Create one final summary table comparing optimizers across:
+
+- Clean graph
+- Feature noise
+- Edge removal
+- Fake edge addition
+
+3. Decide the final conclusion:
+
+- Best clean accuracy.
+- Best macro F1-score.
+- Fastest convergence.
+- Most robust optimizer under perturbations.
+- Best overall optimizer for the project.
+
+4. Merge both report sections into the final report.
+
+## Branches
+
+Ossama:
+
+```bash
+git checkout ossama/baseline
+```
+
+Teammate:
+
+```bash
+git checkout teammate/robustness-experiments
+```
 
 ## Shared Rules
 
-- Use branches: `ossama/baseline` and `teammate/perturbations`.
+- Both people can work independently.
+- Do not wait for the other person's code to begin experiments.
+- Use the same optimizer list.
+- Use the same CSV columns.
+- Keep seeds fixed for fair comparison.
 - Commit small changes with clear messages.
-- Put generated metrics and figures in `results/`.
-- Keep random seeds fixed when comparing optimizers.
-- Merge through pull requests so both people review the work.
+- Open pull requests into `main` when a track is ready.
 
 ## Step-by-Step Project Roadmap
 
-1. Create environment and install dependencies.
-2. Load and inspect the Cora dataset.
-3. Build a clean GCN baseline.
-4. Validate the baseline with Adam.
-5. Add all five optimizers.
-6. Run clean-graph optimizer comparison.
-7. Add perturbation functions.
-8. Run robustness experiments.
-9. Generate plots and tables.
-10. Write the final report.
-11. Prepare presentation slides if required.
-12. Final review: check reproducibility, figures, and conclusions.
+1. Each person clones the repository.
+2. Each person switches to their own branch.
+3. Each person creates a runnable notebook or script for their track.
+4. Ossama runs clean graph and feature-noise experiments.
+5. Teammate runs edge-removal and fake-edge experiments.
+6. Each person saves CSV files and figures.
+7. Each person writes their own report section.
+8. Merge both branches into `main`.
+9. Combine result CSVs.
+10. Build final plots, final conclusion, and final report.
 

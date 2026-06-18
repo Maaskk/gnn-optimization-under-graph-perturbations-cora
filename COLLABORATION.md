@@ -22,6 +22,12 @@ Direct page:
 https://github.com/Maaskk/gnn-optimization-under-graph-perturbations-cora/settings/access
 ```
 
+After the invite is accepted, send them this repository link:
+
+```text
+https://github.com/Maaskk/gnn-optimization-under-graph-perturbations-cora
+```
+
 ## Clone the Project
 
 ```bash
@@ -40,7 +46,7 @@ git checkout ossama/baseline
 Teammate works on:
 
 ```bash
-git checkout teammate/perturbations
+git checkout teammate/robustness-experiments
 ```
 
 ## Daily Workflow
@@ -66,4 +72,3 @@ git push
 2. Open a pull request into `main`.
 3. Ask the other person to review.
 4. Merge only after the code runs and results are saved correctly.
-
