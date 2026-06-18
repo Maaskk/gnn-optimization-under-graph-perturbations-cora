@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Interactive frontend for comparing GNN optimizer robustness on the Cora citation network."
+    />
+    <title>GNN Optimizer Robustness | Cora Citation Network</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="GNN robustness dashboard home">
+        <span class="brand-mark">G</span>
+        <span>GCN Robustness Lab</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#results">Results</a>
+        <a href="#robustness">Robustness</a>
+        <a href="#convergence">Convergence</a>
+        <a href="#protocol">Protocol</a>
+      </nav>
+      <a
+        class="repo-link"
+        href="https://github.com/Maaskk/gnn-optimization-under-graph-perturbations-cora"
+        target="_blank"
+        rel="noreferrer"
+      >
+        GitHub
+      </a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <canvas id="networkCanvas" aria-hidden="true"></canvas>
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-content">
+          <div class="hero-copy">
+            <p class="eyebrow">Project 13 / Option 4 / Cora Citation Network</p>
+            <h1 id="hero-title">Optimization of GNNs under Graph Perturbations</h1>
+            <p class="hero-lede">
+              A science-style command center for comparing Adam, AdamW, RMSProp, AdaGrad,
+              and SGD on a two-layer GCN under clean training, feature noise, edge removal,
+              and fake edge addition.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-action" href="#results">Explore results</a>
+              <a class="secondary-action" href="../reports/final_report.md">Read report</a>
+            </div>
+          </div>
+
+          <aside class="telemetry-panel" aria-label="Cora experiment telemetry">
+            <div>
+              <span class="label">Best overall optimizer</span>
+              <strong data-stat="bestOptimizer">Loading</strong>
+            </div>
+            <div>
+              <span class="label">Overall mean accuracy</span>
+              <strong data-stat="overallAccuracy">--</strong>
+            </div>
+            <div>
+              <span class="label">Clean graph accuracy</span>
+              <strong data-stat="cleanAccuracy">--</strong>
+            </div>
+            <div>
+              <span class="label">Cora nodes</span>
+              <strong data-stat="nodes">--</strong>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="overview-band" aria-label="Dataset and experiment summary">
+        <div class="stat-strip">
+          <article>
+            <span>Nodes</span>
+            <strong data-stat="nodes">--</strong>
+          </article>
+          <article>
+            <span>Citation edges</span>
+            <strong data-stat="edges">--</strong>
+          </article>
+          <article>
+            <span>Node features</span>
+            <strong data-stat="features">--</strong>
+          </article>
+          <article>
+            <span>Classes</span>
+            <strong data-stat="classes">--</strong>
+          </article>
+          <article>
+            <span>Experiment rows</span>
+            <strong data-stat="rows">--</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="section results-section" id="results" aria-labelledby="results-title">
+        <div class="section-heading">
+          <p class="eyebrow">Optimizer command deck</p>
+          <h2 id="results-title">Adaptive optimizers stay strongest under graph noise.</h2>
+          <p>
+            The deck reads the final CSV outputs produced by the project pipeline. Accuracy and
+            macro F1 are shown at the same experimental protocol: 200 epochs, hidden size 16,
+            dropout 0.5, learning rate 0.01, weight decay 0.0005, seed 42.
+          </p>
+        </div>
+
+        <div class="optimizer-toolbar" aria-label="Optimizer selector">
+          <button class="optimizer-button active" data-optimizer="Adam">Adam</button>
+          <button class="optimizer-button" data-optimizer="AdamW">AdamW</button>
+          <button class="optimizer-button" data-optimizer="RMSProp">RMSProp</button>
+          <button class="optimizer-button" data-optimizer="AdaGrad">AdaGrad</button>
+          <button class="optimizer-button" data-optimizer="SGD">SGD</button>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel wide-panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">Mean test accuracy</span>
+                <h3>Optimizer performance by perturbation</h3>
+              </div>
+              <span class="source-tag">results/final_optimizer_summary.csv</span>
+            </div>
+            <svg id="summaryChart" class="chart" role="img" aria-label="Mean accuracy by optimizer and perturbation"></svg>
+          </article>
+
+          <article class="panel profile-panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">Selected optimizer</span>
+                <h3 data-profile="name">Adam</h3>
+              </div>
+              <span class="optimizer-dot" data-profile="dot"></span>
+            </div>
+            <div class="profile-score">
+              <span data-profile="score">--</span>
+              <small>mean test accuracy across all settings</small>
+            </div>
+            <div id="profileBars" class="profile-bars"></div>
+          </article>
+
+          <article class="panel leaderboard-panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">Final conclusion</span>
+                <h3>Overall optimizer ranking</h3>
+              </div>
+            </div>
+            <div id="leaderboard" class="leaderboard"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section robustness-section" id="robustness" aria-labelledby="robustness-title">
+        <div class="section-heading">
+          <p class="eyebrow">Noise mission simulator</p>
+          <h2 id="robustness-title">Stress testing the graph from light to heavy perturbation.</h2>
+          <p>
+            Each curve shows how test accuracy changes as perturbation severity increases from
+            5 percent to 30 percent.
+          </p>
+        </div>
+
+        <div class="segmented-control" role="tablist" aria-label="Perturbation type">
+          <button class="segment active" role="tab" aria-selected="true" data-perturbation="feature_noise">Feature noise</button>
+          <button class="segment" role="tab" aria-selected="false" data-perturbation="edge_removal">Edge removal</button>
+          <button class="segment" role="tab" aria-selected="false" data-perturbation="fake_edge_addition">Fake edges</button>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel full-panel">
+            <div class="panel-header">
+              <div>
+                <span class="label">Test accuracy vs severity</span>
+                <h3 data-perturbation-title>Feature noise robustness</h3>
+              </div>
+              <span class="source-tag">results/all_results.csv</span>
+            </div>
+            <svg id="robustnessChart" class="chart tall-chart" role="img" aria-label="Test accuracy by perturbation severity"></svg>
+          </article>
+        </div>
+      </section>
+
+      <section class="section convergence-section" id="convergence" aria-labelledby="convergence-title">
+        <div class="section-heading">
+          <p class="eyebrow">Training dynamics</p>
+          <h2 id="convergence-title">Loss convergence explains the optimizer gap.</h2>
+          <p>
+            Adam and AdamW reach strong clean-graph accuracy, RMSProp stays competitive,
+            while fixed-hyperparameter SGD struggles on this sparse-label Cora setup.
+          </p>
+        </div>
+        <article class="panel full-panel">
+          <div class="panel-header">
+            <div>
+              <span class="label">Validation loss over 200 epochs</span>
+              <h3>Clean graph convergence</h3>
+            </div>
+            <span class="source-tag">results/ossama_loss_history.csv</span>
+          </div>
+          <svg id="lossChart" class="chart tall-chart" role="img" aria-label="Clean validation loss by optimizer"></svg>
+        </article>
+      </section>
+
+      <section class="section protocol-section" id="protocol" aria-labelledby="protocol-title">
+        <div class="section-heading">
+          <p class="eyebrow">Reproducibility</p>
+          <h2 id="protocol-title">One fixed protocol, four graph conditions.</h2>
+          <p>
+            The frontend is a visual layer over the reproducible Python experiment pipeline.
+            Re-run the scripts to regenerate the CSVs, then rebuild the frontend data bundle.
+          </p>
+        </div>
+        <div class="protocol-grid">
+          <article class="panel">
+            <h3>Model</h3>
+            <ul class="protocol-list">
+              <li>2-layer Graph Convolutional Network</li>
+              <li>16 hidden channels</li>
+              <li>Dropout 0.5</li>
+              <li>200 epochs on CPU</li>
+            </ul>
+          </article>
+          <article class="panel">
+            <h3>Optimizers</h3>
+            <ul class="protocol-list">
+              <li>Adam</li>
+              <li>AdamW</li>
+              <li>RMSProp</li>
+              <li>AdaGrad</li>
+              <li>SGD</li>
+            </ul>
+          </article>
+          <article class="panel">
+            <h3>Perturbations</h3>
+            <ul class="protocol-list">
+              <li>Clean graph baseline</li>
+              <li>Gaussian feature noise</li>
+              <li>Random edge removal</li>
+              <li>Fake edge addition</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>GNN Optimizer Robustness on Cora</span>
+      <span>Project 13 - Option 4</span>
+      <span>Built from real experiment outputs</span>
+    </footer>
+
+    <script src="./assets/app.js" defer></script>
+  </body>
+</html>

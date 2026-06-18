@@ -99,6 +99,30 @@ The final Markdown report is written to:
 reports/final_report.md
 ```
 
+## Interactive Frontend
+
+The project also includes a static visual frontend in `docs/`. It uses the final CSV outputs and a sampled Cora citation graph exported from the real PyTorch Geometric dataset.
+
+Build the frontend data bundle:
+
+```bash
+python scripts/build_frontend_data.py
+```
+
+Run it locally:
+
+```bash
+python -m http.server 4173 --directory docs
+```
+
+Then open:
+
+```text
+http://localhost:4173
+```
+
+The page includes an animated Cora graph, optimizer rankings, robustness curves, and clean-graph loss convergence.
+
 ## First Milestone
 
 1. Load Cora with PyTorch Geometric.
