@@ -5,34 +5,34 @@ const PERTURBATIONS = ["clean", "feature_noise", "edge_removal", "fake_edge_addi
 const SEVERITIES = [0.05, 0.1, 0.2, 0.3];
 
 const PERTURBATION_LABELS = {
-  clean: "Clean graph",
-  feature_noise: "Feature noise",
-  edge_removal: "Edge removal",
-  fake_edge_addition: "Fake edge addition",
+  clean: "Graphe propre",
+  feature_noise: "Bruit sur attributs",
+  edge_removal: "Suppression d'arêtes",
+  fake_edge_addition: "Ajout de fausses arêtes",
 };
 
 const PERTURBATION_AXIS_LABELS = {
-  clean: "Clean",
-  feature_noise: "Feature noise",
-  edge_removal: "Edge removal",
-  fake_edge_addition: "Fake edges",
+  clean: "Propre",
+  feature_noise: "Bruit attributs",
+  edge_removal: "Arêtes supprimées",
+  fake_edge_addition: "Fausses arêtes",
 };
 
 const PERTURBATION_CAPTIONS = {
-  feature_noise: "Gaussian feature disturbance",
-  edge_removal: "Random citation links removed",
-  fake_edge_addition: "Non-existing citations injected",
+  feature_noise: "Perturbation gaussienne des attributs",
+  edge_removal: "Citations retirées aléatoirement",
+  fake_edge_addition: "Citations artificielles injectées",
 };
 
 const OPTIMIZER_COLORS = {
-  Adam: "#d71920",
-  AdamW: "#1f5fbf",
-  RMSProp: "#148f54",
-  AdaGrad: "#c77c00",
-  SGD: "#6f42c1",
+  Adam: "#8f1d2c",
+  AdamW: "#0f7c80",
+  RMSProp: "#4b5c96",
+  AdaGrad: "#b7791f",
+  SGD: "#6b7280",
 };
 
-const CLASS_COLORS = ["#d71920", "#1f5fbf", "#148f54", "#c77c00", "#6f42c1", "#253044", "#0a7b83"];
+const CLASS_COLORS = ["#8f1d2c", "#0f7c80", "#4b5c96", "#b7791f", "#7357a6", "#243043", "#47796b"];
 
 const state = {
   selectedOptimizer: "Adam",
@@ -66,7 +66,7 @@ function parseCsv(text) {
 async function fetchText(path) {
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Missing frontend data file: ${path}`);
+    throw new Error(`Fichier de données introuvable : ${path}`);
   }
   return response.text();
 }
@@ -78,7 +78,7 @@ async function loadData() {
     fetchText(`${DATA_DIR}clean_loss_history.csv`).then(parseCsv),
     fetchText(`${DATA_DIR}cora_dataset_summary.csv`).then(parseCsv).then((rows) => rows[0]),
     fetch(`${DATA_DIR}cora_graph_sample.json`).then((response) => {
-      if (!response.ok) throw new Error("Missing Cora graph sample");
+      if (!response.ok) throw new Error("Échantillon du graphe Cora introuvable");
       return response.json();
     }),
   ]);
@@ -95,7 +95,7 @@ function formatPct(value, digits = 1) {
 }
 
 function formatNumber(value) {
-  return Number(value).toLocaleString("en-US");
+  return Number(value).toLocaleString("fr-FR");
 }
 
 function getOptimizerAverage(optimizer) {
@@ -270,7 +270,7 @@ function drawRobustnessChart() {
   const selectedSeverity = SEVERITIES[state.selectedSeverityIndex];
 
   document.querySelector("[data-perturbation-title]").textContent =
-    `${PERTURBATION_LABELS[state.selectedPerturbation]} robustness`;
+    `Robustesse : ${PERTURBATION_LABELS[state.selectedPerturbation]}`;
 
   drawChartFrame(
     svg,
@@ -285,7 +285,7 @@ function drawRobustnessChart() {
     x2: xBySeverity[selectedSeverity],
     y1: bounds.top,
     y2: bounds.bottom,
-    stroke: "rgba(215, 25, 32, 0.5)",
+    stroke: "rgba(15, 124, 128, 0.5)",
     "stroke-width": 1.5,
     "stroke-dasharray": "6 8",
   }));
@@ -372,9 +372,9 @@ function drawDropMatrixChart() {
   const maxDrop = 0.32;
 
   const groups = [
-    { label: "Feature noise", start: 0, end: 3 },
-    { label: "Edge removal", start: 4, end: 7 },
-    { label: "Fake edges", start: 8, end: 11 },
+    { label: "Bruit attributs", start: 0, end: 3 },
+    { label: "Arêtes supprimées", start: 4, end: 7 },
+    { label: "Fausses arêtes", start: 8, end: 11 },
   ];
 
   groups.forEach((group) => {
@@ -386,8 +386,8 @@ function drawDropMatrixChart() {
       width: w - 6,
       height: 28,
       rx: 4,
-      fill: group.label === "Edge removal" ? "rgba(20,143,84,0.08)" : "rgba(215,25,32,0.08)",
-      stroke: "rgba(37,48,68,0.12)",
+      fill: group.label === "Arêtes supprimées" ? "rgba(15,124,128,0.08)" : "rgba(143,29,44,0.08)",
+      stroke: "rgba(36,48,67,0.12)",
     }));
     drawText(svg, group.label, x + w / 2 - 3, 57, {
       "font-size": 12,
@@ -427,8 +427,8 @@ function drawDropMatrixChart() {
       const negative = Math.max(0, -drop);
       const x = bounds.left + colIndex * cellW;
       const fill = negative > 0.002
-        ? `rgba(31, 95, 191, ${0.1 + Math.min(0.75, negative * 8)})`
-        : `rgba(215, 25, 32, ${0.04 + intensity * 0.82})`;
+        ? `rgba(15, 124, 128, ${0.1 + Math.min(0.75, negative * 8)})`
+        : `rgba(143, 29, 44, ${0.04 + intensity * 0.82})`;
       const textColor = intensity > 0.55 ? "#ffffff" : "#253044";
 
       svg.appendChild(svgElement("rect", {
@@ -438,7 +438,7 @@ function drawDropMatrixChart() {
         height: cellH - 4,
         rx: 5,
         fill,
-        stroke: optimizer === state.selectedOptimizer ? OPTIMIZER_COLORS[optimizer] : "rgba(37,48,68,0.12)",
+        stroke: optimizer === state.selectedOptimizer ? OPTIMIZER_COLORS[optimizer] : "rgba(36,48,67,0.12)",
         "stroke-width": optimizer === state.selectedOptimizer ? 2 : 1,
       }));
       drawText(svg, `${(drop * 100).toFixed(1)}`, x + cellW / 2, y + cellH / 2 + 4, {
@@ -450,15 +450,15 @@ function drawDropMatrixChart() {
     });
   });
 
-  drawText(svg, "points lost vs clean accuracy", bounds.left, height - 30, {
+  drawText(svg, "points perdus vs précision propre", bounds.left, height - 30, {
     "font-size": 12,
     "font-weight": 800,
-    fill: "#5d6675",
+    fill: "#617083",
   });
-  drawText(svg, "blue cells mean accuracy improved slightly vs clean", bounds.right, height - 30, {
+  drawText(svg, "les cellules teal indiquent un léger gain vs propre", bounds.right, height - 30, {
     "font-size": 12,
     "text-anchor": "end",
-    fill: "#5d6675",
+    fill: "#617083",
   });
 }
 
@@ -645,14 +645,14 @@ function paintBackground(ctx, width, height, time) {
   ctx.save();
   ctx.lineWidth = 1;
   for (let x = 0; x < width; x += 44) {
-    ctx.strokeStyle = x % 220 === 0 ? "rgba(215,25,32,0.14)" : "rgba(37,48,68,0.075)";
+    ctx.strokeStyle = x % 220 === 0 ? "rgba(15,124,128,0.14)" : "rgba(36,48,67,0.075)";
     ctx.beginPath();
     ctx.moveTo(x, 0);
     ctx.lineTo(x, height);
     ctx.stroke();
   }
   for (let y = 0; y < height; y += 44) {
-    ctx.strokeStyle = y % 220 === 0 ? "rgba(215,25,32,0.12)" : "rgba(37,48,68,0.065)";
+    ctx.strokeStyle = y % 220 === 0 ? "rgba(143,29,44,0.11)" : "rgba(36,48,67,0.065)";
     ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(width, y);
@@ -660,7 +660,7 @@ function paintBackground(ctx, width, height, time) {
   }
 
   const scanX = (time * 0.045) % (width + 180) - 90;
-  ctx.strokeStyle = "rgba(215,25,32,0.34)";
+  ctx.strokeStyle = "rgba(15,124,128,0.34)";
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(scanX, 0);
@@ -684,7 +684,7 @@ function nearestNode(positions, pointer) {
 }
 
 function drawNodeLabel(ctx, node, point, color, widthLimit) {
-  const label = `Cora node ${node.original_id} | class ${node.class_id} | degree ${node.degree}`;
+  const label = `Nœud Cora ${node.original_id} | classe ${node.class_id} | degré ${node.degree}`;
   ctx.save();
   ctx.font = "12px Inter, system-ui, sans-serif";
   const width = ctx.measureText(label).width + 20;
@@ -697,7 +697,7 @@ function drawNodeLabel(ctx, node, point, color, widthLimit) {
   ctx.roundRect(x, y, width, 28, 6);
   ctx.fill();
   ctx.stroke();
-  ctx.fillStyle = "#11161f";
+  ctx.fillStyle = "#14213d";
   ctx.fillText(label, x + 10, y + 18);
   ctx.restore();
 }
@@ -717,7 +717,7 @@ function drawHeroScene(ctx, width, height, time) {
     const source = positions.get(edge.source);
     const target = positions.get(edge.target);
     if (!source || !target) return;
-    ctx.strokeStyle = "rgba(37,48,68,0.16)";
+    ctx.strokeStyle = "rgba(36,48,67,0.16)";
     ctx.lineWidth = 0.75;
     ctx.beginPath();
     ctx.moveTo(source.x, source.y);
@@ -748,7 +748,7 @@ function drawHeroScene(ctx, width, height, time) {
 
   if (pointer.x > -100) {
     ctx.save();
-    ctx.strokeStyle = "rgba(215,25,32,0.38)";
+    ctx.strokeStyle = "rgba(15,124,128,0.38)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(pointer.x - 18, pointer.y);
@@ -772,7 +772,7 @@ function drawPerturbationScene(ctx, width, height, time) {
 
   ctx.save();
   ctx.translate(width * 0.5, height * 0.48);
-  ctx.strokeStyle = "rgba(215,25,32,0.18)";
+  ctx.strokeStyle = "rgba(143,29,44,0.16)";
   ctx.lineWidth = 1;
   for (let r = 82; r < Math.min(width, height) * 0.52; r += 70) {
     ctx.beginPath();
@@ -787,7 +787,7 @@ function drawPerturbationScene(ctx, width, height, time) {
     if (!source || !target) return;
     const h = edgeHash(edge.source, edge.target);
     const removed = state.selectedPerturbation === "edge_removal" && h < severity;
-    ctx.strokeStyle = removed ? "rgba(215,25,32,0.24)" : "rgba(37,48,68,0.18)";
+    ctx.strokeStyle = removed ? "rgba(143,29,44,0.25)" : "rgba(36,48,67,0.18)";
     ctx.lineWidth = removed ? 0.7 : 0.9;
     ctx.setLineDash(removed ? [2, 8] : []);
     ctx.beginPath();
@@ -799,7 +799,7 @@ function drawPerturbationScene(ctx, width, height, time) {
 
   if (state.selectedPerturbation === "fake_edge_addition") {
     const fakeCount = Math.floor(45 + severity * 260);
-    ctx.strokeStyle = "rgba(215,25,32,0.46)";
+    ctx.strokeStyle = "rgba(143,29,44,0.46)";
     ctx.lineWidth = 1.05;
     ctx.setLineDash([6, 9]);
     for (let i = 0; i < fakeCount; i += 1) {
@@ -868,9 +868,9 @@ function startCanvasAnimation() {
 function showError(error) {
   document.body.innerHTML = `
     <main class="loading-error">
-      <h1>Frontend data is incomplete.</h1>
+      <h1>Les données du site sont incomplètes.</h1>
       <p>${error.message}</p>
-      <p>The static data bundle in <code>docs/assets/data/</code> must include the final result tables and graph sample.</p>
+      <p>Le dossier statique <code>docs/assets/data/</code> doit contenir les tableaux finaux et l'échantillon du graphe.</p>
     </main>
   `;
 }

@@ -1,22 +1,24 @@
 :root {
   color-scheme: light;
   --paper: #ffffff;
-  --surface: #f6f7f9;
-  --surface-strong: #eef1f5;
-  --ink: #11161f;
-  --muted: #5d6675;
-  --dim: #8b93a1;
-  --line: #d9dee7;
-  --line-strong: #b9c1cf;
-  --accent-red: #d71920;
-  --accent-red-dark: #9f1118;
-  --accent-red-soft: #fff0f1;
-  --graphite: #253044;
-  --blue: #1f5fbf;
-  --green: #148f54;
-  --amber: #c77c00;
-  --violet: #6f42c1;
-  --shadow: 0 22px 70px rgba(17, 22, 31, 0.12);
+  --surface: #f7f8fa;
+  --surface-strong: #edf2f4;
+  --ink: #14213d;
+  --muted: #617083;
+  --dim: #8f9bac;
+  --line: #d7dde3;
+  --line-strong: #aeb8c4;
+  --accent-red: #8f1d2c;
+  --accent-red-dark: #641421;
+  --accent-red-soft: #fff4f5;
+  --accent-teal: #0f7c80;
+  --accent-teal-soft: #e8f7f6;
+  --graphite: #243043;
+  --blue: #4b5c96;
+  --green: #0f7c80;
+  --amber: #b7791f;
+  --violet: #7357a6;
+  --shadow: 0 22px 70px rgba(20, 33, 61, 0.11);
   --radius: 8px;
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --mouse-x: 50vw;
@@ -38,8 +40,8 @@ body {
   font-family: var(--font);
   letter-spacing: 0;
   background:
-    linear-gradient(90deg, rgba(17, 22, 31, 0.045) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(17, 22, 31, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 33, 61, 0.042) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(20, 33, 61, 0.034) 1px, transparent 1px),
     var(--paper);
   background-size: 72px 72px;
 }
@@ -55,13 +57,13 @@ body::before {
     linear-gradient(
       90deg,
       transparent calc(var(--mouse-x) - 1px),
-      rgba(215, 25, 32, 0.72) var(--mouse-x),
+      rgba(15, 124, 128, 0.58) var(--mouse-x),
       transparent calc(var(--mouse-x) + 1px)
     ),
     linear-gradient(
       180deg,
       transparent calc(var(--mouse-y) - 1px),
-      rgba(215, 25, 32, 0.72) var(--mouse-y),
+      rgba(143, 29, 44, 0.58) var(--mouse-y),
       transparent calc(var(--mouse-y) + 1px)
     );
   mix-blend-mode: multiply;
@@ -92,8 +94,8 @@ button {
   gap: 18px;
   min-height: 70px;
   padding: 0 clamp(18px, 4vw, 56px);
-  border-bottom: 1px solid rgba(185, 193, 207, 0.72);
-  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(174, 184, 196, 0.72);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(18px);
 }
 
@@ -103,18 +105,48 @@ button {
   gap: 10px;
   min-width: max-content;
   color: var(--ink);
-  font-weight: 900;
+  font-weight: 950;
 }
 
 .brand-mark {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 2px solid var(--accent-red);
-  border-radius: 50%;
-  color: var(--accent-red);
-  background: var(--paper);
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+}
+
+.mark-frame {
+  fill: #ffffff;
+  stroke: var(--line-strong);
+  stroke-width: 1.4;
+}
+
+.mark-edge {
+  fill: none;
+  stroke: var(--graphite);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mark-node {
+  stroke: #ffffff;
+  stroke-width: 1.6;
+}
+
+.mark-node-a {
+  fill: var(--accent-red);
+}
+
+.mark-node-b {
+  fill: var(--accent-teal);
+}
+
+.mark-node-c {
+  fill: var(--amber);
+}
+
+.brand-text {
+  letter-spacing: 0;
 }
 
 .nav-links {
@@ -154,13 +186,13 @@ button {
 .nav-links a:hover,
 .repo-link:hover,
 .secondary-action:hover {
-  color: var(--accent-red);
-  border-color: rgba(215, 25, 32, 0.28);
-  background: var(--accent-red-soft);
+  color: var(--accent-teal);
+  border-color: rgba(15, 124, 128, 0.28);
+  background: var(--accent-teal-soft);
 }
 
 .repo-link {
-  border-color: rgba(215, 25, 32, 0.32);
+  border-color: rgba(143, 29, 44, 0.32);
   color: var(--accent-red);
 }
 
@@ -174,7 +206,7 @@ button {
   isolation: isolate;
   border-bottom: 1px solid var(--line);
   background:
-    linear-gradient(120deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.72) 45%, rgba(255, 240, 241, 0.64) 100%);
+    linear-gradient(120deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.75) 48%, rgba(232, 247, 246, 0.68) 100%);
 }
 
 #heroCanvas {
@@ -266,12 +298,12 @@ h1 {
   color: #ffffff;
   border-color: var(--accent-red);
   background: var(--accent-red);
-  box-shadow: 0 14px 36px rgba(215, 25, 32, 0.22);
+  box-shadow: 0 14px 36px rgba(143, 29, 44, 0.22);
 }
 
 .secondary-action {
-  color: var(--accent-red);
-  border-color: rgba(215, 25, 32, 0.32);
+  color: var(--accent-teal);
+  border-color: rgba(15, 124, 128, 0.32);
   background: rgba(255, 255, 255, 0.78);
 }
 
@@ -444,7 +476,7 @@ h1 {
   color: #ffffff;
   border-color: var(--accent-red);
   background: var(--accent-red);
-  box-shadow: 0 12px 28px rgba(215, 25, 32, 0.18);
+  box-shadow: 0 12px 28px rgba(143, 29, 44, 0.18);
 }
 
 .dashboard-grid,
@@ -526,7 +558,7 @@ h1 {
 }
 
 .chart-band {
-  fill: rgba(215, 25, 32, 0.035);
+  fill: rgba(15, 124, 128, 0.035);
 }
 
 .optimizer-dot {
@@ -627,8 +659,8 @@ h1 {
 
 .matrix-section {
   background:
-    linear-gradient(90deg, rgba(215, 25, 32, 0.055) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(215, 25, 32, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 124, 128, 0.055) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(143, 29, 44, 0.04) 1px, transparent 1px),
     #ffffff;
   background-size: 86px 86px;
 }
@@ -666,7 +698,7 @@ h1 {
   gap: 6px;
   min-width: min(360px, calc(100% - 40px));
   padding: 18px;
-  border: 1px solid rgba(215, 25, 32, 0.28);
+  border: 1px solid rgba(143, 29, 44, 0.28);
   border-left: 5px solid var(--accent-red);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.88);
@@ -779,7 +811,7 @@ h1 {
   width: min(780px, calc(100% - 40px));
   margin: 120px auto;
   padding: 28px;
-  border: 1px solid rgba(215, 25, 32, 0.45);
+  border: 1px solid rgba(143, 29, 44, 0.45);
   border-radius: var(--radius);
   background: var(--accent-red-soft);
   color: var(--ink);
@@ -843,7 +875,7 @@ h1 {
     min-width: 0;
   }
 
-  .brand span:last-child {
+  .brand-text {
     max-width: 180px;
     white-space: normal;
   }

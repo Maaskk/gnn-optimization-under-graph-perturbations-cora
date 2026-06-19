@@ -1,31 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Interactive research frontend for optimizer robustness of Graph Neural Networks on the Cora citation network."
+      content="Interface interactive en francais pour analyser la robustesse des optimiseurs de GNN sur le reseau de citations Cora."
     />
-    <title>Cora GNN Robustness Lab</title>
+    <title>Laboratoire GNN Cora</title>
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M12 34C20 16 40 16 52 30' fill='none' stroke='%23d71920' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='22' cy='38' r='5' fill='%2311161f'/%3E%3Ccircle cx='42' cy='28' r='5' fill='%23d71920'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23ffffff'/%3E%3Cpath d='M17 43L31 20L47 37' fill='none' stroke='%2314213d' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='17' cy='43' r='7' fill='%238f1d2c'/%3E%3Ccircle cx='31' cy='20' r='7' fill='%230f7c80'/%3E%3Ccircle cx='47' cy='37' r='7' fill='%23b7791f'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="./assets/styles.css" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="Cora GNN Robustness Lab">
-        <span class="brand-mark">G</span>
-        <span>Cora GNN Robustness Lab</span>
+      <a class="brand" href="#top" aria-label="Laboratoire GNN Cora">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <rect class="mark-frame" x="4" y="4" width="40" height="40" rx="8"></rect>
+          <path class="mark-edge" d="M14 32L23 15L35 27"></path>
+          <circle class="mark-node mark-node-a" cx="14" cy="32" r="4.8"></circle>
+          <circle class="mark-node mark-node-b" cx="23" cy="15" r="4.8"></circle>
+          <circle class="mark-node mark-node-c" cx="35" cy="27" r="4.8"></circle>
+        </svg>
+        <span class="brand-text">Laboratoire GNN Cora</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#evidence">Evidence</a>
-        <a href="#robustness">Robustness</a>
-        <a href="#matrix">Drop matrix</a>
+      <nav class="nav-links" aria-label="Navigation principale">
+        <a href="#evidence">Résultats</a>
+        <a href="#robustness">Robustesse</a>
+        <a href="#matrix">Matrice</a>
         <a href="#convergence">Convergence</a>
-        <a href="#protocol">Protocol</a>
+        <a href="#protocol">Protocole</a>
       </nav>
       <a
         class="repo-link"
@@ -33,70 +39,70 @@
         target="_blank"
         rel="noreferrer"
       >
-        Repository
+        Dépôt
       </a>
     </header>
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <canvas id="heroCanvas" aria-label="Interactive Cora citation graph sample"></canvas>
+        <canvas id="heroCanvas" aria-label="Échantillon interactif du graphe de citations Cora"></canvas>
         <div class="hero-content">
           <div class="hero-copy">
-            <p class="eyebrow">Project 13 / Option 4 / Cora Citation Network</p>
-            <h1 id="hero-title">Optimization of GNNs under graph perturbations</h1>
+            <p class="eyebrow">Projet 13 / Option 4 / Réseau de citations Cora</p>
+            <h1 id="hero-title">Robustesse des GNN face aux perturbations du graphe</h1>
             <p class="hero-lede">
-              Five optimizers are tested on the same two-layer GCN while Cora is stressed
-              with feature noise, edge removal, and fake citation links. Move the mouse
-              across the field to inspect how the sampled graph responds.
+              Cinq optimiseurs sont évalués sur le même GCN à deux couches pendant que Cora
+              subit du bruit sur les attributs, des suppressions d'arêtes et des arêtes
+              artificielles. Déplacez la souris sur le graphe pour observer la réponse du réseau.
             </p>
             <div class="hero-actions">
-              <a class="primary-action" href="#evidence">Explore evidence</a>
-              <a class="secondary-action" href="#robustness">Stress the graph</a>
+              <a class="primary-action" href="#evidence">Explorer les résultats</a>
+              <a class="secondary-action" href="#robustness">Tester la robustesse</a>
             </div>
           </div>
 
-          <aside class="mission-readout" aria-label="Project summary">
+          <aside class="mission-readout" aria-label="Résumé du projet">
             <div class="readout-line">
-              <span>Best aggregate optimizer</span>
-              <strong data-stat="bestOptimizer">Loading</strong>
+              <span>Meilleur optimiseur global</span>
+              <strong data-stat="bestOptimizer">Chargement</strong>
             </div>
             <div class="readout-grid">
               <div>
-                <span>Mean accuracy</span>
+                <span>Précision moyenne</span>
                 <strong data-stat="overallAccuracy">--</strong>
               </div>
               <div>
-                <span>Clean accuracy</span>
+                <span>Précision propre</span>
                 <strong data-stat="cleanAccuracy">--</strong>
               </div>
               <div>
-                <span>Cora nodes</span>
+                <span>Nœuds Cora</span>
                 <strong data-stat="nodes">--</strong>
               </div>
               <div>
-                <span>Experiments</span>
+                <span>Expériences</span>
                 <strong data-stat="rows">--</strong>
               </div>
             </div>
             <p>
-              Result tables are loaded directly from the final CSV bundle used by the
-              experiment pipeline.
+              Les tableaux sont chargés directement depuis les fichiers CSV finaux produits
+              par le pipeline expérimental.
             </p>
           </aside>
         </div>
       </section>
 
-      <section class="stat-band" aria-label="Dataset summary">
+      <section class="stat-band" aria-label="Résumé du jeu de données">
         <article>
-          <span>Cora nodes</span>
+          <span>Nœuds Cora</span>
           <strong data-stat="nodes">--</strong>
         </article>
         <article>
-          <span>Directed edges</span>
+          <span>Arêtes dirigées</span>
           <strong data-stat="edges">--</strong>
         </article>
         <article>
-          <span>Node features</span>
+          <span>Attributs</span>
           <strong data-stat="features">--</strong>
         </article>
         <article>
@@ -104,41 +110,41 @@
           <strong data-stat="classes">--</strong>
         </article>
         <article>
-          <span>Experiment rows</span>
+          <span>Lignes d'expérience</span>
           <strong data-stat="rows">--</strong>
         </article>
       </section>
 
       <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title">
         <div class="section-heading">
-          <p class="eyebrow">Evidence first</p>
-          <h2 id="evidence-title">Adam is strongest overall, and the clean accuracy is not abnormally low.</h2>
+          <p class="eyebrow">Résultat principal</p>
+          <h2 id="evidence-title">Adam domine globalement, et 79,9% sur le graphe propre reste cohérent.</h2>
           <p>
-            The clean Cora score is close to the classic GCN reference range. The lower
-            aggregate value is expected because the project intentionally evaluates damaged
-            graphs, not only the clean benchmark.
+            Le score propre est proche de la référence classique du GCN sur Cora. La moyenne
+            globale descend parce qu'elle inclut volontairement des graphes perturbés, pas
+            seulement le cas propre.
           </p>
         </div>
 
         <div class="benchmark-grid">
           <article class="benchmark-card primary-benchmark">
-            <span>Accuracy benchmark</span>
+            <span>Benchmark de précision</span>
             <strong data-stat="cleanAccuracy">--</strong>
-            <p>Best clean test accuracy in this fixed-protocol run.</p>
+            <p>Meilleure précision test sur Cora dans ce protocole fixe.</p>
           </article>
           <article class="benchmark-card">
-            <span>GCN reference</span>
-            <strong>81.5%</strong>
-            <p>Reported Cora accuracy for the original GCN paper under its own setup.</p>
+            <span>Référence GCN</span>
+            <strong>81,5%</strong>
+            <p>Précision Cora rapportée par l'article GCN original avec son propre protocole.</p>
           </article>
           <article class="benchmark-card">
-            <span>Why lower under stress?</span>
+            <span>Pourquoi la moyenne baisse ?</span>
             <strong data-stat="overallAccuracy">--</strong>
-            <p>Aggregate accuracy includes feature noise, removed edges, and fake edges.</p>
+            <p>La moyenne agrège le bruit sur attributs, les arêtes supprimées et les fausses arêtes.</p>
           </article>
         </div>
 
-        <div class="optimizer-toolbar" aria-label="Optimizer selector">
+        <div class="optimizer-toolbar" aria-label="Sélecteur d'optimiseur">
           <button class="optimizer-button active" data-optimizer="Adam">Adam</button>
           <button class="optimizer-button" data-optimizer="AdamW">AdamW</button>
           <button class="optimizer-button" data-optimizer="RMSProp">RMSProp</button>
@@ -150,25 +156,25 @@
           <article class="panel atlas-chart">
             <div class="panel-header">
               <div>
-                <span class="label">Mean test accuracy</span>
-                <h3>Optimizer trajectories across perturbation regimes</h3>
+                <span class="label">Précision test moyenne</span>
+                <h3>Trajectoires des optimiseurs selon les régimes de perturbation</h3>
               </div>
               <span class="source-tag">final_optimizer_summary.csv</span>
             </div>
-            <svg id="summaryChart" class="chart" role="img" aria-label="Mean accuracy by optimizer and perturbation"></svg>
+            <svg id="summaryChart" class="chart" role="img" aria-label="Précision moyenne par optimiseur et perturbation"></svg>
           </article>
 
           <article class="panel optimizer-profile">
             <div class="panel-header">
               <div>
-                <span class="label">Focused optimizer</span>
+                <span class="label">Optimiseur sélectionné</span>
                 <h3 data-profile="name">Adam</h3>
               </div>
               <span class="optimizer-dot" data-profile="dot"></span>
             </div>
             <div class="profile-score">
               <span data-profile="score">--</span>
-              <small>mean test accuracy across all experiment rows</small>
+              <small>précision test moyenne sur toutes les expériences</small>
             </div>
             <div id="profileBars" class="profile-bars"></div>
           </article>
@@ -176,8 +182,8 @@
           <article class="panel leaderboard-panel">
             <div class="panel-header">
               <div>
-                <span class="label">Final ranking</span>
-                <h3>Aggregate optimizer robustness</h3>
+                <span class="label">Classement final</span>
+                <h3>Robustesse globale des optimiseurs</h3>
               </div>
             </div>
             <div id="leaderboard" class="leaderboard"></div>
@@ -187,38 +193,39 @@
 
       <section class="section chamber-section" id="robustness" aria-labelledby="robustness-title">
         <div class="section-heading">
-          <p class="eyebrow">Interactive perturbation chamber</p>
-          <h2 id="robustness-title">Move through graph damage and watch the network surface react.</h2>
+          <p class="eyebrow">Chambre de perturbation interactive</p>
+          <h2 id="robustness-title">Faites varier le bruit et observez la surface du graphe réagir.</h2>
           <p>
-            The chamber uses a sampled Cora graph. Feature noise shakes node positions,
-            edge removal marks deleted citations, and fake-edge mode overlays injected links.
+            La scène utilise un échantillon du graphe Cora. Le bruit sur attributs agite les
+            noeuds, la suppression d'arêtes marque les citations retirées, et le mode fausses
+            arêtes superpose des liens artificiels.
           </p>
         </div>
 
         <div class="chamber-layout">
           <article class="chamber-visual">
-            <canvas id="perturbationCanvas" aria-label="Interactive perturbation visualization"></canvas>
+            <canvas id="perturbationCanvas" aria-label="Visualisation interactive des perturbations"></canvas>
             <div class="chamber-hud">
-              <span data-hud="mode">Feature noise</span>
+              <span data-hud="mode">Bruit sur attributs</span>
               <strong data-hud="severity">5%</strong>
-              <small data-hud="caption">Gaussian feature disturbance</small>
+              <small data-hud="caption">Perturbation gaussienne des attributs</small>
             </div>
           </article>
 
           <article class="panel chamber-controls">
             <div class="panel-header">
               <div>
-                <span class="label">Stress controls</span>
-                <h3>Noise protocol</h3>
+                <span class="label">Contrôles de stress</span>
+                <h3>Protocole de bruit</h3>
               </div>
             </div>
-            <div class="segmented-control" role="tablist" aria-label="Perturbation type">
-              <button class="segment active" role="tab" aria-selected="true" data-perturbation="feature_noise">Feature noise</button>
-              <button class="segment" role="tab" aria-selected="false" data-perturbation="edge_removal">Edge removal</button>
-              <button class="segment" role="tab" aria-selected="false" data-perturbation="fake_edge_addition">Fake edges</button>
+            <div class="segmented-control" role="tablist" aria-label="Type de perturbation">
+              <button class="segment active" role="tab" aria-selected="true" data-perturbation="feature_noise">Bruit sur attributs</button>
+              <button class="segment" role="tab" aria-selected="false" data-perturbation="edge_removal">Suppression d'arêtes</button>
+              <button class="segment" role="tab" aria-selected="false" data-perturbation="fake_edge_addition">Fausses arêtes</button>
             </div>
             <label class="severity-control" for="severityRange">
-              <span>Severity</span>
+              <span>Sévérité</span>
               <strong data-severity-label>5%</strong>
             </label>
             <input id="severityRange" class="severity-range" type="range" min="0" max="3" step="1" value="0" />
@@ -235,92 +242,92 @@
         <article class="panel robustness-panel">
           <div class="panel-header">
             <div>
-              <span class="label">Test accuracy vs severity</span>
-              <h3 data-perturbation-title>Feature noise robustness</h3>
+              <span class="label">Précision test selon la sévérité</span>
+              <h3 data-perturbation-title>Robustesse au bruit sur attributs</h3>
             </div>
             <span class="source-tag">all_results.csv</span>
           </div>
-          <svg id="robustnessChart" class="chart tall-chart" role="img" aria-label="Test accuracy by perturbation severity"></svg>
+          <svg id="robustnessChart" class="chart tall-chart" role="img" aria-label="Précision test selon la sévérité"></svg>
         </article>
       </section>
 
       <section class="section matrix-section" id="matrix" aria-labelledby="matrix-title">
         <div class="section-heading">
-          <p class="eyebrow">Damage map</p>
-          <h2 id="matrix-title">Accuracy drops show exactly where robustness breaks.</h2>
+          <p class="eyebrow">Carte des pertes</p>
+          <h2 id="matrix-title">Les chutes de précision montrent où la robustesse casse.</h2>
           <p>
-            The matrix compares each perturbed run against that optimizer's own clean
-            accuracy. Darker red means a larger loss from the clean graph baseline.
+            La matrice compare chaque exécution perturbée avec la précision propre du même
+            optimiseur. Plus la cellule est foncée, plus la perte est importante.
           </p>
         </div>
         <article class="panel full-panel">
           <div class="panel-header">
             <div>
-              <span class="label">Accuracy drop from clean</span>
-              <h3>Optimizer-by-perturbation heat matrix</h3>
+              <span class="label">Perte de précision vs graphe propre</span>
+              <h3>Matrice thermique optimiseur × perturbation</h3>
             </div>
             <span class="source-tag">all_results.csv</span>
           </div>
-          <svg id="dropMatrixChart" class="chart matrix-chart" role="img" aria-label="Accuracy drop heat matrix"></svg>
+          <svg id="dropMatrixChart" class="chart matrix-chart" role="img" aria-label="Matrice thermique des pertes de précision"></svg>
         </article>
       </section>
 
       <section class="section convergence-section" id="convergence" aria-labelledby="convergence-title">
         <div class="section-heading">
-          <p class="eyebrow">Training dynamics</p>
-          <h2 id="convergence-title">Convergence explains why adaptive optimizers dominate.</h2>
+          <p class="eyebrow">Dynamique d'entraînement</p>
+          <h2 id="convergence-title">La convergence explique l'avantage des optimiseurs adaptatifs.</h2>
           <p>
-            Validation loss over 200 epochs separates Adam, AdamW, and RMSProp from SGD
-            under the fixed learning-rate protocol.
+            La perte de validation sur 200 époques sépare Adam, AdamW et RMSProp de SGD
+            dans le protocole à taux d'apprentissage fixe.
           </p>
         </div>
         <article class="panel full-panel">
           <div class="panel-header">
             <div>
-              <span class="label">Validation loss over 200 epochs</span>
-              <h3>Clean graph convergence</h3>
+              <span class="label">Perte de validation sur 200 époques</span>
+              <h3>Convergence sur le graphe propre</h3>
             </div>
             <span class="source-tag">clean_loss_history.csv</span>
           </div>
-          <svg id="lossChart" class="chart tall-chart" role="img" aria-label="Clean validation loss by optimizer"></svg>
+          <svg id="lossChart" class="chart tall-chart" role="img" aria-label="Perte de validation par optimiseur"></svg>
         </article>
       </section>
 
       <section class="section protocol-section" id="protocol" aria-labelledby="protocol-title">
         <div class="section-heading">
-          <p class="eyebrow">Research protocol</p>
-          <h2 id="protocol-title">A fixed comparison protocol for every optimizer.</h2>
+          <p class="eyebrow">Protocole de recherche</p>
+          <h2 id="protocol-title">Un protocole fixe pour comparer chaque optimiseur.</h2>
           <p>
-            Same Cora split, same GCN architecture, same seed, same epochs, same learning
-            rate. The comparison isolates optimizer behavior.
+            Même split Cora, même architecture GCN, même graine aléatoire, mêmes époques, même taux
+            d'apprentissage. La comparaison isole le comportement de l'optimiseur.
           </p>
         </div>
         <div class="protocol-grid">
           <article class="panel">
-            <h3>Model</h3>
+            <h3>Modèle</h3>
             <ul class="protocol-list">
-              <li>Two-layer GCN</li>
-              <li>1433 input features</li>
-              <li>16 hidden channels</li>
-              <li>7 class output</li>
+              <li>GCN à deux couches</li>
+              <li>1433 attributs d'entrée</li>
+              <li>16 canaux cachés</li>
+              <li>7 classes en sortie</li>
             </ul>
           </article>
           <article class="panel">
-            <h3>Optimization</h3>
+            <h3>Optimisation</h3>
             <ul class="protocol-list">
-              <li>Learning rate 0.01</li>
-              <li>Weight decay 0.0005</li>
-              <li>Dropout 0.5</li>
-              <li>200 epochs</li>
+              <li>Taux d'apprentissage 0,01</li>
+              <li>Décroissance des poids 0,0005</li>
+              <li>Dropout 0,5</li>
+              <li>200 époques</li>
             </ul>
           </article>
           <article class="panel">
-            <h3>Evaluation</h3>
+            <h3>Évaluation</h3>
             <ul class="protocol-list">
-              <li>Test accuracy</li>
+              <li>Précision test</li>
               <li>Macro F1-score</li>
-              <li>Final training loss</li>
-              <li>Training time</li>
+              <li>Perte finale d'entraînement</li>
+              <li>Temps d'entraînement</li>
             </ul>
           </article>
         </div>
@@ -328,9 +335,9 @@
     </main>
 
     <footer class="site-footer">
-      <span>Optimization of GNNs under Graph Perturbations</span>
-      <span>Cora Citation Network</span>
-      <span>Project 13 - Option 4</span>
+      <span>Robustesse des GNN face aux perturbations du graphe</span>
+      <span>Réseau de citations Cora</span>
+      <span>Projet 13 - Option 4</span>
     </footer>
 
     <script src="./assets/app.js" defer></script>
