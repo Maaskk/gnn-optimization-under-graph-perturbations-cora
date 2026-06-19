@@ -595,12 +595,12 @@ function setupCanvas(canvas) {
   return { ctx, resize };
 }
 
-function bindCanvasPointer(canvas, key) {
-  canvas.addEventListener("pointermove", (event) => {
+function bindCanvasPointer(canvas, key, target = canvas) {
+  target.addEventListener("pointermove", (event) => {
     const rect = canvas.getBoundingClientRect();
     state.pointers[key] = { x: event.clientX - rect.left, y: event.clientY - rect.top };
   });
-  canvas.addEventListener("pointerleave", () => {
+  target.addEventListener("pointerleave", () => {
     state.pointers[key] = { x: -9999, y: -9999 };
   });
 }
@@ -629,6 +629,33 @@ function applyPointerField(point, pointer, radius, power) {
   return {
     x: point.x + (dx / distance) * force,
     y: point.y + (dy / distance) * force,
+  };
+}
+
+function pointerIsActive(pointer, width, height) {
+  return pointer.x > -80 && pointer.y > -80 && pointer.x < width + 80 && pointer.y < height + 80;
+}
+
+function applyTangleField(point, pointer, width, height, time, radius, power, twist = 1) {
+  if (!pointerIsActive(pointer, width, height)) return point;
+  const dx = point.x - pointer.x;
+  const dy = point.y - pointer.y;
+  const distance = Math.hypot(dx, dy);
+  if (distance <= 0.001 || distance > radius) return point;
+
+  const influence = 1 - distance / radius;
+  const eased = influence * influence * (3 - 2 * influence);
+  const unitX = dx / distance;
+  const unitY = dy / distance;
+  const tangentX = -unitY;
+  const tangentY = unitX;
+  const pulse = Math.sin(time * 0.003 + distance * 0.045) * 0.22 + 0.88;
+  const spin = power * eased * pulse * twist;
+  const lensPull = -power * 0.28 * eased;
+
+  return {
+    x: point.x + tangentX * spin + unitX * lensPull,
+    y: point.y + tangentY * spin + unitY * lensPull,
   };
 }
 
@@ -667,6 +694,86 @@ function paintBackground(ctx, width, height, time) {
   ctx.lineTo(scanX + height * 0.18, height);
   ctx.stroke();
   ctx.restore();
+}
+
+function drawTangleField(ctx, pointer, width, height, time, intensity = 1) {
+  if (!pointerIsActive(pointer, width, height)) return;
+
+  ctx.save();
+  const radius = 190 * intensity;
+  const gradient = ctx.createRadialGradient(pointer.x, pointer.y, 8, pointer.x, pointer.y, radius);
+  gradient.addColorStop(0, "rgba(15,124,128,0.28)");
+  gradient.addColorStop(0.42, "rgba(143,29,44,0.12)");
+  gradient.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(pointer.x, pointer.y, radius, 0, Math.PI * 2);
+  ctx.fill();
+
+  for (let i = 0; i < 5; i += 1) {
+    const ring = 34 + i * 34 + Math.sin(time * 0.003 + i) * 5;
+    ctx.strokeStyle = i % 2 === 0 ? "rgba(15,124,128,0.42)" : "rgba(143,29,44,0.36)";
+    ctx.lineWidth = 1.45;
+    ctx.setLineDash(i % 2 === 0 ? [10, 12] : [2, 10]);
+    ctx.beginPath();
+    ctx.arc(pointer.x, pointer.y, ring * intensity, time * 0.001 + i, Math.PI * 1.62 + time * 0.001 + i);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  for (let i = 0; i < 11; i += 1) {
+    const angle = time * 0.0016 + i * ((Math.PI * 2) / 11);
+    const inner = 28 * intensity;
+    const outer = (130 + (i % 3) * 22) * intensity;
+    const startX = pointer.x + Math.cos(angle) * inner;
+    const startY = pointer.y + Math.sin(angle) * inner;
+    const endX = pointer.x + Math.cos(angle + 0.78) * outer;
+    const endY = pointer.y + Math.sin(angle + 0.78) * outer;
+    const controlX = pointer.x + Math.cos(angle + 1.8) * outer * 0.62;
+    const controlY = pointer.y + Math.sin(angle + 1.8) * outer * 0.62;
+    ctx.strokeStyle = i % 2 === 0 ? "rgba(15,124,128,0.5)" : "rgba(143,29,44,0.42)";
+    ctx.lineWidth = 1.55;
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawTangledEdge(ctx, source, target, pointer, width, height, time, options = {}) {
+  const {
+    baseColor = "rgba(36,48,67,0.16)",
+    activeColor = "rgba(15,124,128,0.46)",
+    lineWidth = 0.8,
+    dash = [],
+  } = options;
+  const midpointX = (source.x + target.x) / 2;
+  const midpointY = (source.y + target.y) / 2;
+  const pointerActive = pointerIsActive(pointer, width, height);
+  const distance = pointerActive ? Math.hypot(midpointX - pointer.x, midpointY - pointer.y) : Infinity;
+  const influence = Math.max(0, 1 - distance / 270);
+  const dx = target.x - source.x;
+  const dy = target.y - source.y;
+  const length = Math.max(1, Math.hypot(dx, dy));
+  const normalX = -dy / length;
+  const normalY = dx / length;
+  const curve = influence * influence * (42 + Math.sin(time * 0.004 + length) * 13);
+  const controlX = midpointX + normalX * curve + (pointer.x - midpointX) * influence * 0.16;
+  const controlY = midpointY + normalY * curve + (pointer.y - midpointY) * influence * 0.16;
+
+  ctx.setLineDash(dash);
+  ctx.strokeStyle = influence > 0.02 ? activeColor : baseColor;
+  ctx.lineWidth = lineWidth + influence * 1.2;
+  ctx.beginPath();
+  ctx.moveTo(source.x, source.y);
+  if (influence > 0.02) {
+    ctx.quadraticCurveTo(controlX, controlY, target.x, target.y);
+  } else {
+    ctx.lineTo(target.x, target.y);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
 }
 
 function nearestNode(positions, pointer) {
@@ -708,8 +815,10 @@ function drawHeroScene(ctx, width, height, time) {
   const positions = new Map();
   state.graph.nodes.forEach((node) => {
     const base = nodePosition(node, width, height, time, "hero");
-    positions.set(node.id, applyPointerField(base, pointer, 170, 26));
+    const repelled = applyPointerField(base, pointer, 210, 18);
+    positions.set(node.id, applyTangleField(repelled, pointer, width, height, time, 330, 88, 1.05));
   });
+  drawTangleField(ctx, pointer, width, height, time, 1.08);
 
   ctx.save();
   ctx.globalAlpha = 0.68;
@@ -717,12 +826,11 @@ function drawHeroScene(ctx, width, height, time) {
     const source = positions.get(edge.source);
     const target = positions.get(edge.target);
     if (!source || !target) return;
-    ctx.strokeStyle = "rgba(36,48,67,0.16)";
-    ctx.lineWidth = 0.75;
-    ctx.beginPath();
-    ctx.moveTo(source.x, source.y);
-    ctx.lineTo(target.x, target.y);
-    ctx.stroke();
+    drawTangledEdge(ctx, source, target, pointer, width, height, time, {
+      baseColor: "rgba(36,48,67,0.14)",
+      activeColor: "rgba(15,124,128,0.62)",
+      lineWidth: 0.75,
+    });
   });
   ctx.restore();
 
@@ -767,8 +875,10 @@ function drawPerturbationScene(ctx, width, height, time) {
   const positions = new Map();
   state.graph.nodes.forEach((node) => {
     const base = nodePosition(node, width, height, time, "chamber");
-    positions.set(node.id, applyPointerField(base, pointer, 140, 18));
+    const repelled = applyPointerField(base, pointer, 180, 16 + severity * 22);
+    positions.set(node.id, applyTangleField(repelled, pointer, width, height, time, 260, 48 + severity * 80, 0.88));
   });
+  drawTangleField(ctx, pointer, width, height, time, 0.88 + severity * 0.8);
 
   ctx.save();
   ctx.translate(width * 0.5, height * 0.48);
@@ -787,13 +897,12 @@ function drawPerturbationScene(ctx, width, height, time) {
     if (!source || !target) return;
     const h = edgeHash(edge.source, edge.target);
     const removed = state.selectedPerturbation === "edge_removal" && h < severity;
-    ctx.strokeStyle = removed ? "rgba(143,29,44,0.25)" : "rgba(36,48,67,0.18)";
-    ctx.lineWidth = removed ? 0.7 : 0.9;
-    ctx.setLineDash(removed ? [2, 8] : []);
-    ctx.beginPath();
-    ctx.moveTo(source.x, source.y);
-    ctx.lineTo(target.x, target.y);
-    ctx.stroke();
+    drawTangledEdge(ctx, source, target, pointer, width, height, time, {
+      baseColor: removed ? "rgba(143,29,44,0.25)" : "rgba(36,48,67,0.18)",
+      activeColor: removed ? "rgba(143,29,44,0.48)" : "rgba(15,124,128,0.44)",
+      lineWidth: removed ? 0.7 : 0.9,
+      dash: removed ? [2, 8] : [],
+    });
   });
   ctx.setLineDash([]);
 
@@ -807,10 +916,12 @@ function drawPerturbationScene(ctx, width, height, time) {
       const b = state.graph.nodes[(i * 43 + 7) % state.graph.nodes.length];
       const source = positions.get(a.id);
       const target = positions.get(b.id);
-      ctx.beginPath();
-      ctx.moveTo(source.x, source.y);
-      ctx.lineTo(target.x, target.y);
-      ctx.stroke();
+      drawTangledEdge(ctx, source, target, pointer, width, height, time + i * 13, {
+        baseColor: "rgba(143,29,44,0.42)",
+        activeColor: "rgba(143,29,44,0.62)",
+        lineWidth: 1.05,
+        dash: [6, 9],
+      });
     }
     ctx.setLineDash([]);
   }
@@ -843,8 +954,8 @@ function startCanvasAnimation() {
   const chamber = setupCanvas(perturbationCanvas);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  bindCanvasPointer(heroCanvas, "hero");
-  bindCanvasPointer(perturbationCanvas, "chamber");
+  bindCanvasPointer(heroCanvas, "hero", heroCanvas.closest(".hero"));
+  bindCanvasPointer(perturbationCanvas, "chamber", perturbationCanvas.closest(".chamber-visual"));
 
   window.addEventListener("pointermove", (event) => {
     document.documentElement.style.setProperty("--mouse-x", `${event.clientX}px`);

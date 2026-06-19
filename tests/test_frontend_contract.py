@@ -29,6 +29,9 @@ def test_frontend_has_mouse_reactive_layers():
     assert "--mouse-x" in js
     assert "--mouse-y" in js
     assert "pointermove" in js
+    assert "applyTangleField" in js
+    assert "drawTangleField" in js
+    assert "quadraticCurveTo" in js
 
 
 def test_frontend_explains_accuracy_benchmark_and_adds_visual_depth():
