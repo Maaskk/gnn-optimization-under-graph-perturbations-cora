@@ -25,14 +25,14 @@ const PERTURBATION_CAPTIONS = {
 };
 
 const OPTIMIZER_COLORS = {
-  Adam: "#65ffd4",
-  AdamW: "#f5c84b",
-  RMSProp: "#ff7b6e",
-  AdaGrad: "#a98cff",
-  SGD: "#8fc7ff",
+  Adam: "#d71920",
+  AdamW: "#1f5fbf",
+  RMSProp: "#148f54",
+  AdaGrad: "#c77c00",
+  SGD: "#6f42c1",
 };
 
-const CLASS_COLORS = ["#65ffd4", "#f5c84b", "#ff7b6e", "#a98cff", "#a4e86f", "#ff9ac8", "#8fc7ff"];
+const CLASS_COLORS = ["#d71920", "#1f5fbf", "#148f54", "#c77c00", "#6f42c1", "#253044", "#0a7b83"];
 
 const state = {
   selectedOptimizer: "Adam",
@@ -43,7 +43,10 @@ const state = {
   lossHistory: [],
   dataset: {},
   graph: { nodes: [], edges: [] },
-  pointer: { x: -9999, y: -9999 },
+  pointers: {
+    hero: { x: -9999, y: -9999 },
+    chamber: { x: -9999, y: -9999 },
+  },
 };
 
 function parseCsv(text) {
@@ -178,9 +181,9 @@ function drawChartFrame(svg, bounds, yTicks, yScale, xLabels = []) {
   });
 }
 
-function drawLegend(svg, x, y) {
+function drawLegend(svg, x, y, gap = 118) {
   OPTIMIZERS.forEach((optimizer, index) => {
-    const group = svgElement("g", { transform: `translate(${x + index * 118}, ${y})` });
+    const group = svgElement("g", { transform: `translate(${x + index * gap}, ${y})` });
     group.appendChild(svgElement("circle", { cx: 0, cy: 0, r: 5, fill: OPTIMIZER_COLORS[optimizer] }));
     const label = svgElement("text", { x: 12, y: 4, "font-size": 12 });
     label.textContent = optimizer;
@@ -191,8 +194,8 @@ function drawLegend(svg, x, y) {
 
 function drawSummaryChart() {
   const svg = document.getElementById("summaryChart");
-  const { width, height } = clearSvg(svg, 940, 450);
-  const bounds = { left: 66, right: width - 28, top: 36, bottom: height - 78 };
+  const { width, height } = clearSvg(svg, 960, 450);
+  const bounds = { left: 70, right: width - 30, top: 34, bottom: height - 78 };
   const xStep = (bounds.right - bounds.left) / (PERTURBATIONS.length - 1);
   const xByPerturbation = Object.fromEntries(PERTURBATIONS.map((perturbation, index) => [perturbation, bounds.left + xStep * index]));
   const yMin = 0.05;
@@ -201,7 +204,7 @@ function drawSummaryChart() {
 
   PERTURBATIONS.forEach((perturbation, index) => {
     if (index % 2 === 0) {
-      const x = xByPerturbation[perturbation] - xStep / 2;
+      const x = Math.max(bounds.left, xByPerturbation[perturbation] - xStep / 2);
       svg.appendChild(svgElement("rect", { class: "chart-band", x, y: bounds.top, width: xStep, height: bounds.bottom - bounds.top }));
     }
   });
@@ -224,8 +227,8 @@ function drawSummaryChart() {
       d: linePath(points),
       fill: "none",
       stroke: OPTIMIZER_COLORS[optimizer],
-      "stroke-width": selected ? 4.5 : 2.1,
-      "stroke-opacity": selected ? 1 : 0.38,
+      "stroke-width": selected ? 4.6 : 2.1,
+      "stroke-opacity": selected ? 1 : 0.34,
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
     }));
@@ -236,7 +239,7 @@ function drawSummaryChart() {
         cy: point.y,
         r: selected ? 6 : 4,
         fill: OPTIMIZER_COLORS[optimizer],
-        "fill-opacity": selected ? 1 : 0.64,
+        "fill-opacity": selected ? 1 : 0.6,
       }));
     });
 
@@ -244,7 +247,7 @@ function drawSummaryChart() {
       const last = points[points.length - 1];
       drawText(svg, `${optimizer} ${formatPct(last.value)}`, last.x - 8, last.y - 14, {
         "font-size": 13,
-        "font-weight": 800,
+        "font-weight": 900,
         "text-anchor": "end",
         fill: OPTIMIZER_COLORS[optimizer],
       });
@@ -256,12 +259,11 @@ function drawSummaryChart() {
 
 function drawRobustnessChart() {
   const svg = document.getElementById("robustnessChart");
-  const { width, height } = clearSvg(svg, 940, 470);
+  const { width, height } = clearSvg(svg, 960, 470);
   const rows = state.allResults.filter((row) => row.perturbation_type === state.selectedPerturbation);
-  const severities = SEVERITIES;
-  const bounds = { left: 66, right: width - 28, top: 34, bottom: height - 76 };
-  const xStep = (bounds.right - bounds.left) / (severities.length - 1);
-  const xBySeverity = Object.fromEntries(severities.map((severity, index) => [severity, bounds.left + xStep * index]));
+  const bounds = { left: 70, right: width - 30, top: 34, bottom: height - 76 };
+  const xStep = (bounds.right - bounds.left) / (SEVERITIES.length - 1);
+  const xBySeverity = Object.fromEntries(SEVERITIES.map((severity, index) => [severity, bounds.left + xStep * index]));
   const yMin = 0.05;
   const yMax = 0.84;
   const yScale = (value) => bounds.bottom - ((value - yMin) / (yMax - yMin)) * (bounds.bottom - bounds.top);
@@ -275,7 +277,7 @@ function drawRobustnessChart() {
     bounds,
     [0.2, 0.4, 0.6, 0.8],
     yScale,
-    severities.map((severity) => ({ label: `${Math.round(severity * 100)}%`, x: xBySeverity[severity] })),
+    SEVERITIES.map((severity) => ({ label: `${Math.round(severity * 100)}%`, x: xBySeverity[severity] })),
   );
 
   svg.appendChild(svgElement("line", {
@@ -283,13 +285,13 @@ function drawRobustnessChart() {
     x2: xBySeverity[selectedSeverity],
     y1: bounds.top,
     y2: bounds.bottom,
-    stroke: "rgba(245, 200, 75, 0.48)",
+    stroke: "rgba(215, 25, 32, 0.5)",
     "stroke-width": 1.5,
     "stroke-dasharray": "6 8",
   }));
 
   OPTIMIZERS.forEach((optimizer) => {
-    const points = severities.map((severity) => {
+    const points = SEVERITIES.map((severity) => {
       const row = rows.find((item) => item.optimizer === optimizer && item.severity === severity);
       return { x: xBySeverity[severity], y: yScale(row.test_accuracy), value: row.test_accuracy };
     });
@@ -299,7 +301,7 @@ function drawRobustnessChart() {
       fill: "none",
       stroke: OPTIMIZER_COLORS[optimizer],
       "stroke-width": selected ? 4.2 : 2,
-      "stroke-opacity": selected ? 1 : 0.38,
+      "stroke-opacity": selected ? 1 : 0.34,
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
     }));
@@ -320,8 +322,8 @@ function drawRobustnessChart() {
 
 function drawLossChart() {
   const svg = document.getElementById("lossChart");
-  const { width, height } = clearSvg(svg, 940, 470);
-  const bounds = { left: 66, right: width - 28, top: 34, bottom: height - 76 };
+  const { width, height } = clearSvg(svg, 960, 470);
+  const bounds = { left: 70, right: width - 30, top: 34, bottom: height - 76 };
   const yScale = (value) => bounds.bottom - (value / 2.05) * (bounds.bottom - bounds.top);
   const xScale = (epoch) => bounds.left + ((epoch - 1) / 199) * (bounds.right - bounds.left);
 
@@ -349,13 +351,115 @@ function drawLossChart() {
       fill: "none",
       stroke: OPTIMIZER_COLORS[optimizer],
       "stroke-width": selected ? 3.8 : 2,
-      "stroke-opacity": selected ? 1 : 0.38,
+      "stroke-opacity": selected ? 1 : 0.34,
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
     }));
   });
 
   drawLegend(svg, bounds.left, height - 28);
+}
+
+function drawDropMatrixChart() {
+  const svg = document.getElementById("dropMatrixChart");
+  const { width, height } = clearSvg(svg, 1020, 520);
+  const columns = ["feature_noise", "edge_removal", "fake_edge_addition"].flatMap((perturbation) =>
+    SEVERITIES.map((severity) => ({ perturbation, severity })),
+  );
+  const bounds = { left: 116, right: width - 34, top: 88, bottom: height - 74 };
+  const cellW = (bounds.right - bounds.left) / columns.length;
+  const cellH = (bounds.bottom - bounds.top) / OPTIMIZERS.length;
+  const maxDrop = 0.32;
+
+  const groups = [
+    { label: "Feature noise", start: 0, end: 3 },
+    { label: "Edge removal", start: 4, end: 7 },
+    { label: "Fake edges", start: 8, end: 11 },
+  ];
+
+  groups.forEach((group) => {
+    const x = bounds.left + group.start * cellW;
+    const w = (group.end - group.start + 1) * cellW;
+    svg.appendChild(svgElement("rect", {
+      x,
+      y: 38,
+      width: w - 6,
+      height: 28,
+      rx: 4,
+      fill: group.label === "Edge removal" ? "rgba(20,143,84,0.08)" : "rgba(215,25,32,0.08)",
+      stroke: "rgba(37,48,68,0.12)",
+    }));
+    drawText(svg, group.label, x + w / 2 - 3, 57, {
+      "font-size": 12,
+      "font-weight": 900,
+      "text-anchor": "middle",
+      fill: "#253044",
+    });
+  });
+
+  columns.forEach((column, index) => {
+    const x = bounds.left + index * cellW + cellW / 2;
+    drawText(svg, `${Math.round(column.severity * 100)}%`, x, bounds.top - 12, {
+      "font-size": 11,
+      "text-anchor": "middle",
+    });
+  });
+
+  OPTIMIZERS.forEach((optimizer, rowIndex) => {
+    const y = bounds.top + rowIndex * cellH;
+    drawText(svg, optimizer, bounds.left - 18, y + cellH / 2 + 5, {
+      "font-size": 13,
+      "font-weight": 900,
+      "text-anchor": "end",
+      fill: OPTIMIZER_COLORS[optimizer],
+    });
+
+    columns.forEach((column, colIndex) => {
+      const result = state.allResults.find(
+        (item) =>
+          item.optimizer === optimizer &&
+          item.perturbation_type === column.perturbation &&
+          item.severity === column.severity,
+      );
+      const drop = getCleanAccuracy(optimizer) - result.test_accuracy;
+      const positive = Math.max(0, drop);
+      const intensity = Math.min(1, positive / maxDrop);
+      const negative = Math.max(0, -drop);
+      const x = bounds.left + colIndex * cellW;
+      const fill = negative > 0.002
+        ? `rgba(31, 95, 191, ${0.1 + Math.min(0.75, negative * 8)})`
+        : `rgba(215, 25, 32, ${0.04 + intensity * 0.82})`;
+      const textColor = intensity > 0.55 ? "#ffffff" : "#253044";
+
+      svg.appendChild(svgElement("rect", {
+        x: x + 2,
+        y: y + 2,
+        width: cellW - 4,
+        height: cellH - 4,
+        rx: 5,
+        fill,
+        stroke: optimizer === state.selectedOptimizer ? OPTIMIZER_COLORS[optimizer] : "rgba(37,48,68,0.12)",
+        "stroke-width": optimizer === state.selectedOptimizer ? 2 : 1,
+      }));
+      drawText(svg, `${(drop * 100).toFixed(1)}`, x + cellW / 2, y + cellH / 2 + 4, {
+        "font-size": 11,
+        "font-weight": 850,
+        "text-anchor": "middle",
+        fill: textColor,
+      });
+    });
+  });
+
+  drawText(svg, "points lost vs clean accuracy", bounds.left, height - 30, {
+    "font-size": 12,
+    "font-weight": 800,
+    fill: "#5d6675",
+  });
+  drawText(svg, "blue cells mean accuracy improved slightly vs clean", bounds.right, height - 30, {
+    "font-size": 12,
+    "text-anchor": "end",
+    fill: "#5d6675",
+  });
 }
 
 function renderProfile() {
@@ -366,7 +470,6 @@ function renderProfile() {
   document.querySelector('[data-profile="score"]').textContent = formatPct(meanAccuracy);
   const dot = document.querySelector('[data-profile="dot"]');
   dot.style.background = OPTIMIZER_COLORS[optimizer];
-  dot.style.boxShadow = `0 0 24px ${OPTIMIZER_COLORS[optimizer]}aa`;
 
   const container = document.getElementById("profileBars");
   container.replaceChildren();
@@ -434,6 +537,7 @@ function renderAllCharts() {
   drawSummaryChart();
   drawRobustnessChart();
   drawLossChart();
+  drawDropMatrixChart();
   renderProfile();
   renderLeaderboard();
   renderSeverityMetrics();
@@ -491,18 +595,40 @@ function setupCanvas(canvas) {
   return { ctx, resize };
 }
 
+function bindCanvasPointer(canvas, key) {
+  canvas.addEventListener("pointermove", (event) => {
+    const rect = canvas.getBoundingClientRect();
+    state.pointers[key] = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  });
+  canvas.addEventListener("pointerleave", () => {
+    state.pointers[key] = { x: -9999, y: -9999 };
+  });
+}
+
 function nodePosition(node, width, height, time, mode = "hero") {
-  const centerX = mode === "hero" ? width * 0.56 : width * 0.5;
-  const centerY = mode === "hero" ? height * 0.48 : height * 0.48;
-  const spreadX = mode === "hero" ? width * 0.78 : width * 0.76;
-  const spreadY = mode === "hero" ? height * 0.72 : height * 0.68;
+  const centerX = mode === "hero" ? width * 0.58 : width * 0.5;
+  const centerY = mode === "hero" ? height * 0.52 : height * 0.48;
+  const spreadX = mode === "hero" ? width * 0.72 : width * 0.76;
+  const spreadY = mode === "hero" ? height * 0.62 : height * 0.68;
   const severity = SEVERITIES[state.selectedSeverityIndex];
   const noisePhase = node.phase + time * 0.00045;
   const chamberJitter = mode === "chamber" && state.selectedPerturbation === "feature_noise" ? severity * 82 : 0;
-  const orbit = mode === "hero" ? node.degree_rank * 18 : node.degree_rank * 10;
+  const orbit = mode === "hero" ? node.degree_rank * 15 : node.degree_rank * 10;
   return {
     x: centerX + (node.x - 0.5) * spreadX + Math.sin(noisePhase) * (orbit + chamberJitter),
     y: centerY + (node.y - 0.5) * spreadY + Math.cos(noisePhase * 1.35) * (orbit * 0.7 + chamberJitter * 0.6),
+  };
+}
+
+function applyPointerField(point, pointer, radius, power) {
+  const dx = point.x - pointer.x;
+  const dy = point.y - pointer.y;
+  const distance = Math.hypot(dx, dy);
+  if (distance <= 0 || distance > radius) return point;
+  const force = (1 - distance / radius) * power;
+  return {
+    x: point.x + (dx / distance) * force,
+    y: point.y + (dy / distance) * force,
   };
 }
 
@@ -513,109 +639,142 @@ function edgeHash(source, target) {
 
 function paintBackground(ctx, width, height, time) {
   ctx.clearRect(0, 0, width, height);
-  const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#050609");
-  gradient.addColorStop(0.48, "#071019");
-  gradient.addColorStop(1, "#050507");
-  ctx.fillStyle = gradient;
+  ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
 
   ctx.save();
-  ctx.globalAlpha = 0.16;
-  ctx.strokeStyle = "#f5efe2";
   ctx.lineWidth = 1;
-  for (let x = ((time * 0.006) % 90) - 90; x < width; x += 90) {
+  for (let x = 0; x < width; x += 44) {
+    ctx.strokeStyle = x % 220 === 0 ? "rgba(215,25,32,0.14)" : "rgba(37,48,68,0.075)";
     ctx.beginPath();
     ctx.moveTo(x, 0);
-    ctx.lineTo(x + height * 0.2, height);
+    ctx.lineTo(x, height);
     ctx.stroke();
   }
-  for (let y = 0; y < height; y += 90) {
+  for (let y = 0; y < height; y += 44) {
+    ctx.strokeStyle = y % 220 === 0 ? "rgba(215,25,32,0.12)" : "rgba(37,48,68,0.065)";
     ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(width, y);
     ctx.stroke();
   }
+
+  const scanX = (time * 0.045) % (width + 180) - 90;
+  ctx.strokeStyle = "rgba(215,25,32,0.34)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(scanX, 0);
+  ctx.lineTo(scanX + height * 0.18, height);
+  ctx.stroke();
   ctx.restore();
 }
 
-function drawHeroScene(ctx, width, height, time) {
-  paintBackground(ctx, width, height, time);
-  const positions = new Map();
-  state.graph.nodes.forEach((node) => positions.set(node.id, nodePosition(node, width, height, time, "hero")));
-
-  const sweep = (time * 0.00018) % (Math.PI * 2);
-  const center = { x: width * 0.58, y: height * 0.47 };
-  ctx.save();
-  ctx.translate(center.x, center.y);
-  ctx.rotate(sweep);
-  const sweepGradient = ctx.createLinearGradient(0, 0, width * 0.5, 0);
-  sweepGradient.addColorStop(0, "rgba(101,255,212,0)");
-  sweepGradient.addColorStop(1, "rgba(101,255,212,0.18)");
-  ctx.fillStyle = sweepGradient;
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.arc(0, 0, Math.max(width, height) * 0.62, -0.08, 0.08);
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
-
-  state.graph.edges.forEach((edge) => {
-    const source = positions.get(edge.source);
-    const target = positions.get(edge.target);
-    if (!source || !target) return;
-    ctx.strokeStyle = "rgba(143,199,255,0.095)";
-    ctx.lineWidth = 0.8;
-    ctx.beginPath();
-    ctx.moveTo(source.x, source.y);
-    ctx.lineTo(target.x, target.y);
-    ctx.stroke();
-  });
-
+function nearestNode(positions, pointer) {
   let nearest = null;
   let nearestDistance = Infinity;
   state.graph.nodes.forEach((node) => {
     const point = positions.get(node.id);
-    const distance = Math.hypot(point.x - state.pointer.x, point.y - state.pointer.y);
+    const distance = Math.hypot(point.x - pointer.x, point.y - pointer.y);
     if (distance < nearestDistance) {
       nearest = node;
       nearestDistance = distance;
     }
   });
-  const highlightedId = nearestDistance < 42 ? nearest.id : null;
+  return nearestDistance < 48 ? nearest : null;
+}
 
+function drawNodeLabel(ctx, node, point, color, widthLimit) {
+  const label = `Cora node ${node.original_id} | class ${node.class_id} | degree ${node.degree}`;
+  ctx.save();
+  ctx.font = "12px Inter, system-ui, sans-serif";
+  const width = ctx.measureText(label).width + 20;
+  const x = Math.min(point.x + 14, widthLimit - width - 16);
+  const y = Math.max(18, point.y - 28);
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(x, y, width, 28, 6);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = "#11161f";
+  ctx.fillText(label, x + 10, y + 18);
+  ctx.restore();
+}
+
+function drawHeroScene(ctx, width, height, time) {
+  paintBackground(ctx, width, height, time);
+  const pointer = state.pointers.hero;
+  const positions = new Map();
+  state.graph.nodes.forEach((node) => {
+    const base = nodePosition(node, width, height, time, "hero");
+    positions.set(node.id, applyPointerField(base, pointer, 170, 26));
+  });
+
+  ctx.save();
+  ctx.globalAlpha = 0.68;
+  state.graph.edges.forEach((edge) => {
+    const source = positions.get(edge.source);
+    const target = positions.get(edge.target);
+    if (!source || !target) return;
+    ctx.strokeStyle = "rgba(37,48,68,0.16)";
+    ctx.lineWidth = 0.75;
+    ctx.beginPath();
+    ctx.moveTo(source.x, source.y);
+    ctx.lineTo(target.x, target.y);
+    ctx.stroke();
+  });
+  ctx.restore();
+
+  const highlighted = nearestNode(positions, pointer);
   state.graph.nodes.forEach((node) => {
     const point = positions.get(node.id);
-    const active = node.id === highlightedId;
-    ctx.globalAlpha = active ? 1 : 0.78;
-    ctx.fillStyle = CLASS_COLORS[node.class_id % CLASS_COLORS.length];
+    const active = highlighted && node.id === highlighted.id;
+    const color = CLASS_COLORS[node.class_id % CLASS_COLORS.length];
+    ctx.globalAlpha = active ? 1 : 0.86;
+    ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.arc(point.x, point.y, active ? 6 : 2.1 + node.degree_rank * 3.4, 0, Math.PI * 2);
+    ctx.arc(point.x, point.y, active ? 6.5 : 2 + node.degree_rank * 3.6, 0, Math.PI * 2);
     ctx.fill();
     if (active) {
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = "rgba(245,239,226,0.9)";
-      ctx.lineWidth = 1.4;
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.fillStyle = "#f5efe2";
-      ctx.font = "12px Inter, system-ui, sans-serif";
-      ctx.fillText(`Cora node ${node.original_id} | class ${node.class_id}`, point.x + 11, point.y - 12);
+      drawNodeLabel(ctx, node, point, color, width);
     }
   });
   ctx.globalAlpha = 1;
+
+  if (pointer.x > -100) {
+    ctx.save();
+    ctx.strokeStyle = "rgba(215,25,32,0.38)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pointer.x - 18, pointer.y);
+    ctx.lineTo(pointer.x + 18, pointer.y);
+    ctx.moveTo(pointer.x, pointer.y - 18);
+    ctx.lineTo(pointer.x, pointer.y + 18);
+    ctx.stroke();
+    ctx.restore();
+  }
 }
 
 function drawPerturbationScene(ctx, width, height, time) {
   paintBackground(ctx, width, height, time * 0.5);
+  const pointer = state.pointers.chamber;
   const severity = SEVERITIES[state.selectedSeverityIndex];
   const positions = new Map();
-  state.graph.nodes.forEach((node) => positions.set(node.id, nodePosition(node, width, height, time, "chamber")));
+  state.graph.nodes.forEach((node) => {
+    const base = nodePosition(node, width, height, time, "chamber");
+    positions.set(node.id, applyPointerField(base, pointer, 140, 18));
+  });
 
   ctx.save();
   ctx.translate(width * 0.5, height * 0.48);
-  ctx.strokeStyle = "rgba(245,200,75,0.18)";
+  ctx.strokeStyle = "rgba(215,25,32,0.18)";
   ctx.lineWidth = 1;
-  for (let r = 80; r < Math.min(width, height) * 0.52; r += 70) {
+  for (let r = 82; r < Math.min(width, height) * 0.52; r += 70) {
     ctx.beginPath();
     ctx.arc(0, 0, r, 0, Math.PI * 2);
     ctx.stroke();
@@ -628,8 +787,8 @@ function drawPerturbationScene(ctx, width, height, time) {
     if (!source || !target) return;
     const h = edgeHash(edge.source, edge.target);
     const removed = state.selectedPerturbation === "edge_removal" && h < severity;
-    ctx.strokeStyle = removed ? "rgba(255,123,110,0.13)" : "rgba(143,199,255,0.13)";
-    ctx.lineWidth = removed ? 0.6 : 0.9;
+    ctx.strokeStyle = removed ? "rgba(215,25,32,0.24)" : "rgba(37,48,68,0.18)";
+    ctx.lineWidth = removed ? 0.7 : 0.9;
     ctx.setLineDash(removed ? [2, 8] : []);
     ctx.beginPath();
     ctx.moveTo(source.x, source.y);
@@ -640,8 +799,8 @@ function drawPerturbationScene(ctx, width, height, time) {
 
   if (state.selectedPerturbation === "fake_edge_addition") {
     const fakeCount = Math.floor(45 + severity * 260);
-    ctx.strokeStyle = "rgba(255,123,110,0.36)";
-    ctx.lineWidth = 1.1;
+    ctx.strokeStyle = "rgba(215,25,32,0.46)";
+    ctx.lineWidth = 1.05;
     ctx.setLineDash([6, 9]);
     for (let i = 0; i < fakeCount; i += 1) {
       const a = state.graph.nodes[(i * 17) % state.graph.nodes.length];
@@ -656,14 +815,23 @@ function drawPerturbationScene(ctx, width, height, time) {
     ctx.setLineDash([]);
   }
 
+  const highlighted = nearestNode(positions, pointer);
   state.graph.nodes.forEach((node) => {
     const point = positions.get(node.id);
+    const color = CLASS_COLORS[node.class_id % CLASS_COLORS.length];
+    const active = highlighted && node.id === highlighted.id;
     const pulse = state.selectedPerturbation === "feature_noise" ? Math.sin(time * 0.004 + node.phase) * severity * 4 : 0;
-    ctx.fillStyle = CLASS_COLORS[node.class_id % CLASS_COLORS.length];
-    ctx.globalAlpha = 0.72;
+    ctx.fillStyle = color;
+    ctx.globalAlpha = active ? 1 : 0.74;
     ctx.beginPath();
-    ctx.arc(point.x, point.y, 2.2 + node.degree_rank * 3.4 + pulse, 0, Math.PI * 2);
+    ctx.arc(point.x, point.y, (active ? 6 : 2.2 + node.degree_rank * 3.4) + pulse, 0, Math.PI * 2);
     ctx.fill();
+    if (active) {
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      drawNodeLabel(ctx, node, point, color, width);
+    }
   });
   ctx.globalAlpha = 1;
 }
@@ -675,12 +843,12 @@ function startCanvasAnimation() {
   const chamber = setupCanvas(perturbationCanvas);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  heroCanvas.addEventListener("pointermove", (event) => {
-    const rect = heroCanvas.getBoundingClientRect();
-    state.pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-  });
-  heroCanvas.addEventListener("pointerleave", () => {
-    state.pointer = { x: -9999, y: -9999 };
+  bindCanvasPointer(heroCanvas, "hero");
+  bindCanvasPointer(perturbationCanvas, "chamber");
+
+  window.addEventListener("pointermove", (event) => {
+    document.documentElement.style.setProperty("--mouse-x", `${event.clientX}px`);
+    document.documentElement.style.setProperty("--mouse-y", `${event.clientY}px`);
   });
 
   function frame(time = 0) {

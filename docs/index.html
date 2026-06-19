@@ -7,22 +7,23 @@
       name="description"
       content="Interactive research frontend for optimizer robustness of Graph Neural Networks on the Cora citation network."
     />
-    <title>Cora GNN Robustness Observatory</title>
+    <title>Cora GNN Robustness Lab</title>
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23040507'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%2365ffd4' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23f5c84b'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M12 34C20 16 40 16 52 30' fill='none' stroke='%23d71920' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='22' cy='38' r='5' fill='%2311161f'/%3E%3Ccircle cx='42' cy='28' r='5' fill='%23d71920'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="./assets/styles.css" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="Cora GNN Robustness Observatory">
-        <span class="brand-mark">C</span>
-        <span>Cora Robustness Observatory</span>
+      <a class="brand" href="#top" aria-label="Cora GNN Robustness Lab">
+        <span class="brand-mark">G</span>
+        <span>Cora GNN Robustness Lab</span>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#atlas">Atlas</a>
-        <a href="#perturbation">Perturbation Chamber</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#robustness">Robustness</a>
+        <a href="#matrix">Drop matrix</a>
         <a href="#convergence">Convergence</a>
         <a href="#protocol">Protocol</a>
       </nav>
@@ -38,88 +39,103 @@
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <canvas id="heroCanvas" aria-hidden="true"></canvas>
-        <div class="hero-grid" aria-hidden="true"></div>
+        <canvas id="heroCanvas" aria-label="Interactive Cora citation graph sample"></canvas>
         <div class="hero-content">
           <div class="hero-copy">
             <p class="eyebrow">Project 13 / Option 4 / Cora Citation Network</p>
-            <h1 id="hero-title">Graph Perturbation Observatory</h1>
+            <h1 id="hero-title">Optimization of GNNs under graph perturbations</h1>
             <p class="hero-lede">
-              A visual research instrument for testing how five optimizers train the same
-              Graph Convolutional Network when Cora citations, node features, and graph
-              structure are disturbed.
+              Five optimizers are tested on the same two-layer GCN while Cora is stressed
+              with feature noise, edge removal, and fake citation links. Move the mouse
+              across the field to inspect how the sampled graph responds.
             </p>
             <div class="hero-actions">
-              <a class="primary-action" href="#atlas">Open the atlas</a>
-              <a class="secondary-action" href="https://github.com/Maaskk/gnn-optimization-under-graph-perturbations-cora/blob/main/reports/final_report.md" target="_blank" rel="noreferrer">Final report</a>
+              <a class="primary-action" href="#evidence">Explore evidence</a>
+              <a class="secondary-action" href="#robustness">Stress the graph</a>
             </div>
           </div>
 
-          <aside class="observatory-panel" aria-label="Experiment telemetry">
-            <div class="panel-orbit" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="telemetry-readout">
-              <span class="label">Best aggregate optimizer</span>
+          <aside class="mission-readout" aria-label="Project summary">
+            <div class="readout-line">
+              <span>Best aggregate optimizer</span>
               <strong data-stat="bestOptimizer">Loading</strong>
             </div>
-            <div class="telemetry-grid">
+            <div class="readout-grid">
               <div>
-                <span class="label">Mean accuracy</span>
+                <span>Mean accuracy</span>
                 <strong data-stat="overallAccuracy">--</strong>
               </div>
               <div>
-                <span class="label">Clean accuracy</span>
+                <span>Clean accuracy</span>
                 <strong data-stat="cleanAccuracy">--</strong>
               </div>
               <div>
-                <span class="label">Nodes</span>
+                <span>Cora nodes</span>
                 <strong data-stat="nodes">--</strong>
               </div>
               <div>
-                <span class="label">Edges</span>
-                <strong data-stat="edges">--</strong>
+                <span>Experiments</span>
+                <strong data-stat="rows">--</strong>
               </div>
             </div>
+            <p>
+              Result tables are loaded directly from the final CSV bundle used by the
+              experiment pipeline.
+            </p>
           </aside>
         </div>
       </section>
 
-      <section class="telemetry-band" aria-label="Dataset summary">
-        <div class="stat-strip">
-          <article>
-            <span>Cora nodes</span>
-            <strong data-stat="nodes">--</strong>
-          </article>
-          <article>
-            <span>Citation edges</span>
-            <strong data-stat="edges">--</strong>
-          </article>
-          <article>
-            <span>Features</span>
-            <strong data-stat="features">--</strong>
-          </article>
-          <article>
-            <span>Classes</span>
-            <strong data-stat="classes">--</strong>
-          </article>
-          <article>
-            <span>Measurements</span>
-            <strong data-stat="rows">--</strong>
-          </article>
-        </div>
+      <section class="stat-band" aria-label="Dataset summary">
+        <article>
+          <span>Cora nodes</span>
+          <strong data-stat="nodes">--</strong>
+        </article>
+        <article>
+          <span>Directed edges</span>
+          <strong data-stat="edges">--</strong>
+        </article>
+        <article>
+          <span>Node features</span>
+          <strong data-stat="features">--</strong>
+        </article>
+        <article>
+          <span>Classes</span>
+          <strong data-stat="classes">--</strong>
+        </article>
+        <article>
+          <span>Experiment rows</span>
+          <strong data-stat="rows">--</strong>
+        </article>
       </section>
 
-      <section class="section atlas-section" id="atlas" aria-labelledby="atlas-title">
+      <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title">
         <div class="section-heading">
-          <p class="eyebrow">Optimizer atlas</p>
-          <h2 id="atlas-title">Adam keeps the strongest trajectory through the Cora field.</h2>
+          <p class="eyebrow">Evidence first</p>
+          <h2 id="evidence-title">Adam is strongest overall, and the clean accuracy is not abnormally low.</h2>
           <p>
-            Each optimizer crosses the same four graph conditions. The curves show mean test
-            accuracy by condition, while the ranking panel uses every recorded experiment row.
+            The clean Cora score is close to the classic GCN reference range. The lower
+            aggregate value is expected because the project intentionally evaluates damaged
+            graphs, not only the clean benchmark.
           </p>
+        </div>
+
+        <div class="benchmark-grid">
+          <article class="benchmark-card primary-benchmark">
+            <span>Accuracy benchmark</span>
+            <strong data-stat="cleanAccuracy">--</strong>
+            <p>Best clean test accuracy in this fixed-protocol run.</p>
+          </article>
+          <article class="benchmark-card">
+            <span>GCN reference</span>
+            <strong>81.5%</strong>
+            <p>Reported Cora accuracy for the original GCN paper under its own setup.</p>
+          </article>
+          <article class="benchmark-card">
+            <span>Why lower under stress?</span>
+            <strong data-stat="overallAccuracy">--</strong>
+            <p>Aggregate accuracy includes feature noise, removed edges, and fake edges.</p>
+          </article>
         </div>
 
         <div class="optimizer-toolbar" aria-label="Optimizer selector">
@@ -152,7 +168,7 @@
             </div>
             <div class="profile-score">
               <span data-profile="score">--</span>
-              <small>aggregate mean test accuracy</small>
+              <small>mean test accuracy across all experiment rows</small>
             </div>
             <div id="profileBars" class="profile-bars"></div>
           </article>
@@ -161,7 +177,7 @@
             <div class="panel-header">
               <div>
                 <span class="label">Final ranking</span>
-                <h3>Aggregate optimizer stability</h3>
+                <h3>Aggregate optimizer robustness</h3>
               </div>
             </div>
             <div id="leaderboard" class="leaderboard"></div>
@@ -169,19 +185,19 @@
         </div>
       </section>
 
-      <section class="section chamber-section" id="perturbation" aria-labelledby="perturbation-title">
+      <section class="section chamber-section" id="robustness" aria-labelledby="robustness-title">
         <div class="section-heading">
-          <p class="eyebrow">Perturbation chamber</p>
-          <h2 id="perturbation-title">Watch the graph degrade while the metrics respond.</h2>
+          <p class="eyebrow">Interactive perturbation chamber</p>
+          <h2 id="robustness-title">Move through graph damage and watch the network surface react.</h2>
           <p>
-            The chamber uses a sampled Cora citation graph from the dataset bundle. Move between
-            perturbation modes and severity levels to compare structural and feature-level stress.
+            The chamber uses a sampled Cora graph. Feature noise shakes node positions,
+            edge removal marks deleted citations, and fake-edge mode overlays injected links.
           </p>
         </div>
 
         <div class="chamber-layout">
           <article class="chamber-visual">
-            <canvas id="perturbationCanvas" aria-hidden="true"></canvas>
+            <canvas id="perturbationCanvas" aria-label="Interactive perturbation visualization"></canvas>
             <div class="chamber-hud">
               <span data-hud="mode">Feature noise</span>
               <strong data-hud="severity">5%</strong>
@@ -228,13 +244,34 @@
         </article>
       </section>
 
+      <section class="section matrix-section" id="matrix" aria-labelledby="matrix-title">
+        <div class="section-heading">
+          <p class="eyebrow">Damage map</p>
+          <h2 id="matrix-title">Accuracy drops show exactly where robustness breaks.</h2>
+          <p>
+            The matrix compares each perturbed run against that optimizer's own clean
+            accuracy. Darker red means a larger loss from the clean graph baseline.
+          </p>
+        </div>
+        <article class="panel full-panel">
+          <div class="panel-header">
+            <div>
+              <span class="label">Accuracy drop from clean</span>
+              <h3>Optimizer-by-perturbation heat matrix</h3>
+            </div>
+            <span class="source-tag">all_results.csv</span>
+          </div>
+          <svg id="dropMatrixChart" class="chart matrix-chart" role="img" aria-label="Accuracy drop heat matrix"></svg>
+        </article>
+      </section>
+
       <section class="section convergence-section" id="convergence" aria-labelledby="convergence-title">
         <div class="section-heading">
           <p class="eyebrow">Training dynamics</p>
-          <h2 id="convergence-title">Convergence separates adaptive methods from SGD.</h2>
+          <h2 id="convergence-title">Convergence explains why adaptive optimizers dominate.</h2>
           <p>
-            Clean-graph validation loss shows why the adaptive optimizers dominate the final
-            robustness results under the fixed hyperparameter protocol.
+            Validation loss over 200 epochs separates Adam, AdamW, and RMSProp from SGD
+            under the fixed learning-rate protocol.
           </p>
         </div>
         <article class="panel full-panel">
@@ -254,18 +291,18 @@
           <p class="eyebrow">Research protocol</p>
           <h2 id="protocol-title">A fixed comparison protocol for every optimizer.</h2>
           <p>
-            All measurements use the same Cora split, two-layer GCN architecture, seed, and
-            hyperparameters so the comparison focuses on optimizer behavior.
+            Same Cora split, same GCN architecture, same seed, same epochs, same learning
+            rate. The comparison isolates optimizer behavior.
           </p>
         </div>
         <div class="protocol-grid">
           <article class="panel">
             <h3>Model</h3>
             <ul class="protocol-list">
-              <li>Graph Convolutional Network</li>
-              <li>Two GCN layers</li>
+              <li>Two-layer GCN</li>
+              <li>1433 input features</li>
               <li>16 hidden channels</li>
-              <li>Dropout 0.5</li>
+              <li>7 class output</li>
             </ul>
           </article>
           <article class="panel">
@@ -273,8 +310,8 @@
             <ul class="protocol-list">
               <li>Learning rate 0.01</li>
               <li>Weight decay 0.0005</li>
+              <li>Dropout 0.5</li>
               <li>200 epochs</li>
-              <li>Seed 42</li>
             </ul>
           </article>
           <article class="panel">
