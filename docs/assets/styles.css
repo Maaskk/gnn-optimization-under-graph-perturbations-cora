@@ -34,6 +34,7 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   min-width: 320px;
   color: var(--ink);
@@ -46,13 +47,24 @@ body {
   background-size: 72px 72px;
 }
 
+.space-field {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.74;
+  mix-blend-mode: multiply;
+}
+
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 31;
   pointer-events: none;
-  opacity: 0.24;
+  opacity: 0.1;
   background:
     linear-gradient(
       90deg,
@@ -67,6 +79,12 @@ body::before {
       transparent calc(var(--mouse-y) + 1px)
     );
   mix-blend-mode: multiply;
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 2;
 }
 
 a {
@@ -85,7 +103,7 @@ button {
 
 .site-header {
   position: fixed;
-  z-index: 40;
+  z-index: 45;
   top: 0;
   left: 0;
   right: 0;
@@ -321,7 +339,7 @@ h1 {
 .benchmark-card {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
 }
 
@@ -358,7 +376,7 @@ h1 {
   display: grid;
   gap: 8px;
   padding: 16px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .readout-grid strong {
@@ -680,7 +698,7 @@ h1 {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
   cursor: crosshair;
 }
@@ -772,7 +790,7 @@ h1 {
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .metric-row span {

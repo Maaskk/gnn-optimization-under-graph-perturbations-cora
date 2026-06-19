@@ -43,7 +43,9 @@ const state = {
   lossHistory: [],
   dataset: {},
   graph: { nodes: [], edges: [] },
+  spaceNodes: [],
   pointers: {
+    space: { x: -9999, y: -9999 },
     hero: { x: -9999, y: -9999 },
     chamber: { x: -9999, y: -9999 },
   },
@@ -605,6 +607,17 @@ function bindCanvasPointer(canvas, key, target = canvas) {
   });
 }
 
+function bindGlobalPointer() {
+  window.addEventListener("pointermove", (event) => {
+    state.pointers.space = { x: event.clientX, y: event.clientY };
+    document.documentElement.style.setProperty("--mouse-x", `${event.clientX}px`);
+    document.documentElement.style.setProperty("--mouse-y", `${event.clientY}px`);
+  });
+  window.addEventListener("pointerleave", () => {
+    state.pointers.space = { x: -9999, y: -9999 };
+  });
+}
+
 function nodePosition(node, width, height, time, mode = "hero") {
   const centerX = mode === "hero" ? width * 0.58 : width * 0.5;
   const centerY = mode === "hero" ? height * 0.52 : height * 0.48;
@@ -634,6 +647,151 @@ function applyPointerField(point, pointer, radius, power) {
 
 function pointerIsActive(pointer, width, height) {
   return pointer.x > -80 && pointer.y > -80 && pointer.x < width + 80 && pointer.y < height + 80;
+}
+
+function seededUnit(index, salt = 1) {
+  const value = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+function createSpaceNodes(width, height) {
+  const count = Math.max(68, Math.min(118, Math.round((width * height) / 14500)));
+  state.spaceNodes = Array.from({ length: count }, (_, index) => {
+    const lane = seededUnit(index, 3);
+    return {
+      x: seededUnit(index, 11) * width,
+      y: seededUnit(index, 17) * height,
+      vx: (seededUnit(index, 23) - 0.5) * 0.34,
+      vy: (seededUnit(index, 29) - 0.5) * 0.28,
+      r: 1.4 + seededUnit(index, 31) * 2.8,
+      phase: seededUnit(index, 37) * Math.PI * 2,
+      color: lane < 0.38 ? "#0f7c80" : lane < 0.72 ? "#8f1d2c" : "#4b5c96",
+    };
+  });
+}
+
+function updateSpaceNodes(width, height, time, reducedMotion) {
+  const pointer = state.pointers.space;
+  const active = pointerIsActive(pointer, width, height);
+  state.spaceNodes.forEach((node, index) => {
+    if (!reducedMotion) {
+      node.x += node.vx + Math.sin(time * 0.00045 + node.phase) * 0.18;
+      node.y += node.vy + Math.cos(time * 0.0004 + node.phase) * 0.14;
+    }
+
+    if (active) {
+      const dx = node.x - pointer.x;
+      const dy = node.y - pointer.y;
+      const distance = Math.max(1, Math.hypot(dx, dy));
+      if (distance < 360) {
+        const influence = (1 - distance / 360) ** 2;
+        const tangentX = -dy / distance;
+        const tangentY = dx / distance;
+        node.x += tangentX * influence * 10 + (pointer.x - node.x) * influence * 0.012;
+        node.y += tangentY * influence * 10 + (pointer.y - node.y) * influence * 0.012;
+      }
+    }
+
+    const margin = 90 + (index % 5) * 12;
+    if (node.x < -margin) node.x = width + margin;
+    if (node.x > width + margin) node.x = -margin;
+    if (node.y < -margin) node.y = height + margin;
+    if (node.y > height + margin) node.y = -margin;
+  });
+}
+
+function drawSpaceField(ctx, width, height, time, reducedMotion) {
+  ctx.clearRect(0, 0, width, height);
+  if (!state.spaceNodes.length) createSpaceNodes(width, height);
+  updateSpaceNodes(width, height, time, reducedMotion);
+
+  const pointer = state.pointers.space;
+  const active = pointerIsActive(pointer, width, height);
+
+  ctx.save();
+  ctx.globalCompositeOperation = "multiply";
+  for (let i = 0; i < state.spaceNodes.length; i += 1) {
+    const a = state.spaceNodes[i];
+    for (let j = i + 1; j < state.spaceNodes.length; j += 1) {
+      const b = state.spaceNodes[j];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance > 158) continue;
+      const midpointX = (a.x + b.x) / 2;
+      const midpointY = (a.y + b.y) / 2;
+      const pointerDistance = active ? Math.hypot(midpointX - pointer.x, midpointY - pointer.y) : Infinity;
+      const influence = Math.max(0, 1 - pointerDistance / 360);
+      const alpha = 0.08 + (1 - distance / 158) * 0.16 + influence * 0.42;
+      const curve = influence * influence * (52 + Math.sin(time * 0.003 + i + j) * 18);
+      const length = Math.max(1, distance);
+      const normalX = -dy / length;
+      const normalY = dx / length;
+
+      ctx.strokeStyle = influence > 0.05 ? `rgba(15,124,128,${alpha})` : `rgba(36,48,67,${alpha})`;
+      ctx.lineWidth = 0.6 + influence * 1.3;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.quadraticCurveTo(midpointX + normalX * curve, midpointY + normalY * curve, b.x, b.y);
+      ctx.stroke();
+    }
+  }
+
+  if (active) {
+    const gradient = ctx.createRadialGradient(pointer.x, pointer.y, 4, pointer.x, pointer.y, 310);
+    gradient.addColorStop(0, "rgba(15,124,128,0.26)");
+    gradient.addColorStop(0.34, "rgba(143,29,44,0.12)");
+    gradient.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(pointer.x, pointer.y, 310, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (let i = 0; i < 7; i += 1) {
+      const angle = time * 0.0018 + i * 0.9;
+      const radius = 42 + i * 24 + Math.sin(time * 0.003 + i) * 8;
+      ctx.strokeStyle = i % 2 ? "rgba(143,29,44,0.38)" : "rgba(15,124,128,0.46)";
+      ctx.lineWidth = 1.35;
+      ctx.setLineDash(i % 2 ? [4, 11] : [13, 14]);
+      ctx.beginPath();
+      ctx.arc(pointer.x, pointer.y, radius, angle, angle + Math.PI * 1.45);
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+  }
+
+  state.spaceNodes.forEach((node) => {
+    const pointerDistance = active ? Math.hypot(node.x - pointer.x, node.y - pointer.y) : Infinity;
+    const glow = Math.max(0, 1 - pointerDistance / 260);
+    ctx.fillStyle = node.color;
+    ctx.globalAlpha = 0.38 + glow * 0.5;
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, node.r + glow * 2.6, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+function startGlobalSpaceField(reducedMotion) {
+  const canvas = document.getElementById("spaceFieldCanvas");
+  if (!canvas) return;
+  const field = setupCanvas(canvas);
+  let previousWidth = 0;
+  let previousHeight = 0;
+
+  function frame(time = 0) {
+    const size = field.resize();
+    if (size.width !== previousWidth || size.height !== previousHeight) {
+      createSpaceNodes(size.width, size.height);
+      previousWidth = size.width;
+      previousHeight = size.height;
+    }
+    drawSpaceField(field.ctx, size.width, size.height, reducedMotion ? 0 : time, reducedMotion);
+    if (!reducedMotion) requestAnimationFrame(frame);
+  }
+
+  frame();
 }
 
 function applyTangleField(point, pointer, width, height, time, radius, power, twist = 1) {
@@ -954,13 +1112,10 @@ function startCanvasAnimation() {
   const chamber = setupCanvas(perturbationCanvas);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  bindGlobalPointer();
+  startGlobalSpaceField(reducedMotion);
   bindCanvasPointer(heroCanvas, "hero", heroCanvas.closest(".hero"));
   bindCanvasPointer(perturbationCanvas, "chamber", perturbationCanvas.closest(".chamber-visual"));
-
-  window.addEventListener("pointermove", (event) => {
-    document.documentElement.style.setProperty("--mouse-x", `${event.clientX}px`);
-    document.documentElement.style.setProperty("--mouse-y", `${event.clientY}px`);
-  });
 
   function frame(time = 0) {
     const heroSize = hero.resize();

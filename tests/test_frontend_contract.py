@@ -26,9 +26,12 @@ def test_frontend_has_mouse_reactive_layers():
 
     assert "heroCanvas" in html
     assert "perturbationCanvas" in html
+    assert "spaceFieldCanvas" in html
     assert "--mouse-x" in js
     assert "--mouse-y" in js
     assert "pointermove" in js
+    assert "startGlobalSpaceField" in js
+    assert "drawSpaceField" in js
     assert "applyTangleField" in js
     assert "drawTangleField" in js
     assert "quadraticCurveTo" in js
