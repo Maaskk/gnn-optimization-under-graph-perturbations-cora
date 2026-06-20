@@ -23,6 +23,7 @@ def test_frontend_uses_light_burgundy_teal_visual_system():
 def test_frontend_has_mouse_reactive_layers():
     html = read_frontend_file("docs/index.html")
     js = read_frontend_file("docs/assets/app.js")
+    css = read_frontend_file("docs/assets/styles.css")
 
     assert "heroCanvas" in html
     assert "perturbationCanvas" in html
@@ -35,6 +36,9 @@ def test_frontend_has_mouse_reactive_layers():
     assert "applyTangleField" in js
     assert "drawTangleField" in js
     assert "quadraticCurveTo" in js
+    assert "ctx.arc(pointer.x, pointer.y" not in js
+    assert "createRadialGradient(pointer.x" not in js
+    assert "cursor: crosshair" not in css
 
 
 def test_frontend_explains_accuracy_benchmark_and_adds_visual_depth():

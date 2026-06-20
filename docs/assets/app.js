@@ -737,29 +737,6 @@ function drawSpaceField(ctx, width, height, time, reducedMotion) {
     }
   }
 
-  if (active) {
-    const gradient = ctx.createRadialGradient(pointer.x, pointer.y, 4, pointer.x, pointer.y, 310);
-    gradient.addColorStop(0, "rgba(15,124,128,0.26)");
-    gradient.addColorStop(0.34, "rgba(143,29,44,0.12)");
-    gradient.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.arc(pointer.x, pointer.y, 310, 0, Math.PI * 2);
-    ctx.fill();
-
-    for (let i = 0; i < 7; i += 1) {
-      const angle = time * 0.0018 + i * 0.9;
-      const radius = 42 + i * 24 + Math.sin(time * 0.003 + i) * 8;
-      ctx.strokeStyle = i % 2 ? "rgba(143,29,44,0.38)" : "rgba(15,124,128,0.46)";
-      ctx.lineWidth = 1.35;
-      ctx.setLineDash(i % 2 ? [4, 11] : [13, 14]);
-      ctx.beginPath();
-      ctx.arc(pointer.x, pointer.y, radius, angle, angle + Math.PI * 1.45);
-      ctx.stroke();
-    }
-    ctx.setLineDash([]);
-  }
-
   state.spaceNodes.forEach((node) => {
     const pointerDistance = active ? Math.hypot(node.x - pointer.x, node.y - pointer.y) : Infinity;
     const glow = Math.max(0, 1 - pointerDistance / 260);
@@ -854,49 +831,8 @@ function paintBackground(ctx, width, height, time) {
   ctx.restore();
 }
 
-function drawTangleField(ctx, pointer, width, height, time, intensity = 1) {
-  if (!pointerIsActive(pointer, width, height)) return;
-
-  ctx.save();
-  const radius = 190 * intensity;
-  const gradient = ctx.createRadialGradient(pointer.x, pointer.y, 8, pointer.x, pointer.y, radius);
-  gradient.addColorStop(0, "rgba(15,124,128,0.28)");
-  gradient.addColorStop(0.42, "rgba(143,29,44,0.12)");
-  gradient.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.arc(pointer.x, pointer.y, radius, 0, Math.PI * 2);
-  ctx.fill();
-
-  for (let i = 0; i < 5; i += 1) {
-    const ring = 34 + i * 34 + Math.sin(time * 0.003 + i) * 5;
-    ctx.strokeStyle = i % 2 === 0 ? "rgba(15,124,128,0.42)" : "rgba(143,29,44,0.36)";
-    ctx.lineWidth = 1.45;
-    ctx.setLineDash(i % 2 === 0 ? [10, 12] : [2, 10]);
-    ctx.beginPath();
-    ctx.arc(pointer.x, pointer.y, ring * intensity, time * 0.001 + i, Math.PI * 1.62 + time * 0.001 + i);
-    ctx.stroke();
-  }
-  ctx.setLineDash([]);
-
-  for (let i = 0; i < 11; i += 1) {
-    const angle = time * 0.0016 + i * ((Math.PI * 2) / 11);
-    const inner = 28 * intensity;
-    const outer = (130 + (i % 3) * 22) * intensity;
-    const startX = pointer.x + Math.cos(angle) * inner;
-    const startY = pointer.y + Math.sin(angle) * inner;
-    const endX = pointer.x + Math.cos(angle + 0.78) * outer;
-    const endY = pointer.y + Math.sin(angle + 0.78) * outer;
-    const controlX = pointer.x + Math.cos(angle + 1.8) * outer * 0.62;
-    const controlY = pointer.y + Math.sin(angle + 1.8) * outer * 0.62;
-    ctx.strokeStyle = i % 2 === 0 ? "rgba(15,124,128,0.5)" : "rgba(143,29,44,0.42)";
-    ctx.lineWidth = 1.55;
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.quadraticCurveTo(controlX, controlY, endX, endY);
-    ctx.stroke();
-  }
-  ctx.restore();
+function drawTangleField() {
+  // Pointer response is kept in the graph geometry; no cursor-centered ornament is drawn.
 }
 
 function drawTangledEdge(ctx, source, target, pointer, width, height, time, options = {}) {

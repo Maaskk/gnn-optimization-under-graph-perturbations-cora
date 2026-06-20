@@ -225,7 +225,6 @@ button {
   border-bottom: 1px solid var(--line);
   background:
     linear-gradient(120deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.75) 48%, rgba(232, 247, 246, 0.68) 100%);
-  cursor: crosshair;
 }
 
 #heroCanvas {
@@ -700,7 +699,6 @@ h1 {
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
-  cursor: crosshair;
 }
 
 #perturbationCanvas {
