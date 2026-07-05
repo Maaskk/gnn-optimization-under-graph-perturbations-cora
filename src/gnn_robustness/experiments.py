@@ -51,8 +51,7 @@ def run_baseline_track(
 
             for severity in config.severities:
                 print(
-                    f"[feature_noise] seed={seed} optimizer={optimizer_name} "
-                    f"severity={severity}",
+                    f"[feature_noise] seed={seed} optimizer={optimizer_name} severity={severity}",
                     flush=True,
                 )
                 noise_outcome = run_training(

@@ -16,7 +16,6 @@ sys.path.insert(0, str(SRC))
 
 from gnn_robustness.data import load_cora  # noqa: E402
 
-
 CSV_FILES = [
     "all_results.csv",
     "final_optimizer_summary.csv",

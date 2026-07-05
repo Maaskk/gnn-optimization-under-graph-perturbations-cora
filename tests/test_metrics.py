@@ -33,4 +33,3 @@ def test_macro_f1_score_uses_masked_nodes_only():
     mask = torch.tensor([True, True, True, False])
 
     assert math.isclose(macro_f1_score(logits, labels, mask), 2 / 3, rel_tol=1e-9)
-

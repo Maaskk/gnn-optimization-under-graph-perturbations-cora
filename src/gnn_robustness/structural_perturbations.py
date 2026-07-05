@@ -37,7 +37,7 @@ def add_fake_edges(
 
     num_existing = edge_index.size(1)
     num_to_add = int(num_existing * severity)
-    existing_edges = set(zip(edge_index[0].tolist(), edge_index[1].tolist()))
+    existing_edges = set(zip(edge_index[0].tolist(), edge_index[1].tolist(), strict=False))
     added_edges: list[tuple[int, int]] = []
 
     generator = torch.Generator(device="cpu")
@@ -61,4 +61,3 @@ def add_fake_edges(
 
     fake_edges = torch.tensor(added_edges, dtype=edge_index.dtype).t().contiguous()
     return torch.cat([edge_index, fake_edges], dim=1)
-

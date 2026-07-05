@@ -1,0 +1,25 @@
+experiment_id: v2_tuned_cora
+version: v2
+datasets: [Cora]
+protocol: tuned
+robustness_setting: training_time
+seeds: [42, 43, 44, 45, 46]
+optimizers: [Adam, AdamW, RMSProp, AdaGrad, SGD]
+perturbations: [clean, feature_masking, edge_removal, fake_edge_addition]
+severities: [0.20]
+training:
+  epochs: 200
+  hidden_channels: 16
+  dropout: 0.5
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  device: cpu
+tuning:
+  enabled: true
+  learning_rates: [0.001, 0.003, 0.01, 0.03]
+  weight_decays: [0.0, 0.0005, 0.005]
+  tuning_seeds: [42, 43, 44]
+  sgd_momentum: 0.9
+notes: >
+  Validation-only deterministic grid. Test accuracy must not be inspected
+  during hyperparameter selection.

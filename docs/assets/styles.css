@@ -471,6 +471,57 @@ h1 {
   line-height: 1.58;
 }
 
+.methodology-downloads {
+  width: min(1120px, 100%);
+  margin: 28px auto 0;
+}
+
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.download-grid a {
+  min-height: 56px;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-weight: 850;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.embedding-panel {
+  width: min(1260px, 100%);
+  margin: 0 auto;
+}
+
+.embedding-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+#embeddingCanvas {
+  width: 100%;
+  height: min(520px, 58vw);
+  min-height: 340px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.embedding-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .optimizer-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -495,6 +546,60 @@ h1 {
   border-color: var(--accent-red);
   background: var(--accent-red);
   box-shadow: 0 12px 28px rgba(143, 29, 44, 0.18);
+}
+
+.version-panel {
+  margin-top: 24px;
+}
+
+.version-toggle {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.panel-note {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.results-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.results-table th,
+.results-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.results-table th {
+  color: var(--accent-red);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--surface);
+}
+
+.results-table tr:last-child td {
+  border-bottom: 0;
 }
 
 .dashboard-grid,
@@ -864,7 +969,8 @@ h1 {
 
   .hero-content,
   .chamber-layout,
-  .benchmark-grid {
+  .benchmark-grid,
+  .download-grid {
     grid-template-columns: 1fr;
   }
 

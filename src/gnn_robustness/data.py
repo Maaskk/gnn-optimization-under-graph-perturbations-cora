@@ -4,11 +4,19 @@ from torch_geometric.datasets import Planetoid
 from torch_geometric.transforms import NormalizeFeatures
 
 
+def load_planetoid(name: str, root: str | Path = "data"):
+    """Load a supported Planetoid citation network."""
+
+    if name not in {"Cora", "CiteSeer", "PubMed"}:
+        raise ValueError("Supported Planetoid datasets are Cora, CiteSeer, and PubMed")
+    dataset = Planetoid(root=str(root), name=name, transform=NormalizeFeatures())
+    return dataset, dataset[0]
+
+
 def load_cora(root: str | Path = "data"):
     """Load the professor-requested Cora citation network."""
 
-    dataset = Planetoid(root=str(root), name="Cora", transform=NormalizeFeatures())
-    return dataset, dataset[0]
+    return load_planetoid("Cora", root=root)
 
 
 def cora_summary(dataset, data) -> dict[str, int]:
@@ -23,4 +31,3 @@ def cora_summary(dataset, data) -> dict[str, int]:
         "validation_nodes": int(data.val_mask.sum().item()),
         "test_nodes": int(data.test_mask.sum().item()),
     }
-

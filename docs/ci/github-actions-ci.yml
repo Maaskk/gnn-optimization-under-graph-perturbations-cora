@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Lint
+        run: ruff check src scripts tests
+      - name: Format check
+        run: ruff format --check src scripts tests
+      - name: Unit tests
+        run: pytest -q
+      - name: V2 smoke experiment
+        run: |
+          python scripts/run_v2_experiments.py --config configs/v2_fixed_cora.yaml --epochs 2 --seeds 42 --optimizers Adam --perturbations clean --max-runs 1 --label ci
+          python scripts/aggregate_v2.py
+      - name: Static site data validation
+        run: python scripts/build_v2_site_data.py

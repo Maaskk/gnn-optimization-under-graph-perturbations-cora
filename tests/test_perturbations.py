@@ -39,4 +39,3 @@ def test_feature_noise_rejects_negative_severity():
         assert "severity" in str(exc)
     else:
         raise AssertionError("Expected ValueError for negative severity")
-

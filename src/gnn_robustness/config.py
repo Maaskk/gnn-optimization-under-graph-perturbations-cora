@@ -13,4 +13,3 @@ class ExperimentConfig:
     seeds: tuple[int, ...] = (42,)
     severities: tuple[float, ...] = (0.05, 0.10, 0.20, 0.30)
     device: str = "cpu"
-

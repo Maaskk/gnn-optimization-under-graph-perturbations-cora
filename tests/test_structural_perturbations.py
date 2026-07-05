@@ -27,8 +27,8 @@ def test_add_fake_edges_avoids_self_loops_and_existing_edges():
     )
 
     perturbed = add_fake_edges(edge_index, num_nodes=6, severity=0.5, seed=7)
-    original_edges = set(zip(edge_index[0].tolist(), edge_index[1].tolist()))
-    added_edges = list(zip(perturbed[0].tolist()[4:], perturbed[1].tolist()[4:]))
+    original_edges = set(zip(edge_index[0].tolist(), edge_index[1].tolist(), strict=False))
+    added_edges = list(zip(perturbed[0].tolist()[4:], perturbed[1].tolist()[4:], strict=False))
 
     assert perturbed.shape == (2, 6)
     assert all(source != target for source, target in added_edges)
@@ -50,4 +50,3 @@ def test_structural_perturbations_reject_invalid_severity():
             assert "severity" in str(exc)
         else:
             raise AssertionError("Expected ValueError for invalid severity")
-

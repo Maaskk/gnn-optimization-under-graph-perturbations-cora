@@ -1,0 +1,21 @@
+experiment_id: v2_cross_dataset
+version: v2
+datasets: [Cora, CiteSeer, PubMed]
+protocol: fixed
+robustness_setting: training_time
+seeds: [42, 43, 44, 45, 46]
+optimizers: [Adam, AdamW, RMSProp, AdaGrad, SGD]
+perturbations: [clean, feature_masking, edge_removal, fake_edge_addition]
+severities: [0.20]
+training:
+  epochs: 200
+  hidden_channels: 16
+  dropout: 0.5
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  device: cpu
+tuning:
+  enabled: false
+notes: >
+  Cross-dataset validation uses clean graphs and representative 20 percent
+  random perturbation conditions.

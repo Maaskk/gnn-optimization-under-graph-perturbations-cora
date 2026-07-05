@@ -4,7 +4,6 @@ import pandas as pd
 
 from .results import RESULT_COLUMNS
 
-
 INPUT_RESULT_FILES = [
     "clean_optimizer_results.csv",
     "feature_noise_results.csv",
@@ -45,7 +44,9 @@ def combine_results(results_dir: str | Path = "results") -> pd.DataFrame:
     return combined
 
 
-def build_optimizer_summary(combined: pd.DataFrame, results_dir: str | Path = "results") -> pd.DataFrame:
+def build_optimizer_summary(
+    combined: pd.DataFrame, results_dir: str | Path = "results"
+) -> pd.DataFrame:
     summary = (
         combined.groupby(["optimizer", "perturbation_type"], as_index=False)
         .agg(
@@ -59,7 +60,9 @@ def build_optimizer_summary(combined: pd.DataFrame, results_dir: str | Path = "r
     return summary
 
 
-def _best_optimizer(summary: pd.DataFrame, perturbation_type: str, metric: str) -> tuple[str, float]:
+def _best_optimizer(
+    summary: pd.DataFrame, perturbation_type: str, metric: str
+) -> tuple[str, float]:
     subset = summary[summary["perturbation_type"] == perturbation_type]
     best = subset.sort_values(metric, ascending=False).iloc[0]
     return str(best["optimizer"]), float(best[metric])
@@ -113,7 +116,7 @@ def write_final_report(
 
 ## Dataset And Model
 
-The experiments use the Cora citation network from PyTorch Geometric's Planetoid dataset. Cora contains {int(dataset['num_nodes'])} nodes, {int(dataset['num_edges'])} directed citation edges, {int(dataset['num_features'])} node features, and {int(dataset['num_classes'])} classes. The standard split contains {int(dataset['train_nodes'])} training nodes, {int(dataset['validation_nodes'])} validation nodes, and {int(dataset['test_nodes'])} test nodes.
+The experiments use the Cora citation network from PyTorch Geometric's Planetoid dataset. Cora contains {int(dataset["num_nodes"])} nodes, {int(dataset["num_edges"])} directed citation edges, {int(dataset["num_features"])} node features, and {int(dataset["num_classes"])} classes. The standard split contains {int(dataset["train_nodes"])} training nodes, {int(dataset["validation_nodes"])} validation nodes, and {int(dataset["test_nodes"])} test nodes.
 
 All experiments use a 2-layer Graph Convolutional Network with 16 hidden channels, dropout 0.5, learning rate 0.01, weight decay 0.0005, seed 42, and 200 epochs. Keeping this protocol fixed makes the optimizer comparison fair across clean training, feature noise, edge removal, and fake edge addition.
 
@@ -143,7 +146,7 @@ Best mean test accuracy by setting:
 
 ## Final Conclusion
 
-Across all result rows, the best overall optimizer by mean test accuracy is **{overall_best['optimizer']}** with {_format_score(float(overall_best['mean_test_accuracy']))} mean accuracy and {_format_score(float(overall_best['mean_macro_f1']))} mean macro F1.
+Across all result rows, the best overall optimizer by mean test accuracy is **{overall_best["optimizer"]}** with {_format_score(float(overall_best["mean_test_accuracy"]))} mean accuracy and {_format_score(float(overall_best["mean_macro_f1"]))} mean macro F1.
 
 The main pattern is that adaptive optimizers are much stronger than SGD for this Cora GCN setup. Adam, AdamW, and RMSProp are the most competitive optimizers. Perturbations reduce performance compared with the clean graph, but the adaptive methods remain more stable than SGD.
 

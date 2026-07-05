@@ -1,0 +1,21 @@
+experiment_id: v2_fixed_cora
+version: v2
+datasets: [Cora]
+protocol: fixed
+robustness_setting: training_time
+seeds: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]
+optimizers: [Adam, AdamW, RMSProp, AdaGrad, SGD]
+perturbations: [clean, feature_masking, edge_removal, fake_edge_addition]
+severities: [0.05, 0.10, 0.20, 0.30]
+training:
+  epochs: 200
+  hidden_channels: 16
+  dropout: 0.5
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  device: cpu
+tuning:
+  enabled: false
+notes: >
+  Fixed controlled comparison on Cora. This favors comparability across
+  optimizers and does not claim each optimizer is individually optimal.

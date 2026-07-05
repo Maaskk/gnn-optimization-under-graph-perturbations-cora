@@ -18,8 +18,12 @@ class GCN(nn.Module):
         self.conv2 = GCNConv(hidden_channels, output_channels)
         self.dropout = dropout
 
+    def encode(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
+        """Return hidden GCN representations before output classification."""
+
+        return self.conv1(x, edge_index).relu()
+
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
-        x = self.conv1(x, edge_index).relu()
+        x = self.encode(x, edge_index)
         x = torch.nn.functional.dropout(x, p=self.dropout, training=self.training)
         return self.conv2(x, edge_index)
-

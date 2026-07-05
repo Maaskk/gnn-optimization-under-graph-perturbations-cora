@@ -1,0 +1,21 @@
+experiment_id: v1_legacy_fixed_cora
+version: v1_legacy
+datasets: [Cora]
+protocol: fixed
+robustness_setting: training_time
+seeds: [42]
+optimizers: [Adam, AdamW, RMSProp, AdaGrad, SGD]
+perturbations: [clean, gaussian_feature_noise_sigma, edge_removal_directed, fake_edge_addition_directed]
+severities: [0.05, 0.10, 0.20, 0.30]
+training:
+  epochs: 200
+  hidden_channels: 16
+  dropout: 0.5
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  device: cpu
+tuning:
+  enabled: false
+notes: >
+  Legacy V1 / single-seed fixed protocol. Feature perturbation was Gaussian
+  feature-noise standard deviation sigma, not percentage feature corruption.

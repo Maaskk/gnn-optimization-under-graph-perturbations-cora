@@ -23,4 +23,3 @@ def build_result_row(**values) -> dict:
     if missing:
         raise ValueError(f"Missing result columns: {missing}")
     return {column: values[column] for column in RESULT_COLUMNS}
-

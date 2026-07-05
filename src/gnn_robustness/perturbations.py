@@ -19,4 +19,3 @@ def add_feature_noise(features: torch.Tensor, severity: float, seed: int) -> tor
         device="cpu",
     ).to(features.device)
     return noisy_features + (severity * noise)
-

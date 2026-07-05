@@ -1,0 +1,54 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\title{GCN Optimizer Robustness Under Random Graph Perturbations: V2 Report}
+\author{Project 13 - Option 4}
+\date{2026}
+\begin{document}
+\maketitle
+\tableofcontents
+\section{Abstract}
+This V2 report upgrades the original single-seed Cora optimizer comparison into a reproducible experimental design. It separates legacy V1 results from V2 raw outputs, defines random perturbations precisely, records environment metadata, and reports uncertainty when enough completed seeds exist. No result is interpreted as adversarial robustness or as a universal optimizer ranking.
+\section{Introduction and Research Question}
+The research question is how optimizer choice affects a two-layer GCN when random graph or feature perturbations are applied. Conclusions are scoped to the dataset, model, seed set, hyperparameter protocol, and perturbation regime.
+\section{Related Work}
+GCNs aggregate information over graph neighborhoods. Optimizers differ in adaptive updates, convergence behavior, and implicit regularization. Random perturbation stress tests are distinct from adversarial attack studies.
+\section{Experimental Design}
+V2 uses config-driven runs in \texttt{configs/}. Every raw row records dataset, optimizer, base seed, resolved seed, protocol, robustness setting, perturbation type, requested severity, actual perturbation count/rate, metrics, timing, and environment metadata path.
+\section{Datasets and GCN Architecture}
+Supported datasets are Cora, CiteSeer, and PubMed from PyTorch Geometric Planetoid. The fixed protocol uses a two-layer GCN with 16 hidden channels and dropout 0.5. The GCN layers do not cache adjacency.
+\section{Fixed Protocol and Tuned Protocol}
+The fixed protocol favors comparability. The tuned protocol uses validation metrics only and a deterministic grid over learning rate and weight decay. SGD includes momentum 0.9.
+\section{Random Perturbation Definitions}
+Feature masking zeros a requested fraction of active non-zero feature entries. Edge removal removes unique undirected connections. Fake edge addition inserts previously unconnected undirected node pairs with no self-loops or duplicates. V1 Gaussian feature noise is legacy behavior.
+\section{Training-Time Versus Inference-Time Corruption}
+Training-time corruption trains and evaluates on perturbed inputs. Inference-time corruption trains on the clean graph and evaluates fixed weights on perturbed inputs.
+\section{Statistical Methodology}
+V2 reports means, sample standard deviations, 95 percent confidence interval half-widths, seed counts, clean-to-perturbed accuracy drops, and normalized robustness AUC scores across available severities. Matched optimizer comparisons should use paired bootstrap intervals, Wilcoxon signed-rank tests, and Holm correction before using significance wording.
+\section{Results}
+Raw rows are stored under \texttt{results/v2/raw/}; aggregate summaries are stored under \texttt{results/v2/aggregated/}. Smoke rows validate the pipeline but are not the full scientific matrix. The completed local smoke run contains four real Cora rows: Adam clean, Adam 20 percent feature masking, RMSProp clean, and RMSProp 20 percent feature masking, all for one seed and 3 epochs. The standard Cora fixed-protocol primary matrix contains 650 planned rows; 646 remain pending after the smoke execution. Runtime benchmarking is implemented separately with one warm-up excluded, repeated local measurements, and median, mean, standard deviation, and IQR outputs. Tuned-protocol selection writes validation-only trials and locked hyperparameters without using the test split.
+\section{Cross-Dataset Validation}
+The cross-dataset config covers Cora, CiteSeer, and PubMed with representative 20 percent perturbation settings. Missing rows are pending compute, not inferred.
+\section{Discussion}
+V2 separates fixed-protocol comparability from tuned-protocol optimizer-specific performance. It also separates learning from corrupted data from clean-trained inference robustness.
+\section{Threats to Validity and Limitations}
+Full V2 matrices are CPU-expensive; timing is machine-dependent; Planetoid splits are limited; random perturbations are not adversarial attacks; smoke runs are not final evidence.
+\section{Reproducibility}
+\begin{verbatim}
+make setup
+make test
+make coverage
+make lint
+make format-check
+make smoke-v2
+make benchmark-v2
+make tune-v2
+make aggregate-v2
+make build-site
+\end{verbatim}
+\section{References}
+Kipf and Welling, Semi-Supervised Classification with Graph Convolutional Networks. PyTorch Geometric Planetoid datasets. PyTorch optimizer documentation.
+\section{Appendix}
+Primary configs are \texttt{v1\_legacy\_fixed\_cora.yaml}, \texttt{v2\_fixed\_cora.yaml}, \texttt{v2\_tuned\_cora.yaml}, \texttt{v2\_cross\_dataset.yaml}, and \texttt{v2\_inference\_robustness.yaml}.
+\end{document}

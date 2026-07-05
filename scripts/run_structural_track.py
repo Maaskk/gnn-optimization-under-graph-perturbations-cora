@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import sys
+from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
@@ -21,9 +21,7 @@ def parse_int_list(value: str) -> tuple[int, ...]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Run structural Cora GCN robustness experiments."
-    )
+    parser = argparse.ArgumentParser(description="Run structural Cora GCN robustness experiments.")
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--hidden-channels", type=int, default=16)
     parser.add_argument("--dropout", type=float, default=0.5)
@@ -60,4 +58,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

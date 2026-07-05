@@ -45,4 +45,3 @@ def test_make_optimizer_rejects_unknown_name():
         assert "Unsupported optimizer" in str(exc)
     else:
         raise AssertionError("Expected ValueError for unsupported optimizer")
-

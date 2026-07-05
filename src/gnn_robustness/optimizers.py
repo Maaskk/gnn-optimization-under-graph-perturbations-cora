@@ -11,6 +11,7 @@ def make_optimizer(
     parameters: Iterable[torch.nn.Parameter],
     learning_rate: float,
     weight_decay: float,
+    momentum: float = 0.0,
 ) -> torch.optim.Optimizer:
     """Create a PyTorch optimizer from the project optimizer list."""
 
@@ -24,7 +25,12 @@ def make_optimizer(
     if normalized == "adagrad":
         return torch.optim.Adagrad(parameters, lr=learning_rate, weight_decay=weight_decay)
     if normalized == "sgd":
-        return torch.optim.SGD(parameters, lr=learning_rate, weight_decay=weight_decay)
+        return torch.optim.SGD(
+            parameters,
+            lr=learning_rate,
+            weight_decay=weight_decay,
+            momentum=momentum,
+        )
     if normalized == "amsgrad":
         return torch.optim.Adam(
             parameters,
@@ -34,4 +40,3 @@ def make_optimizer(
         )
     supported = ", ".join(DEFAULT_OPTIMIZERS + BONUS_OPTIMIZERS)
     raise ValueError(f"Unsupported optimizer '{name}'. Supported optimizers: {supported}")
-

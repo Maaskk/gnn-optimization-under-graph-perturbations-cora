@@ -34,7 +34,9 @@ def plot_loss_convergence(history: pd.DataFrame, output_dir: Path) -> Path:
 
 def plot_clean_bars(clean_results: pd.DataFrame, output_dir: Path) -> Path:
     figures_dir = _prepare_output_dir(output_dir)
-    grouped = clean_results.groupby("optimizer", as_index=False)[["test_accuracy", "macro_f1"]].mean()
+    grouped = clean_results.groupby("optimizer", as_index=False)[
+        ["test_accuracy", "macro_f1"]
+    ].mean()
     x = range(len(grouped))
     fig, ax = plt.subplots(figsize=(9, 5))
     width = 0.35

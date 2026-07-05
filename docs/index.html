@@ -29,6 +29,7 @@
       </a>
       <nav class="nav-links" aria-label="Navigation principale">
         <a href="#evidence">Résultats</a>
+        <a href="#v2-methodology">V2</a>
         <a href="#robustness">Robustesse</a>
         <a href="#matrix">Matrice</a>
         <a href="#convergence">Convergence</a>
@@ -53,8 +54,8 @@
             <h1 id="hero-title">Robustesse des GNN face aux perturbations du graphe</h1>
             <p class="hero-lede">
               Cinq optimiseurs sont évalués sur le même GCN à deux couches pendant que Cora
-              subit du bruit sur les attributs, des suppressions d'arêtes et des arêtes
-              artificielles. Déplacez la souris sur le graphe pour observer la réponse du réseau.
+              subit des perturbations aléatoires. La scène animée est une visualisation
+              illustrative d'un échantillon de Cora, pas une inférence GNN en temps réel.
             </p>
             <div class="hero-actions">
               <a class="primary-action" href="#evidence">Explorer les résultats</a>
@@ -64,7 +65,7 @@
 
           <aside class="mission-readout" aria-label="Résumé du projet">
             <div class="readout-line">
-              <span>Meilleur optimiseur global</span>
+              <span>Optimiseur V1 en tête</span>
               <strong data-stat="bestOptimizer">Chargement</strong>
             </div>
             <div class="readout-grid">
@@ -116,14 +117,109 @@
         </article>
       </section>
 
+      <section class="section methodology-section" id="v2-methodology" aria-labelledby="v2-title">
+        <div class="section-heading">
+          <p class="eyebrow">Version scientifique</p>
+          <h2 id="v2-title">V2 sépare clairement les résultats hérités et les expériences reproductibles.</h2>
+          <p>
+            V1 reste disponible comme protocole fixe à une seule graine. V2 ajoute des
+            configurations multi-graines, des perturbations aléatoires mieux définies, des
+            métadonnées d'environnement et des agrégations avec incertitude quand les runs
+            existent réellement.
+          </p>
+        </div>
+        <div class="benchmark-grid">
+          <article class="benchmark-card">
+            <span>Version active</span>
+            <strong data-v2="resultVersion">V2</strong>
+            <p data-v2="status">Chargement du statut V2.</p>
+          </article>
+          <article class="benchmark-card">
+            <span>Runs V2 terminés</span>
+            <strong data-v2="completedRuns">--</strong>
+            <p>Les matrices non exécutées restent marquées comme en attente.</p>
+          </article>
+          <article class="benchmark-card">
+            <span>Définition du masquage</span>
+            <strong>Entrées actives</strong>
+            <p>Le taux correspond aux valeurs non nulles mises à zéro, pas à un bruit gaussien.</p>
+          </article>
+        </div>
+        <article class="panel version-panel">
+          <div class="panel-header">
+            <div>
+              <span class="label">Comparaison V1 / V2</span>
+              <h3 data-version-title>V2 - agrégats reproductibles disponibles</h3>
+            </div>
+            <div class="version-toggle" aria-label="Version des résultats">
+              <button class="segment active" data-version-view="v2">V2</button>
+              <button class="segment" data-version-view="v1">Legacy V1</button>
+            </div>
+          </div>
+          <p class="panel-note" data-version-note>
+            Les valeurs affichées sont des moyennes avec intervalle de confiance 95% quand plusieurs graines existent.
+          </p>
+          <div id="v2AggregateTable" class="table-scroll" aria-live="polite"></div>
+        </article>
+        <div class="panel methodology-downloads">
+          <div class="panel-header">
+            <div>
+              <span class="label">Téléchargements reproductibles</span>
+              <h3>Configs, données et rapports</h3>
+            </div>
+          </div>
+          <div class="download-grid">
+            <a href="./assets/downloads/configs/v2_fixed_cora.yaml">Config V2 fixe</a>
+            <a href="./assets/downloads/configs/v2_inference_robustness.yaml">Config inférence</a>
+            <a href="./assets/downloads/configs/v2_tuned_cora.yaml">Config tuning</a>
+            <a href="./assets/data/v2_aggregated_summary.csv">Agrégats V2</a>
+            <a href="./assets/data/v2_raw_combined.csv">Raw V2</a>
+            <a href="./assets/downloads/reports/final_report_v2.md">Rapport V2 source</a>
+            <a href="./assets/downloads/reports/final_report_v2.pdf">Rapport V2 PDF</a>
+            <a href="./assets/downloads/notebooks/GNN_Robustness_V2_Reproducibility.ipynb">Notebook V2</a>
+            <a href="./assets/downloads/benchmarks/runtime_benchmark_smoke.csv">Benchmark local</a>
+            <a href="./assets/downloads/tuned/locked_hyperparameters_smoke.json">Hyperparamètres verrouillés</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section embedding-section" id="embedding" aria-labelledby="embedding-title">
+        <div class="section-heading">
+          <p class="eyebrow">Représentation réelle</p>
+          <h2 id="embedding-title">PCA des embeddings cachés d'un GCN entraîné.</h2>
+          <p>
+            Cette vue utilise de vrais embeddings cachés produits par un GCN Adam sur Cora
+            (seed 42). Les positions viennent de la PCA des représentations, jamais des
+            étiquettes vraies.
+          </p>
+        </div>
+        <article class="panel embedding-panel">
+          <div class="panel-header">
+            <div>
+              <span class="label">Embedding V2</span>
+              <h3 data-embedding-title>Chargement de l'embedding</h3>
+            </div>
+            <div class="embedding-controls" aria-label="Couleur des points">
+              <button class="segment active" data-embedding-color="true_label">Vraies classes</button>
+              <button class="segment" data-embedding-color="pred_clean">Prédictions propres</button>
+              <button class="segment" data-embedding-color="pred_feature_masking_20">Prédictions masquées</button>
+            </div>
+          </div>
+          <canvas id="embeddingCanvas" width="1100" height="520" aria-label="PCA des embeddings cachés du GCN"></canvas>
+          <p class="embedding-note" data-embedding-note>
+            L'embedding sera affiché lorsque l'artefact V2 sera généré.
+          </p>
+        </article>
+      </section>
+
       <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title">
         <div class="section-heading">
           <p class="eyebrow">Résultat principal</p>
-          <h2 id="evidence-title">Adam domine globalement, et 79,9% sur le graphe propre reste cohérent.</h2>
+          <h2 id="evidence-title">Les résultats V1 montrent Adam en tête dans ce protocole fixe à une seule graine.</h2>
           <p>
-            Le score propre est proche de la référence classique du GCN sur Cora. La moyenne
-            globale descend parce qu'elle inclut volontairement des graphes perturbés, pas
-            seulement le cas propre.
+            Ces chiffres hérités restent utiles pour la présentation, mais ils ne doivent pas
+            être lus comme une preuve universelle. V2 ajoute des graines multiples et des
+            intervalles d'incertitude lorsque les calculs sont disponibles.
           </p>
         </div>
 
@@ -183,8 +279,8 @@
           <article class="panel leaderboard-panel">
             <div class="panel-header">
               <div>
-                <span class="label">Classement final</span>
-                <h3>Robustesse globale des optimiseurs</h3>
+                <span class="label">Classement V1</span>
+                <h3>Score agrégé des optimiseurs</h3>
               </div>
             </div>
             <div id="leaderboard" class="leaderboard"></div>
@@ -197,7 +293,7 @@
           <p class="eyebrow">Chambre de perturbation interactive</p>
           <h2 id="robustness-title">Faites varier le bruit et observez la surface du graphe réagir.</h2>
           <p>
-            La scène utilise un échantillon du graphe Cora. Le bruit sur attributs agite les
+            La scène utilise un échantillon illustratif du graphe Cora. Le bruit sur attributs agite les
             noeuds, la suppression d'arêtes marque les citations retirées, et le mode fausses
             arêtes superpose des liens artificiels.
           </p>

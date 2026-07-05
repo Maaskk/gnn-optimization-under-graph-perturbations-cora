@@ -7,6 +7,7 @@ const SEVERITIES = [0.05, 0.1, 0.2, 0.3];
 const PERTURBATION_LABELS = {
   clean: "Graphe propre",
   feature_noise: "Bruit sur attributs",
+  feature_masking: "Masquage d'attributs",
   edge_removal: "Suppression d'arêtes",
   fake_edge_addition: "Ajout de fausses arêtes",
 };
@@ -43,6 +44,11 @@ const state = {
   lossHistory: [],
   dataset: {},
   graph: { nodes: [], edges: [] },
+  v2Methodology: null,
+  v2Aggregate: [],
+  versionView: "v2",
+  embedding: null,
+  embeddingColor: "true_label",
   spaceNodes: [],
   pointers: {
     space: { x: -9999, y: -9999 },
@@ -92,6 +98,36 @@ async function loadData() {
   state.graph = graph;
 }
 
+async function loadV2Methodology() {
+  try {
+    const response = await fetch(`${DATA_DIR}v2_methodology.json`);
+    if (!response.ok) return;
+    state.v2Methodology = await response.json();
+  } catch {
+    state.v2Methodology = null;
+  }
+}
+
+async function loadV2Aggregate() {
+  try {
+    const response = await fetch(`${DATA_DIR}v2_aggregated_summary.csv`);
+    if (!response.ok) return;
+    state.v2Aggregate = parseCsv(await response.text());
+  } catch {
+    state.v2Aggregate = [];
+  }
+}
+
+async function loadEmbedding() {
+  try {
+    const response = await fetch(`${DATA_DIR}v2_embedding_cora_adam_seed42.json`);
+    if (!response.ok) return;
+    state.embedding = await response.json();
+  } catch {
+    state.embedding = null;
+  }
+}
+
 function formatPct(value, digits = 1) {
   return `${(value * 100).toFixed(digits)}%`;
 }
@@ -134,6 +170,177 @@ function renderStats() {
   setText('[data-stat="features"]', formatNumber(state.dataset.num_features));
   setText('[data-stat="classes"]', formatNumber(state.dataset.num_classes));
   setText('[data-stat="rows"]', formatNumber(state.allResults.length));
+}
+
+function renderV2Methodology() {
+  const methodology = state.v2Methodology;
+  if (!methodology) {
+    setText('[data-v2="status"]', "Aucun agrégat V2 n'est encore publié; V1 reste affiché comme héritage.");
+    return;
+  }
+  setText('[data-v2="resultVersion"]', methodology.result_version || "V2");
+  setText('[data-v2="completedRuns"]', formatNumber(methodology.primary_completed_runs || 0));
+  const pending = methodology.pending_runs_due_to_compute_limit || 0;
+  const aggregateRows = methodology.aggregate_rows_available || 0;
+  setText(
+    '[data-v2="status"]',
+    `${formatNumber(aggregateRows)} lignes agrégées disponibles; ${formatNumber(pending)} conditions restent en attente.`,
+  );
+}
+
+function formatMaybePct(value, digits = 1) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return "--";
+  return formatPct(numeric, digits);
+}
+
+function createResultsTable(rows, columns) {
+  const table = document.createElement("table");
+  table.className = "results-table";
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  columns.forEach((column) => {
+    const th = document.createElement("th");
+    th.textContent = column.label;
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  rows.forEach((row) => {
+    const tr = document.createElement("tr");
+    columns.forEach((column) => {
+      const td = document.createElement("td");
+      td.textContent = column.format(row);
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  return table;
+}
+
+function renderVersionPanel() {
+  const container = document.getElementById("v2AggregateTable");
+  if (!container) return;
+  container.replaceChildren();
+  document.querySelectorAll("[data-version-view]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.versionView === state.versionView);
+  });
+
+  const title = document.querySelector("[data-version-title]");
+  const note = document.querySelector("[data-version-note]");
+  if (state.versionView === "v2" && state.v2Aggregate.length) {
+    if (title) title.textContent = "V2 - agrégats reproductibles disponibles";
+    if (note) {
+      note.textContent = "Les valeurs affichées sont des moyennes avec intervalle de confiance 95% quand plusieurs graines existent.";
+    }
+    const rows = state.v2Aggregate
+      .filter((row) => row.dataset === "Cora" && row.robustness_setting === "training_time")
+      .sort((a, b) => {
+        if (a.optimizer !== b.optimizer) return a.optimizer.localeCompare(b.optimizer);
+        if (a.perturbation_type !== b.perturbation_type) return a.perturbation_type.localeCompare(b.perturbation_type);
+        return Number(a.requested_severity) - Number(b.requested_severity);
+      })
+      .slice(0, 10);
+    container.appendChild(createResultsTable(rows, [
+      { label: "Optimiseur", format: (row) => row.optimizer },
+      { label: "Perturbation", format: (row) => PERTURBATION_LABELS[row.perturbation_type] || row.perturbation_type },
+      { label: "Sévérité", format: (row) => formatMaybePct(row.requested_severity, 0) },
+      {
+        label: "Accuracy ± IC95",
+        format: (row) => `${formatMaybePct(row.mean_test_accuracy)} ± ${formatMaybePct(row.ci95_test_accuracy_half_width)}`,
+      },
+      { label: "Macro F1", format: (row) => formatMaybePct(row.mean_macro_f1) },
+      { label: "Graines", format: (row) => String(row.n_seeds || "--") },
+    ]));
+    return;
+  }
+
+  if (title) title.textContent = "Legacy V1 - protocole fixe à une seule graine";
+  if (note) {
+    note.textContent = "Ces résultats sont conservés pour la présentation historique; ils ne fournissent pas d'incertitude statistique.";
+  }
+  const rows = state.summary
+    .filter((row) => row.perturbation_type === "clean" || row.perturbation_type === "feature_noise")
+    .slice(0, 10);
+  container.appendChild(createResultsTable(rows, [
+    { label: "Optimiseur", format: (row) => row.optimizer },
+    { label: "Perturbation", format: (row) => PERTURBATION_LABELS[row.perturbation_type] || row.perturbation_type },
+    { label: "Accuracy moyenne", format: (row) => formatMaybePct(row.mean_test_accuracy) },
+    { label: "Statut", format: () => "single-seed V1" },
+  ]));
+}
+
+function drawEmbedding() {
+  const canvas = document.getElementById("embeddingCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width;
+  const height = canvas.height;
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, width, height);
+  ctx.strokeStyle = "rgba(36,48,67,0.08)";
+  for (let x = 60; x < width; x += 60) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height);
+    ctx.stroke();
+  }
+  for (let y = 60; y < height; y += 60) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+  if (!state.embedding || !state.embedding.nodes?.length) {
+    ctx.fillStyle = "#617083";
+    ctx.font = "700 22px Inter, sans-serif";
+    ctx.fillText("Embedding V2 en attente de génération", 38, 58);
+    return;
+  }
+  const nodes = state.embedding.nodes;
+  const xs = nodes.map((node) => node.x);
+  const ys = nodes.map((node) => node.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const pad = 34;
+  const scaleX = (value) => pad + ((value - minX) / Math.max(1e-9, maxX - minX)) * (width - pad * 2);
+  const scaleY = (value) => height - pad - ((value - minY) / Math.max(1e-9, maxY - minY)) * (height - pad * 2);
+  nodes.forEach((node) => {
+    const classId = Number(node[state.embeddingColor] ?? 0);
+    ctx.fillStyle = CLASS_COLORS[classId % CLASS_COLORS.length];
+    ctx.globalAlpha = node.split === "train" ? 0.95 : 0.52;
+    ctx.beginPath();
+    ctx.arc(scaleX(node.x), scaleY(node.y), node.split === "train" ? 3.2 : 2.1, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  setText("[data-embedding-title]", `${state.embedding.dataset} / ${state.embedding.optimizer} / seed ${state.embedding.seed}`);
+  setText("[data-embedding-note]", state.embedding.placement_note);
+}
+
+function bindEmbeddingControls() {
+  document.querySelectorAll("[data-embedding-color]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.embeddingColor = button.dataset.embeddingColor;
+      document.querySelectorAll("[data-embedding-color]").forEach((item) => item.classList.toggle("active", item === button));
+      drawEmbedding();
+    });
+  });
+}
+
+function bindVersionControls() {
+  document.querySelectorAll("[data-version-view]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.versionView = button.dataset.versionView || "v2";
+      renderVersionPanel();
+    });
+  });
 }
 
 function svgElement(tag, attrs = {}) {
@@ -555,10 +762,10 @@ function bindControls() {
     });
   });
 
-  document.querySelectorAll(".segment").forEach((button) => {
+  document.querySelectorAll("[data-perturbation]").forEach((button) => {
     button.addEventListener("click", () => {
       state.selectedPerturbation = button.dataset.perturbation;
-      document.querySelectorAll(".segment").forEach((item) => {
+      document.querySelectorAll("[data-perturbation]").forEach((item) => {
         const active = item === button;
         item.classList.toggle("active", active);
         item.setAttribute("aria-selected", String(active));
@@ -1077,10 +1284,15 @@ function showError(error) {
   `;
 }
 
-loadData()
+Promise.all([loadData(), loadV2Methodology(), loadV2Aggregate(), loadEmbedding()])
   .then(() => {
     renderStats();
+    renderV2Methodology();
+    renderVersionPanel();
+    drawEmbedding();
     bindControls();
+    bindVersionControls();
+    bindEmbeddingControls();
     renderAllCharts();
     startCanvasAnimation();
   })
