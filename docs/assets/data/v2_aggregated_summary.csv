@@ -1,0 +1,5 @@
+dataset,protocol,robustness_setting,optimizer,perturbation_type,requested_severity,n_seeds,mean_test_accuracy,std_test_accuracy,ci95_test_accuracy_half_width,mean_macro_f1,std_macro_f1,ci95_macro_f1_half_width,clean_to_perturbed_accuracy_drop,robustness_score_auc
+Cora,fixed,training_time,Adam,clean,0.0,1,0.455,0.0,0.0,0.452429,0.0,0.0,0.0,0.455
+Cora,fixed,training_time,Adam,feature_masking,0.2,1,0.287,0.0,0.0,0.277994,0.0,0.0,0.168,0.287
+Cora,fixed,training_time,RMSProp,clean,0.0,1,0.341,0.0,0.0,0.304263,0.0,0.0,0.0,0.341
+Cora,fixed,training_time,RMSProp,feature_masking,0.2,1,0.186,0.0,0.0,0.086489,0.0,0.0,0.155,0.186

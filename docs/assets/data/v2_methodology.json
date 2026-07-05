@@ -1,0 +1,32 @@
+{
+  "result_version": "V2",
+  "default_view": "V2 when available, V1 legacy otherwise",
+  "v1_label": "Legacy V1 - single seed fixed protocol",
+  "v2_label": "V2 - reproducible random-perturbation protocols",
+  "dataset_scope": [
+    "Cora",
+    "CiteSeer",
+    "PubMed"
+  ],
+  "primary_completed_runs": 4,
+  "primary_standard_planned_runs": 650,
+  "pending_runs_due_to_compute_limit": 646,
+  "aggregate_rows_available": 4,
+  "has_v2_aggregate": true,
+  "has_v2_raw": true,
+  "has_v2_embedding": true,
+  "download_artifacts": {
+    "config_v2_fixed_cora": true,
+    "config_v2_inference": true,
+    "config_v2_tuned": true,
+    "report_v2_md": true,
+    "report_v2_tex": true,
+    "report_v2_pdf": true,
+    "notebook_v2": true,
+    "benchmark_smoke": true,
+    "tuned_locked_smoke": true
+  },
+  "methodology_warning": "Animated graph scenes are illustrative sampled graph views. They are not real-time GNN inference.",
+  "feature_masking_definition": "Feature masking sets a requested fraction of active non-zero node-feature entries to zero.",
+  "gaussian_legacy_definition": "Legacy V1 feature noise used Gaussian feature-noise standard deviation sigma."
+}

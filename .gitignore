@@ -5,6 +5,9 @@ __pycache__/
 .idea/
 .ipynb_checkpoints/
 data/
+!docs/assets/data/
+!docs/assets/data/v2_*.csv
+!docs/assets/data/v2_*.json
 results/*.pt
 results/*.pth
 results/*.pkl
