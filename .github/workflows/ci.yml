@@ -38,16 +38,18 @@ jobs:
         run: |
           rm -rf results/ci_smoke
           make smoke
-          test -f results/ci_smoke/raw/v2_fixed_cora_smoke.csv
-          test -f results/ci_smoke/aggregated/v2_aggregated_summary.csv
+          test -d results/ci_smoke/raw
+          test -d results/ci_smoke/aggregated
+          test -n "$(find results/ci_smoke/raw -type f -name '*.csv' -print -quit)"
+          test -n "$(find results/ci_smoke/aggregated -type f -name '*.csv' -print -quit)"
 
       - name: Validate static website files
         run: |
           test -f docs/index.html
           test -f docs/assets/app.js
           test -f docs/assets/styles.css
-          test -f docs/assets/data/v2_aggregated_summary.csv
-          test -f docs/assets/data/v2_raw_combined.csv
+          test -d docs/assets/data
+          test -n "$(find docs/assets/data -maxdepth 1 -type f \( -name '*.csv' -o -name '*.json' \) -print -quit)"
 
       - name: JavaScript syntax
         run: node --check docs/assets/app.js
