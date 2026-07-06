@@ -1,5 +1,5 @@
-experiment_id: v2_fixed_cora
-version: v2
+experiment_id: final_fixed_cora
+version: final
 datasets: [Cora]
 protocol: fixed
 robustness_setting: training_time

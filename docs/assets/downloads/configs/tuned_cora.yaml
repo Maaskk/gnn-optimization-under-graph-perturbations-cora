@@ -1,5 +1,5 @@
-experiment_id: v2_tuned_cora
-version: v2
+experiment_id: final_tuned_cora
+version: final
 datasets: [Cora]
 protocol: tuned
 robustness_setting: training_time

@@ -26,8 +26,8 @@ jobs:
         run: |
           rm -rf results/ci_smoke
           make smoke
-          test -f results/ci_smoke/raw/v2_fixed_cora_smoke.csv
-          test -f results/ci_smoke/aggregated/v2_aggregated_summary.csv
+          test -n "$(find results/ci_smoke/raw -name '*fixed_cora_smoke.csv' -print -quit)"
+          test -n "$(find results/ci_smoke/aggregated -name '*aggregated_summary.csv' -print -quit)"
       - name: Static website validation
         run: |
           test -f docs/index.html

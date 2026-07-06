@@ -1,5 +1,5 @@
-experiment_id: v2_inference_robustness
-version: v2
+experiment_id: final_inference_robustness
+version: final
 datasets: [Cora]
 protocol: fixed
 robustness_setting: inference_time

@@ -51,16 +51,16 @@ def test_frontend_explains_accuracy_benchmark_and_adds_visual_depth():
     assert "drawDropMatrixChart" in js
     assert "Une matrice multi-graines" in html
     assert "visualisation illustrative" in " ".join(html.split())
-    assert "loadV2Methodology" in js
-    assert "v2_methodology.json" in js
+    assert "loadMethodology" in js
+    assert "methodology.json" in js
     assert "embeddingCanvas" in html
     assert "loadEmbedding" in js
     assert "embedding_cora_adam_seed42.json" in js
     assert "PCA des embeddings cachés" in html
-    assert "v2AggregateTable" in html
+    assert "finalAggregateTable" in html
     assert "data-version-view" in html
-    assert "loadV2Aggregate" in js
-    assert "./assets/downloads/configs/v2_fixed_cora.yaml" in html
+    assert "loadAggregate" in js
+    assert "./assets/downloads/configs/fixed_cora.yaml" in html
     assert "Rapport PDF" in html
     assert "../configs/" not in html
     assert "../reports/" not in html

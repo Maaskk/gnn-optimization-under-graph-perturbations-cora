@@ -46,8 +46,8 @@ const state = {
   lossHistory: [],
   dataset: {},
   graph: { nodes: [], edges: [] },
-  v2Methodology: null,
-  v2Aggregate: [],
+  methodology: null,
+  finalAggregate: [],
   versionView: "final",
   embedding: null,
   embeddingColor: "true_label",
@@ -100,23 +100,23 @@ async function loadData() {
   state.graph = graph;
 }
 
-async function loadV2Methodology() {
+async function loadMethodology() {
   try {
-    const response = await fetch(`${DATA_DIR}v2_methodology.json`);
+    const response = await fetch(`${DATA_DIR}methodology.json`);
     if (!response.ok) return;
-    state.v2Methodology = await response.json();
+    state.methodology = await response.json();
   } catch {
-    state.v2Methodology = null;
+    state.methodology = null;
   }
 }
 
-async function loadV2Aggregate() {
+async function loadAggregate() {
   try {
-    const response = await fetch(`${DATA_DIR}v2_aggregated_summary.csv`);
+    const response = await fetch(`${DATA_DIR}aggregate_summary.csv`);
     if (!response.ok) return;
-    state.v2Aggregate = parseCsv(await response.text());
+    state.finalAggregate = parseCsv(await response.text());
   } catch {
-    state.v2Aggregate = [];
+    state.finalAggregate = [];
   }
 }
 
@@ -139,8 +139,8 @@ function formatNumber(value) {
 }
 
 function getOptimizerAverage(optimizer) {
-  if (state.v2Aggregate.length) {
-    const rows = state.v2Aggregate.filter(
+  if (state.finalAggregate.length) {
+    const rows = state.finalAggregate.filter(
       (row) =>
         row.dataset === "Cora" &&
         row.protocol === "fixed" &&
@@ -159,8 +159,8 @@ function getOptimizerAverage(optimizer) {
 }
 
 function getCleanAccuracy(optimizer) {
-  if (state.v2Aggregate.length) {
-    const row = state.v2Aggregate.find(
+  if (state.finalAggregate.length) {
+    const row = state.finalAggregate.find(
       (item) =>
         item.dataset === "Cora" &&
         item.protocol === "fixed" &&
@@ -175,8 +175,8 @@ function getCleanAccuracy(optimizer) {
 }
 
 function getFinalAggregateValue(optimizer, perturbation) {
-  if (!state.v2Aggregate.length) return null;
-  const rows = state.v2Aggregate.filter(
+  if (!state.finalAggregate.length) return null;
+  const rows = state.finalAggregate.filter(
     (row) =>
       row.dataset === "Cora" &&
       row.protocol === "fixed" &&
@@ -217,8 +217,8 @@ function renderStats() {
   setText('[data-stat="rows"]', formatNumber(state.allResults.length));
 }
 
-function renderV2Methodology() {
-  const methodology = state.v2Methodology;
+function renderMethodology() {
+  const methodology = state.methodology;
   if (!methodology) {
     setText('[data-result="status"]', "Aucun agrégat final n'est encore publié.");
     return;
@@ -267,7 +267,7 @@ function createResultsTable(rows, columns) {
 }
 
 function renderVersionPanel() {
-  const container = document.getElementById("v2AggregateTable");
+  const container = document.getElementById("finalAggregateTable");
   if (!container) return;
   container.replaceChildren();
   document.querySelectorAll("[data-version-view]").forEach((button) => {
@@ -276,12 +276,12 @@ function renderVersionPanel() {
 
   const title = document.querySelector("[data-version-title]");
   const note = document.querySelector("[data-version-note]");
-  if (state.versionView === "final" && state.v2Aggregate.length) {
+  if (state.versionView === "final" && state.finalAggregate.length) {
     if (title) title.textContent = "Résultats reproductibles disponibles";
     if (note) {
       note.textContent = "Les valeurs affichées sont des moyennes avec intervalle de confiance 95% quand plusieurs graines existent.";
     }
-    const rows = state.v2Aggregate
+    const rows = state.finalAggregate
       .filter((row) => row.dataset === "Cora" && row.robustness_setting === "training_time")
       .sort((a, b) => {
         if (a.optimizer !== b.optimizer) return a.optimizer.localeCompare(b.optimizer);
@@ -516,8 +516,8 @@ function drawSummaryChart() {
 function drawRobustnessChart() {
   const svg = document.getElementById("robustnessChart");
   const { width, height } = clearSvg(svg, 960, 470);
-  const rows = state.v2Aggregate.length
-    ? state.v2Aggregate.filter(
+  const rows = state.finalAggregate.length
+    ? state.finalAggregate.filter(
         (row) =>
           row.dataset === "Cora" &&
           row.protocol === "fixed" &&
@@ -684,8 +684,8 @@ function drawDropMatrixChart() {
     });
 
     columns.forEach((column, colIndex) => {
-      const result = state.v2Aggregate.length
-        ? state.v2Aggregate.find(
+      const result = state.finalAggregate.length
+        ? state.finalAggregate.find(
             (item) =>
               item.dataset === "Cora" &&
               item.protocol === "fixed" &&
@@ -792,8 +792,8 @@ function renderLeaderboard() {
 
 function renderSeverityMetrics() {
   const severity = SEVERITIES[state.selectedSeverityIndex];
-  const rows = state.v2Aggregate.length
-    ? state.v2Aggregate
+  const rows = state.finalAggregate.length
+    ? state.finalAggregate
         .filter(
           (row) =>
             row.dataset === "Cora" &&
@@ -1369,10 +1369,10 @@ function showError(error) {
   `;
 }
 
-Promise.all([loadData(), loadV2Methodology(), loadV2Aggregate(), loadEmbedding()])
+Promise.all([loadData(), loadMethodology(), loadAggregate(), loadEmbedding()])
   .then(() => {
     renderStats();
-    renderV2Methodology();
+    renderMethodology();
     renderVersionPanel();
     drawEmbedding();
     bindControls();
