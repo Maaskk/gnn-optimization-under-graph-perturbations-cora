@@ -31,5 +31,5 @@
     "diagnostics_optimizer_summary": true
   },
   "methodology_warning": "Les scenes animees du graphe sont des vues illustratives echantillonnees. Elles ne representent pas une inference GNN en temps reel.",
-  "feature_masking_definition": "Le feature masking met a zero une fraction demandee des entrees actives non nulles."
+  "feature_masking_definition": "Masquage al\u00e9atoire d\u2019une proportion de caract\u00e9ristiques actives non nulles."
 }

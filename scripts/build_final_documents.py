@@ -367,7 +367,7 @@ def build_report_markdown(
 
 **Projet 13 - Option 4.** Dataset Cora Citation Network. Modele GCN a deux couches. Optimiseurs: Adam, AdamW, RMSProp, AdaGrad et SGD.
 
-**Generation:** {generated}. **Commit:** `{current_commit()}`.
+**Generation:** {generated}.
 
 ## Résumé
 
@@ -474,7 +474,7 @@ make build-site
 make reproduce-final
 ```
 
-Les resultats bruts, agregats, diagnostics, configurations, notebook, rapport et site sont stockes dans le depot. Le commit Git est conserve dans les lignes brutes et dans les metadonnees d'environnement.
+Les resultats bruts, agregats, diagnostics, configurations, notebook, rapport et site sont stockes dans le depot. L'identifiant de version est conserve dans les lignes brutes et dans les metadonnees d'environnement.
 
 ## Références
 
@@ -486,7 +486,7 @@ Les resultats bruts, agregats, diagnostics, configurations, notebook, rapport et
 
 ## Annexe
 
-Les definitions exactes de graines resolues, taux demandes, taux effectivement appliques, commits Git et metadonnees materiel sont dans les CSV bruts et les JSON de metadonnees generes par le pipeline.
+Les definitions exactes de graines resolues, taux demandes, taux effectivement appliques, identifiants de version et metadonnees materiel sont dans les CSV bruts et les JSON de metadonnees generes par le pipeline.
 """
 
 
@@ -806,8 +806,8 @@ def jury_qa_markdown() -> str:
             "Sous ce taux d'apprentissage fixe et sans tuning principal, SGD converge moins bien. Ce n'est pas une critique generale de SGD.",
         ),
         (
-            "Feature masking ou bruit gaussien ?",
-            "Le feature masking met a zero des entrees actives; le bruit gaussien ajoute une valeur continue. Ici, la definition finale utilise le masking.",
+            "Pourquoi le feature masking ?",
+            "Le feature masking met a zero une proportion aleatoire de caracteristiques actives non nulles. Cette definition correspond au protocole final et garde les valeurs deja nulles intactes.",
         ),
         (
             "Est-ce de la robustesse adversariale ?",
@@ -827,7 +827,7 @@ def jury_qa_markdown() -> str:
         ),
         (
             "Comment garantir la reproductibilite ?",
-            "Graines fixes, configs versionnees, commit Git, metadonnees materiel, resultats bruts et tests automatises.",
+            "Graines fixes, configs versionnees, identifiant de version, metadonnees materiel, resultats bruts et tests automatises.",
         ),
         (
             "Ou sont les resultats bruts ?",

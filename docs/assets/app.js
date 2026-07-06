@@ -6,7 +6,7 @@ const SEVERITIES = [0.05, 0.1, 0.2, 0.3];
 
 const PERTURBATION_LABELS = {
   clean: "Graphe propre",
-  feature_noise: "Attributs perturbés",
+  feature_noise: "Masquage d'attributs",
   feature_masking: "Masquage d'attributs",
   edge_removal: "Suppression d'arêtes",
   fake_edge_addition: "Ajout de fausses arêtes",
@@ -14,15 +14,15 @@ const PERTURBATION_LABELS = {
 
 const PERTURBATION_AXIS_LABELS = {
   clean: "Propre",
-  feature_noise: "Bruit attributs",
-  feature_masking: "Feature masking",
+  feature_noise: "Masquage",
+  feature_masking: "Masquage",
   edge_removal: "Arêtes supprimées",
   fake_edge_addition: "Fausses arêtes",
 };
 
 const PERTURBATION_CAPTIONS = {
-  feature_noise: "Perturbation gaussienne des attributs",
-  feature_masking: "Masquage aléatoire des caractéristiques actives",
+  feature_noise: "Masquage aléatoire d’une proportion de caractéristiques actives non nulles.",
+  feature_masking: "Masquage aléatoire d’une proportion de caractéristiques actives non nulles.",
   edge_removal: "Citations retirées aléatoirement",
   fake_edge_addition: "Citations artificielles injectées",
 };
@@ -343,7 +343,7 @@ function drawEmbedding() {
   if (!state.embedding || !state.embedding.nodes?.length) {
     ctx.fillStyle = "#617083";
     ctx.font = "700 22px Inter, sans-serif";
-    ctx.fillText("Embedding final en attente de génération", 38, 58);
+    ctx.fillText("Données d'embedding indisponibles", 38, 58);
     return;
   }
   const nodes = state.embedding.nodes;

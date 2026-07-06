@@ -1,18 +1,16 @@
-# Reproducibility Guide
+# Guide de reproductibilité
 
-## Environment
+## Environnement
 
-Use Python 3.11 or 3.12. Install pinned dependencies with:
+Utiliser Python 3.11 ou 3.12. Installer les dépendances avec:
 
 ```bash
 make setup
 ```
 
-The experiment runners write hardware and software metadata under `results/v2/metadata/`.
-Each raw result row includes the Git commit, resolved seed, requested perturbation rate,
-actual perturbation rate, and hardware metadata path.
+Les runners d'expériences écrivent les métadonnées matérielles et logicielles dans le dossier de métadonnées du pipeline. Chaque ligne brute contient l'identifiant de version, la graine résolue, le taux de perturbation demandé, le taux réellement appliqué et le chemin des métadonnées matérielles.
 
-## Quality Gates
+## Vérifications qualité
 
 ```bash
 make test
@@ -20,34 +18,33 @@ make lint
 make format-check
 ```
 
-## Isolated Smoke Run
+## Smoke test isolé
 
 ```bash
 make smoke
 ```
 
-The smoke command writes only to `results/ci_smoke/`. It is for pipeline validation and
-does not replace the scientific matrices.
+La commande smoke écrit uniquement dans `results/ci_smoke/`. Elle valide le pipeline sans remplacer les matrices scientifiques finales.
 
-## Main Cora Matrix
+## Matrice principale Cora
 
 ```bash
 make experiment-cora
 make aggregate
-make diagnostics-v2
+make diagnostics
 make build-site
 ```
 
-The main Cora matrix contains 650 generated rows:
+La matrice principale Cora contient 650 lignes générées:
 
 - Cora
-- 10 seeds
-- 5 optimizers
-- clean graph plus feature masking, edge removal, and fake edge addition
-- severities 0.05, 0.10, 0.20, 0.30
-- 200 epochs per run
+- 10 graines
+- 5 optimiseurs
+- graphe propre, feature masking, suppression d'arêtes et ajout de fausses arêtes
+- sévérités 0.05, 0.10, 0.20, 0.30
+- 200 époques par run
 
-## Additional Validation Protocols
+## Validations complémentaires
 
 ```bash
 make experiment-cross-dataset
@@ -56,28 +53,22 @@ make experiment-inference
 make aggregate
 ```
 
-Cross-dataset validation runs Cora, CiteSeer, and PubMed with five seeds and four
-conditions. The tuned protocol uses validation metrics only and then locks the selected
-hyperparameters before final test evaluation. Inference-time robustness trains on clean
-Cora and perturbs inputs only during evaluation.
+La validation multi-datasets exécute Cora, CiteSeer et PubMed avec cinq graines et quatre conditions. Le protocole tuné utilise uniquement les métriques de validation, puis verrouille les hyperparamètres avant l'évaluation test finale. La robustesse à l'inférence entraîne sur Cora propre puis perturbe uniquement l'évaluation.
 
-## Optimizer Diagnostics
+## Diagnostics optimiseurs
 
 ```bash
-make diagnostics-v2
+make diagnostics
 ```
 
-The diagnostics command runs clean Cora training for each optimizer and seed, logs the
-L2 gradient norm for every epoch, and records CPU/GPU memory summaries.
+Cette commande entraîne chaque optimiseur sur Cora propre, journalise la norme L2 du gradient à chaque époque et enregistre les résumés mémoire CPU/GPU.
 
-## Final Reproduction
+## Reproduction finale
 
 ```bash
 make reproduce-final
 ```
 
-This command is intentionally long: it runs tests, linting, formatting checks, the final
-experimental protocols, aggregation, diagnostics, and website generation.
+Cette commande est volontairement longue: elle lance les tests, le lint, la vérification de format, les protocoles expérimentaux finaux, l'agrégation, les diagnostics et la génération du site.
 
-Do not fill missing rows manually. Only generated raw rows should be aggregated or
-reported as completed.
+Ne jamais compléter les lignes manquantes manuellement. Seules les lignes brutes générées par le pipeline doivent être agrégées ou déclarées terminées.

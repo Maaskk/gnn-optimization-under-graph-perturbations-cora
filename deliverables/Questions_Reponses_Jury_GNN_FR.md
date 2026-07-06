@@ -28,9 +28,9 @@ Ils couvrent Adam, AdamW, RMSProp, AdaGrad et SGD, donc des familles adaptatives
 
 Sous ce taux d'apprentissage fixe et sans tuning principal, SGD converge moins bien. Ce n'est pas une critique generale de SGD.
 
-## Feature masking ou bruit gaussien ?
+## Pourquoi le feature masking ?
 
-Le feature masking met a zero des entrees actives; le bruit gaussien ajoute une valeur continue. Ici, la definition finale utilise le masking.
+Le feature masking met a zero une proportion aleatoire de caracteristiques actives non nulles. Cette definition correspond au protocole final et garde les valeurs deja nulles intactes.
 
 ## Est-ce de la robustesse adversariale ?
 
@@ -50,7 +50,7 @@ La densite, les attributs et les classes different, donc le signal de propagatio
 
 ## Comment garantir la reproductibilite ?
 
-Graines fixes, configs versionnees, commit Git, metadonnees materiel, resultats bruts et tests automatises.
+Graines fixes, configs versionnees, identifiant de version, metadonnees materiel, resultats bruts et tests automatises.
 
 ## Ou sont les resultats bruts ?
 

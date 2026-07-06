@@ -139,7 +139,7 @@ def main() -> None:
             "Elles ne representent pas une inference GNN en temps reel."
         ),
         "feature_masking_definition": (
-            "Le feature masking met a zero une fraction demandee des entrees actives non nulles."
+            "Masquage aléatoire d’une proportion de caractéristiques actives non nulles."
         ),
     }
     (DOCS_DATA / "v2_methodology.json").write_text(

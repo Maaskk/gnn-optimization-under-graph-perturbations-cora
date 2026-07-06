@@ -4,7 +4,7 @@
 
 **Projet 13 - Option 4.** Dataset Cora Citation Network. Modele GCN a deux couches. Optimiseurs: Adam, AdamW, RMSProp, AdaGrad et SGD.
 
-**Generation:** 2026-07-06 04:41 UTC. **Commit:** `d92b4537c9feea71155da03841fc1df3dd30b1da`.
+**Generation:** 2026-07-06 12:43 UTC.
 
 ## Résumé
 
@@ -209,7 +209,7 @@ make build-site
 make reproduce-final
 ```
 
-Les resultats bruts, agregats, diagnostics, configurations, notebook, rapport et site sont stockes dans le depot. Le commit Git est conserve dans les lignes brutes et dans les metadonnees d'environnement.
+Les resultats bruts, agregats, diagnostics, configurations, notebook, rapport et site sont stockes dans le depot. L'identifiant de version est conserve dans les lignes brutes et dans les metadonnees d'environnement.
 
 ## Références
 
@@ -221,4 +221,4 @@ Les resultats bruts, agregats, diagnostics, configurations, notebook, rapport et
 
 ## Annexe
 
-Les definitions exactes de graines resolues, taux demandes, taux effectivement appliques, commits Git et metadonnees materiel sont dans les CSV bruts et les JSON de metadonnees generes par le pipeline.
+Les definitions exactes de graines resolues, taux demandes, taux effectivement appliques, identifiants de version et metadonnees materiel sont dans les CSV bruts et les JSON de metadonnees generes par le pipeline.

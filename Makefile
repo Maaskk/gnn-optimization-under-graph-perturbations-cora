@@ -6,7 +6,7 @@ FORMATTER ?= .venv/bin/ruff format
 COVERAGE ?= .venv/bin/coverage
 PY_SCRIPTS := $(shell find scripts -name '*.py' -type f)
 
-.PHONY: setup test coverage lint format-check smoke experiment-cora experiment-cross-dataset experiment-tuned experiment-inference aggregate build-site reproduce-final experiment-v2-cora experiment-v2-cross-dataset aggregate-v2 reproduce-v2-standard smoke-v2 benchmark-v2 tune-v2 diagnostics-v2 statistics-v2
+.PHONY: setup test coverage lint format-check smoke experiment-cora experiment-cross-dataset experiment-tuned experiment-inference aggregate diagnostics build-site reproduce-final experiment-v2-cora experiment-v2-cross-dataset aggregate-v2 reproduce-v2-standard smoke-v2 benchmark-v2 tune-v2 diagnostics-v2 statistics-v2
 
 setup:
 	$(PIP) install -r requirements.txt
@@ -60,6 +60,8 @@ benchmark-v2:
 
 diagnostics-v2:
 	$(PYTHON) scripts/collect_v2_diagnostics.py --config configs/v2_fixed_cora.yaml
+
+diagnostics: diagnostics-v2
 
 tune-v2:
 	$(PYTHON) scripts/tune_v2_hyperparameters.py --config configs/v2_tuned_cora.yaml --label local

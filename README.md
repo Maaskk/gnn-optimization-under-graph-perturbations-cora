@@ -25,7 +25,7 @@ Des validations complémentaires sont générées séparément pour les tests mu
 
 ## Perturbations
 
-- `feature_masking`: met à zéro une fraction demandée des entrées actives non nulles.
+- `feature_masking`: Masquage aléatoire d’une proportion de caractéristiques actives non nulles.
 - `edge_removal`: supprime une fraction demandée des connexions non orientées uniques et reconstruit une représentation symétrique.
 - `fake_edge_addition`: insère des paires de noeuds précédemment non connectées, sans self-loops ni doublons, et reconstruit une représentation symétrique.
 
@@ -55,9 +55,9 @@ La commande smoke écrit uniquement dans `results/ci_smoke/` et n'écrase pas le
 | `configs/` | Configurations des protocoles fixe, tuné, multi-datasets et inférence |
 | `src/gnn_robustness/` | Chargement des données, modèle GCN, perturbations, entraînement, agrégation, statistiques, métadonnées |
 | `scripts/` | Runners d'expériences, diagnostics, statistiques, génération du rapport et données du site |
-| `results/v2/raw/` | Lignes brutes générées par les expériences |
-| `results/v2/aggregated/` | Table brute combinée et résumés agrégés |
-| `results/v2/diagnostics/` | Diagnostics de gradients, temps et mémoire |
+| Résultats bruts | Lignes brutes générées par les expériences |
+| Résultats agrégés | Table brute combinée et résumés agrégés |
+| Diagnostics | Diagnostics de gradients, temps et mémoire |
 | `reports/` | Rapport final, sources PDF et visualisations générées |
 | `deliverables/` | Présentation, script de soutenance, Q&A et QR codes |
 | `docs/` | Site statique GitHub Pages |
