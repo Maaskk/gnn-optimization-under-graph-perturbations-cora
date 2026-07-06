@@ -49,7 +49,7 @@ def test_frontend_explains_accuracy_benchmark_and_adds_visual_depth():
     assert "Référence GCN" in html
     assert "dropMatrixChart" in html
     assert "drawDropMatrixChart" in js
-    assert "V2 sépare clairement" in html
+    assert "Une matrice multi-graines" in html
     assert "visualisation illustrative" in " ".join(html.split())
     assert "loadV2Methodology" in js
     assert "v2_methodology.json" in js
@@ -57,11 +57,11 @@ def test_frontend_explains_accuracy_benchmark_and_adds_visual_depth():
     assert "loadEmbedding" in js
     assert "v2_embedding_cora_adam_seed42.json" in js
     assert "PCA des embeddings cachés" in html
-    assert "Legacy V1" in html
     assert "v2AggregateTable" in html
     assert "data-version-view" in html
     assert "loadV2Aggregate" in js
     assert "./assets/downloads/configs/v2_fixed_cora.yaml" in html
+    assert "Rapport PDF" in html
     assert "../configs/" not in html
     assert "../reports/" not in html
     assert "../notebooks/" not in html

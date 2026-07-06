@@ -1,0 +1,224 @@
+# Robustesse des Réseaux de Neurones de Graphes sous Perturbations Aléatoires
+
+**Titre anglais:** Robustness of Graph Convolutional Networks under Random Graph Perturbations
+
+**Projet 13 - Option 4.** Dataset Cora Citation Network. Modele GCN a deux couches. Optimiseurs: Adam, AdamW, RMSProp, AdaGrad et SGD.
+
+**Generation:** 2026-07-06 04:41 UTC. **Commit:** `d92b4537c9feea71155da03841fc1df3dd30b1da`.
+
+## Résumé
+
+Ce rapport etudie comment le choix de l'optimiseur influence la stabilite d'un GCN a deux couches lorsque le graphe Cora subit des perturbations aleatoires. Le coeur de l'etude contient 650 entrainements reels: 5 optimiseurs x 13 conditions x 10 graines. Les resultats sont rapportes avec moyenne, ecart-type et intervalle de confiance 95%. Les conclusions restent limitees au dataset, a l'architecture, aux hyperparametres et aux perturbations aleatoires etudies.
+
+## Introduction
+
+Les reseaux de neurones de graphes propagent l'information le long des aretes. Une suppression d'aretes, l'ajout de fausses aretes ou le masquage des attributs actifs peut donc modifier directement le signal disponible. L'objectif est de comparer les optimiseurs sous un protocole fixe et reproductible, pas de chercher le meilleur optimiseur universel.
+
+## Question de recherche
+
+Pour un GCN a deux couches sur les reseaux de citations Planetoid, comment Adam, AdamW, RMSProp, AdaGrad et SGD se comparent-ils lorsque des perturbations aleatoires sont appliquees au graphe ou aux caracteristiques?
+
+## Travaux connexes
+
+Kipf et Welling ont introduit le Graph Convolutional Network utilise ici comme reference architecturale. Kingma et Ba ont propose Adam, Loshchilov et Hutter ont separe la regularisation dans AdamW, et les optimiseurs RMSProp, AdaGrad et SGD representent des familles classiques d'optimisation stochastique. Cette etude reste experimentale et controlee.
+
+## Jeu de données et architecture GCN
+
+Cora contient 2708 documents, 1433 attributs binaires, 7 classes et 10556 aretes dirigees dans la representation Planetoid chargee par PyTorch Geometric. Le modele utilise deux couches GCNConv, 16 canaux caches, ReLU, dropout 0.5 et une perte cross-entropy sur le masque d'entrainement.
+
+## Optimiseurs
+
+Les cinq optimiseurs sont executes avec le meme budget de 200 epoques dans le protocole fixe. Le protocole tune utilise uniquement la validation pour choisir les hyperparametres, puis verrouille ces choix avant l'evaluation test.
+
+## Protocole expérimental
+
+- Graines principales: 42 a 51.
+- 200 epoques par entrainement.
+- Conditions Cora principales: graphe propre, feature masking 5%, 10%, 20%, 30%, edge removal 5%, 10%, 20%, 30%, fake edge addition 5%, 10%, 20%, 30%.
+- Matrice principale: 5 optimiseurs x 13 conditions x 10 graines = 650 runs reels.
+- Cross-dataset complete: 300 runs reels.
+- Evaluation tunee complete: 100 runs reels.
+- Robustesse a l'inference complete: 75 runs reels.
+
+## Définitions des perturbations aléatoires
+
+Le feature masking met a zero une proportion demandee des entrees actives non nulles. Edge removal supprime une fraction de connexions non orientees uniques et conserve une representation symetrique. Fake edge addition ajoute uniquement des paires de noeuds non connectees auparavant, sans self-loops ni duplicats.
+
+## Méthodologie statistique
+
+Les tableaux agreges donnent moyenne, ecart-type et IC95. Les comparaisons entre optimiseurs utilisent des graines appariees, un intervalle bootstrap apparie, un test de Wilcoxon quand il est valide, puis une correction de Holm pour comparaisons multiples.
+
+## Résultats principaux sur Cora
+
+Meilleur score moyen agrege sous ce protocole: **Adam (79.0%)**. Cette phrase ne signifie pas que l'optimiseur est universellement meilleur.
+
+| optimizer | Accuracy moyenne | IC95 | Macro F1 | n_seeds |
+| --- | --- | --- | --- | --- |
+| Adam | 81.2% | 0.2% | 80.1% | 10 |
+| RMSProp | 80.8% | 0.6% | 79.8% | 10 |
+| AdamW | 78.7% | 0.4% | 78.1% | 10 |
+| AdaGrad | 77.2% | 0.6% | 76.5% | 10 |
+| SGD | 14.9% | 1.1% | 7.2% | 10 |
+
+## Classement global de robustesse
+
+| optimizer | Accuracy moyenne | Macro F1 moyen | Gap train-validation |
+| --- | --- | --- | --- |
+| Adam | 79.0% | 77.9% | 0.224 |
+| RMSProp | 78.8% | 77.8% | 0.225 |
+| AdamW | 76.4% | 75.6% | 0.248 |
+| AdaGrad | 74.6% | 74.0% | 0.226 |
+| SGD | 14.0% | 6.7% | 0.037 |
+
+## Analyse statistique
+
+| Optimiseur A | Optimiseur B | Metrique | Difference moyenne | CI95 | p ajustee | Interpretation FR |
+| --- | --- | --- | --- | --- | --- | --- |
+| Adam | AdamW | Accuracy test | 0.026292 | [0.023938, 0.028923] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| Adam | RMSProp | Accuracy test | 0.001754 | [-0.001077, 0.004515] | 0.482243 | Preuve insuffisante pour distinguer clairement les deux optimiseurs. |
+| Adam | AdaGrad | Accuracy test | 0.0428 | [0.039931, 0.045538] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| Adam | SGD | Accuracy test | 0.649431 | [0.639069, 0.659447] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdamW | RMSProp | Accuracy test | -0.024538 | [-0.027946, -0.021008] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdamW | AdaGrad | Accuracy test | 0.016508 | [0.013954, 0.018923] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdamW | SGD | Accuracy test | 0.623138 | [0.611907, 0.633169] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| RMSProp | AdaGrad | Accuracy test | 0.041046 | [0.036992, 0.045385] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| RMSProp | SGD | Accuracy test | 0.647677 | [0.637292, 0.658631] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdaGrad | SGD | Accuracy test | 0.606631 | [0.595731, 0.616331] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| Adam | AdamW | Macro F1 | 0.022936 | [0.020904, 0.024968] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| Adam | RMSProp | Macro F1 | 0.001334 | [-0.001869, 0.004245] | 0.482243 | Preuve insuffisante pour distinguer clairement les deux optimiseurs. |
+| Adam | AdaGrad | Macro F1 | 0.038024 | [0.035398, 0.040508] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| Adam | SGD | Macro F1 | 0.712246 | [0.706764, 0.718311] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdamW | RMSProp | Macro F1 | -0.021602 | [-0.024704, -0.018415] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdamW | AdaGrad | Macro F1 | 0.015088 | [0.012981, 0.017434] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdamW | SGD | Macro F1 | 0.68931 | [0.683154, 0.695394] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| RMSProp | AdaGrad | Macro F1 | 0.03669 | [0.033041, 0.040904] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| RMSProp | SGD | Macro F1 | 0.710913 | [0.705103, 0.717469] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+| AdaGrad | SGD | Macro F1 | 0.674222 | [0.668321, 0.680053] | 0.101241 | Moyenne plus elevee sous ce protocole, avec une interpretation statistique prudente. |
+
+## Résultats multi-datasets
+
+| Dataset | Optimiseur | Perturbation | Severite | Accuracy | Macro F1 | n_seeds |
+| --- | --- | --- | --- | --- | --- | --- |
+| CiteSeer | AdaGrad | Graphe propre | 0.0% | 68.8% | 64.9% | 5 |
+| CiteSeer | AdaGrad | Suppression d'aretes | 20.0% | 66.7% | 63.1% | 5 |
+| CiteSeer | AdaGrad | Ajout de fausses aretes | 20.0% | 63.9% | 60.5% | 5 |
+| CiteSeer | AdaGrad | Feature masking | 20.0% | 65.1% | 61.8% | 5 |
+| CiteSeer | Adam | Graphe propre | 0.0% | 70.8% | 68.0% | 5 |
+| CiteSeer | Adam | Suppression d'aretes | 20.0% | 68.8% | 65.8% | 5 |
+| CiteSeer | Adam | Ajout de fausses aretes | 20.0% | 67.8% | 64.8% | 5 |
+| CiteSeer | Adam | Feature masking | 20.0% | 69.2% | 66.2% | 5 |
+| CiteSeer | AdamW | Graphe propre | 0.0% | 65.1% | 62.2% | 5 |
+| CiteSeer | AdamW | Suppression d'aretes | 20.0% | 58.1% | 56.5% | 5 |
+| CiteSeer | AdamW | Ajout de fausses aretes | 20.0% | 59.4% | 56.8% | 5 |
+| CiteSeer | AdamW | Feature masking | 20.0% | 61.5% | 59.1% | 5 |
+| CiteSeer | RMSProp | Graphe propre | 0.0% | 70.0% | 67.0% | 5 |
+| CiteSeer | RMSProp | Suppression d'aretes | 20.0% | 69.2% | 66.3% | 5 |
+| CiteSeer | RMSProp | Ajout de fausses aretes | 20.0% | 67.2% | 64.0% | 5 |
+| CiteSeer | RMSProp | Feature masking | 20.0% | 68.7% | 65.7% | 5 |
+| CiteSeer | SGD | Graphe propre | 0.0% | 17.4% | 8.7% | 5 |
+| CiteSeer | SGD | Suppression d'aretes | 20.0% | 17.8% | 9.3% | 5 |
+
+## Résultats du protocole tuné
+
+| Dataset | Optimiseur | Perturbation | Severite | Accuracy | n_seeds |
+| --- | --- | --- | --- | --- | --- |
+| Cora | AdaGrad | Graphe propre | 0.0% | 78.7% | 5 |
+| Cora | AdaGrad | Suppression d'aretes | 20.0% | 77.4% | 5 |
+| Cora | AdaGrad | Ajout de fausses aretes | 20.0% | 74.6% | 5 |
+| Cora | AdaGrad | Feature masking | 20.0% | 77.2% | 5 |
+| Cora | Adam | Graphe propre | 0.0% | 80.6% | 5 |
+| Cora | Adam | Suppression d'aretes | 20.0% | 79.1% | 5 |
+| Cora | Adam | Ajout de fausses aretes | 20.0% | 76.7% | 5 |
+| Cora | Adam | Feature masking | 20.0% | 79.1% | 5 |
+| Cora | AdamW | Graphe propre | 0.0% | 79.9% | 5 |
+| Cora | AdamW | Suppression d'aretes | 20.0% | 77.5% | 5 |
+| Cora | AdamW | Ajout de fausses aretes | 20.0% | 73.5% | 5 |
+| Cora | AdamW | Feature masking | 20.0% | 77.8% | 5 |
+| Cora | RMSProp | Graphe propre | 0.0% | 78.2% | 5 |
+| Cora | RMSProp | Suppression d'aretes | 20.0% | 76.3% | 5 |
+| Cora | RMSProp | Ajout de fausses aretes | 20.0% | 74.6% | 5 |
+| Cora | RMSProp | Feature masking | 20.0% | 77.8% | 5 |
+| Cora | SGD | Graphe propre | 0.0% | 27.7% | 5 |
+| Cora | SGD | Suppression d'aretes | 20.0% | 27.6% | 5 |
+
+## Robustesse à l'inférence
+
+| Dataset | Optimiseur | Perturbation | Severite | Accuracy | n_seeds |
+| --- | --- | --- | --- | --- | --- |
+| Cora | AdaGrad | Suppression d'aretes | 20.0% | 75.2% | 5 |
+| Cora | AdaGrad | Ajout de fausses aretes | 20.0% | 73.1% | 5 |
+| Cora | AdaGrad | Feature masking | 20.0% | 74.6% | 5 |
+| Cora | Adam | Suppression d'aretes | 20.0% | 79.5% | 5 |
+| Cora | Adam | Ajout de fausses aretes | 20.0% | 78.2% | 5 |
+| Cora | Adam | Feature masking | 20.0% | 79.8% | 5 |
+| Cora | AdamW | Suppression d'aretes | 20.0% | 75.9% | 5 |
+| Cora | AdamW | Ajout de fausses aretes | 20.0% | 74.1% | 5 |
+| Cora | AdamW | Feature masking | 20.0% | 76.9% | 5 |
+| Cora | RMSProp | Suppression d'aretes | 20.0% | 78.8% | 5 |
+| Cora | RMSProp | Ajout de fausses aretes | 20.0% | 77.3% | 5 |
+| Cora | RMSProp | Feature masking | 20.0% | 78.8% | 5 |
+| Cora | SGD | Suppression d'aretes | 20.0% | 17.6% | 5 |
+| Cora | SGD | Ajout de fausses aretes | 20.0% | 16.5% | 5 |
+| Cora | SGD | Feature masking | 20.0% | 16.9% | 5 |
+
+## Diagnostics gradients et ressources
+
+| optimizer | Gradient moyen | Perte validation moyenne |
+| --- | --- | --- |
+| AdaGrad | 0.1043 | 1.7743 |
+| Adam | 0.1272 | 1.1844 |
+| AdamW | 0.0824 | 1.0431 |
+| RMSProp | 0.1906 | 1.0433 |
+| SGD | 0.0426 | 1.9457 |
+
+Les diagnostics propres comportent 5 optimiseurs x 10 graines x 200 epoques = 10000 lignes de normes de gradients. La consommation memoire est enregistree dans les sorties de diagnostics par optimiseur et par graine.
+
+## Visualisations
+
+![clean_accuracy_ci](assets/final/clean_accuracy_ci.png)
+![aggregate_robustness_accuracy](assets/final/aggregate_robustness_accuracy.png)
+![feature_masking_accuracy_ci](assets/final/feature_masking_accuracy_ci.png)
+![edge_removal_accuracy_ci](assets/final/edge_removal_accuracy_ci.png)
+![fake_edge_accuracy_ci](assets/final/fake_edge_accuracy_ci.png)
+![gradient_l2_norms](assets/final/gradient_l2_norms.png)
+
+## Discussion
+
+Adam et RMSProp obtiennent des moyennes elevees sous le protocole fixe Cora. Les differences entre optimiseurs adaptatifs proches doivent etre lues avec les intervalles et les tests appariees. SGD sous-performe dans ce protocole fixe, notamment parce que le taux d'apprentissage et le momentum ne sont pas optimises pour lui dans la comparaison principale.
+
+## Limites
+
+Les perturbations sont aleatoires et non des attaques optimisees. Le benchmark reste controle sur des datasets de citation classiques. Les temps CPU dependent du materiel local. Les conclusions ne doivent pas etre generalisees a tous les GNN, tous les graphes ou tous les regimes d'hyperparametres.
+
+## Reproductibilité
+
+Commandes principales:
+
+```bash
+make setup
+make test
+make lint
+make format-check
+make smoke
+make experiment-cora
+make experiment-cross-dataset
+make experiment-tuned
+make experiment-inference
+make aggregate
+make build-site
+make reproduce-final
+```
+
+Les resultats bruts, agregats, diagnostics, configurations, notebook, rapport et site sont stockes dans le depot. Le commit Git est conserve dans les lignes brutes et dans les metadonnees d'environnement.
+
+## Références
+
+- Kipf, T. N., & Welling, M. Semi-Supervised Classification with Graph Convolutional Networks.
+- Kingma, D. P., & Ba, J. Adam: A Method for Stochastic Optimization.
+- Loshchilov, I., & Hutter, F. Decoupled Weight Decay Regularization.
+- Duchi, J., Hazan, E., & Singer, Y. Adaptive Subgradient Methods for Online Learning and Stochastic Optimization.
+- PyTorch Geometric documentation for Planetoid datasets and GCNConv.
+
+## Annexe
+
+Les definitions exactes de graines resolues, taux demandes, taux effectivement appliques, commits Git et metadonnees materiel sont dans les CSV bruts et les JSON de metadonnees generes par le pipeline.

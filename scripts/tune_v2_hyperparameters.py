@@ -5,7 +5,6 @@ import argparse
 import json
 import sys
 from dataclasses import replace
-from itertools import product
 from pathlib import Path
 
 import pandas as pd
@@ -16,6 +15,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from gnn_robustness.data import load_planetoid  # noqa: E402
 from gnn_robustness.v2_config import load_v2_config, resolved_seed  # noqa: E402
 from gnn_robustness.v2_experiments import _split_metrics, train_v2_model  # noqa: E402
+from gnn_robustness.v2_tuning import optimizer_tuning_grid  # noqa: E402
 
 
 def parse_csv_list(value: str) -> tuple[str, ...]:
@@ -46,15 +46,18 @@ def main() -> None:
 
     dataset_name = config.datasets[0]
     dataset, data = load_planetoid(dataset_name, args.data_root)
-    grid = list(product(config.tuning.learning_rates, config.tuning.weight_decays))
-    if args.max_configs:
-        grid = grid[: args.max_configs]
 
     trial_rows: list[dict] = []
     locked: dict[str, dict] = {}
     for optimizer_name in optimizers:
         best_row = None
-        for learning_rate, weight_decay in grid:
+        optimizer_grid = optimizer_tuning_grid(config, optimizer_name)
+        if args.max_configs:
+            optimizer_grid = optimizer_grid[: args.max_configs]
+        for trial in optimizer_grid:
+            learning_rate = trial["learning_rate"]
+            weight_decay = trial["weight_decay"]
+            momentum = trial["momentum"]
             trial_config = replace(
                 config,
                 training=replace(
@@ -73,7 +76,6 @@ def main() -> None:
                     perturbation_type="clean",
                     severity=0.0,
                 )
-                momentum = config.tuning.sgd_momentum if optimizer_name == "SGD" else 0.0
                 model, train_info, seconds = train_v2_model(
                     data.clone(),
                     num_features=dataset.num_node_features,
@@ -90,6 +92,7 @@ def main() -> None:
                         "optimizer": optimizer_name,
                         "learning_rate": learning_rate,
                         "weight_decay": weight_decay,
+                        "momentum": momentum if optimizer_name == "SGD" else 0.0,
                         "seed": base_seed,
                         "resolved_seed": seed,
                         "validation_accuracy": validation["accuracy"],
@@ -104,6 +107,7 @@ def main() -> None:
                 "optimizer": optimizer_name,
                 "learning_rate": learning_rate,
                 "weight_decay": weight_decay,
+                "momentum": momentum if optimizer_name == "SGD" else 0.0,
                 "mean_validation_accuracy": mean_validation_accuracy,
             }
             if best_row is None or mean_validation_accuracy > best_row["mean_validation_accuracy"]:
@@ -113,11 +117,12 @@ def main() -> None:
         locked[optimizer_name] = {
             "learning_rate": best_row["learning_rate"],
             "weight_decay": best_row["weight_decay"],
+            "momentum": best_row["momentum"],
             "mean_validation_accuracy": best_row["mean_validation_accuracy"],
             "selection_metric": "mean_validation_accuracy",
             "tuning_seeds": list(config.tuning.tuning_seeds),
             "uses_test_split": False,
-            "sgd_momentum": config.tuning.sgd_momentum if optimizer_name == "SGD" else 0.0,
+            "sgd_momentum": best_row["momentum"] if optimizer_name == "SGD" else 0.0,
         }
 
     output_root = Path(args.output_root)

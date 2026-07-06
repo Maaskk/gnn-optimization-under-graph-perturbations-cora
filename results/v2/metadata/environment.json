@@ -9,5 +9,5 @@
   "cuda_device_count": 0,
   "device": "cpu",
   "torch_geometric": "2.8.0",
-  "git_commit": "c6cbaebfff5503f33451a83377ae44de0faf2e15"
+  "git_commit": "d92b4537c9feea71155da03841fc1df3dd30b1da"
 }

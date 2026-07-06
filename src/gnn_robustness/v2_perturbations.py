@@ -56,6 +56,67 @@ def _edge_index_from_pairs(
     return torch.tensor(directed_edges, dtype=dtype, device=device).t().contiguous()
 
 
+def _normalized_original_pairs(
+    original_pairs: set[tuple[int, int]], num_nodes: int
+) -> set[tuple[int, int]]:
+    normalized: set[tuple[int, int]] = set()
+    for source, target in original_pairs:
+        source = int(source)
+        target = int(target)
+        if source == target:
+            continue
+        if source < 0 or target < 0 or source >= num_nodes or target >= num_nodes:
+            raise ValueError("original edge endpoint is outside the graph")
+        normalized.add((source, target) if source < target else (target, source))
+    return normalized
+
+
+def sample_absent_undirected_edges(
+    *,
+    original_pairs: set[tuple[int, int]],
+    num_nodes: int,
+    requested: int,
+    seed: int,
+) -> set[tuple[int, int]]:
+    """Sample absent undirected edges without enumerating the full complement graph."""
+
+    if num_nodes < 0:
+        raise ValueError("num_nodes must be non-negative")
+    if requested < 0:
+        raise ValueError("requested must be non-negative")
+    normalized_original = _normalized_original_pairs(original_pairs, num_nodes)
+    total_possible = num_nodes * (num_nodes - 1) // 2
+    available = total_possible - len(normalized_original)
+    if requested > available:
+        raise RuntimeError(f"Requested {requested} fake edges but only {available} are available")
+    if requested == 0:
+        return set()
+
+    inserted: set[tuple[int, int]] = set()
+    generator = _generator(seed)
+    batch_size = min(100_000, max(1024, requested * 4))
+
+    while len(inserted) < requested:
+        remaining = requested - len(inserted)
+        current_batch = max(1024, min(batch_size, remaining * 8))
+        sources = torch.randint(0, num_nodes, (current_batch,), generator=generator)
+        targets = torch.randint(0, num_nodes, (current_batch,), generator=generator)
+        for raw_source, raw_target in zip(sources.tolist(), targets.tolist(), strict=False):
+            if raw_source == raw_target:
+                continue
+            source, target = (
+                (raw_source, raw_target) if raw_source < raw_target else (raw_target, raw_source)
+            )
+            pair = (int(source), int(target))
+            if pair in normalized_original or pair in inserted:
+                continue
+            inserted.add(pair)
+            if len(inserted) == requested:
+                break
+
+    return inserted
+
+
 def mask_active_features(
     features: torch.Tensor, severity: float, seed: int
 ) -> FeatureMaskingResult:
@@ -124,22 +185,12 @@ def add_undirected_fake_edges(
     original_pairs = unique_undirected_edges(edge_index)
     original_count = len(original_pairs)
     requested = int(original_count * severity)
-    all_pairs = {
-        (source, target)
-        for source in range(num_nodes)
-        for target in range(source + 1, num_nodes)
-        if (source, target) not in original_pairs
-    }
-    if requested > len(all_pairs):
-        raise RuntimeError(
-            f"Requested {requested} fake edges but only {len(all_pairs)} are available"
-        )
-    candidates = sorted(all_pairs)
-    if requested > 0:
-        permutation = torch.randperm(len(candidates), generator=_generator(seed)).tolist()
-        inserted = {candidates[index] for index in permutation[:requested]}
-    else:
-        inserted = set()
+    inserted = sample_absent_undirected_edges(
+        original_pairs=original_pairs,
+        num_nodes=num_nodes,
+        requested=requested,
+        seed=seed,
+    )
     combined = original_pairs | inserted
     actual_rate = 0.0 if original_count == 0 else len(inserted) / original_count
     return EdgePerturbationResult(

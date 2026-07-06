@@ -24,6 +24,13 @@ def test_v2_fixed_config_documents_primary_protocol():
     assert config.training.dropout == 0.5
 
 
+def test_tuned_config_parses_sgd_momentum_grid():
+    config = load_v2_config(Path("configs/v2_tuned_cora.yaml"))
+
+    assert config.tuning.enabled is True
+    assert config.tuning.sgd_momentum_values == (0.0, 0.9)
+
+
 def test_resolved_seed_is_deterministic_and_context_specific():
     first = resolved_seed(
         dataset="Cora",

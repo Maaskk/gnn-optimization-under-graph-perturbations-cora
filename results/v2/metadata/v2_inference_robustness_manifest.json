@@ -1,0 +1,7 @@
+{
+  "config": "configs/v2_inference_robustness.yaml",
+  "output": "results/v2/raw/v2_inference_robustness.csv",
+  "completed_runs": 75,
+  "planned_runs": 75,
+  "pending_runs": []
+}

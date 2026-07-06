@@ -1,0 +1,9 @@
+{
+  "config": "configs/v2_tuned_cora.yaml",
+  "locked_hyperparameters": "results/v2/tuned/locked_hyperparameters_final.json",
+  "output": "results/v2/raw/v2_tuned_cora.csv",
+  "completed_runs": 100,
+  "planned_runs": 100,
+  "pending_runs": [],
+  "uses_test_split_for_tuning": false
+}

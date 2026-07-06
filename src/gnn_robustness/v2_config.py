@@ -25,6 +25,7 @@ class TuningConfig:
     weight_decays: tuple[float, ...] = ()
     tuning_seeds: tuple[int, ...] = ()
     sgd_momentum: float = 0.9
+    sgd_momentum_values: tuple[float, ...] = (0.0, 0.9)
 
 
 @dataclass(frozen=True)
@@ -74,6 +75,13 @@ def load_v2_config(path: str | Path) -> V2ExperimentConfig:
         weight_decays=_tuple(tuning_raw.get("weight_decays", ()), float),
         tuning_seeds=_tuple(tuning_raw.get("tuning_seeds", ()), int),
         sgd_momentum=float(tuning_raw.get("sgd_momentum", 0.9)),
+        sgd_momentum_values=_tuple(
+            tuning_raw.get(
+                "sgd_momentum_values",
+                tuning_raw.get("sgd_momentum_grid", (0.0, tuning_raw.get("sgd_momentum", 0.9))),
+            ),
+            float,
+        ),
     )
     return V2ExperimentConfig(
         experiment_id=str(raw["experiment_id"]),

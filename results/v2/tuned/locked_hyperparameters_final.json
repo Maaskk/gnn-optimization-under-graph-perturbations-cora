@@ -1,0 +1,72 @@
+{
+  "Adam": {
+    "learning_rate": 0.03,
+    "weight_decay": 0.0005,
+    "momentum": 0.0,
+    "mean_validation_accuracy": 0.7920000000000001,
+    "selection_metric": "mean_validation_accuracy",
+    "tuning_seeds": [
+      42,
+      43,
+      44
+    ],
+    "uses_test_split": false,
+    "sgd_momentum": 0.0
+  },
+  "AdamW": {
+    "learning_rate": 0.003,
+    "weight_decay": 0.0,
+    "momentum": 0.0,
+    "mean_validation_accuracy": 0.782,
+    "selection_metric": "mean_validation_accuracy",
+    "tuning_seeds": [
+      42,
+      43,
+      44
+    ],
+    "uses_test_split": false,
+    "sgd_momentum": 0.0
+  },
+  "RMSProp": {
+    "learning_rate": 0.03,
+    "weight_decay": 0.0005,
+    "momentum": 0.0,
+    "mean_validation_accuracy": 0.8000000000000002,
+    "selection_metric": "mean_validation_accuracy",
+    "tuning_seeds": [
+      42,
+      43,
+      44
+    ],
+    "uses_test_split": false,
+    "sgd_momentum": 0.0
+  },
+  "AdaGrad": {
+    "learning_rate": 0.03,
+    "weight_decay": 0.0,
+    "momentum": 0.0,
+    "mean_validation_accuracy": 0.786,
+    "selection_metric": "mean_validation_accuracy",
+    "tuning_seeds": [
+      42,
+      43,
+      44
+    ],
+    "uses_test_split": false,
+    "sgd_momentum": 0.0
+  },
+  "SGD": {
+    "learning_rate": 0.03,
+    "weight_decay": 0.0,
+    "momentum": 0.9,
+    "mean_validation_accuracy": 0.31866666666666665,
+    "selection_metric": "mean_validation_accuracy",
+    "tuning_seeds": [
+      42,
+      43,
+      44
+    ],
+    "uses_test_split": false,
+    "sgd_momentum": 0.9
+  }
+}

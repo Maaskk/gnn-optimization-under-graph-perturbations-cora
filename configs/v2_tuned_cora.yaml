@@ -20,6 +20,7 @@ tuning:
   weight_decays: [0.0, 0.0005, 0.005]
   tuning_seeds: [42, 43, 44]
   sgd_momentum: 0.9
+  sgd_momentum_values: [0.0, 0.9]
 notes: >
   Validation-only deterministic grid. Test accuracy must not be inspected
   during hyperparameter selection.

@@ -1,6 +1,7 @@
 import math
 
 from gnn_robustness.v2_statistics import (
+    build_optimizer_comparison_table,
     holm_correction,
     paired_bootstrap_ci,
     wilcoxon_signed_rank,
@@ -49,3 +50,39 @@ def test_holm_correction_adjusts_monotonically_and_tracks_rejections():
         <= by_label["Adam_vs_AdamW"]["adjusted_p_value"]
     )
     assert by_label["Adam_vs_SGD"]["reject_null"] is True
+
+
+def test_build_optimizer_comparison_table_uses_matched_seed_means():
+    import pandas as pd
+
+    raw = pd.DataFrame(
+        [
+            {
+                "dataset": "Cora",
+                "protocol": "fixed",
+                "robustness_setting": "training_time",
+                "optimizer": optimizer,
+                "seed": seed,
+                "test_accuracy": base + offset,
+                "macro_f1": base + offset - 0.02,
+            }
+            for optimizer, offset in [("Adam", 0.04), ("RMSProp", 0.02), ("SGD", -0.08)]
+            for seed, base in [(42, 0.70), (43, 0.72), (44, 0.74)]
+        ]
+    )
+
+    table = build_optimizer_comparison_table(
+        raw,
+        optimizers=("Adam", "RMSProp", "SGD"),
+        metrics=("test_accuracy",),
+        n_boot=100,
+    )
+
+    assert set(table["Metric"]) == {"test_accuracy"}
+    assert {"Optimizer A", "Optimizer B", "Mean difference", "CI95", "Adjusted p-value"}.issubset(
+        table.columns
+    )
+    adam_sgd = table[(table["Optimizer A"] == "Adam") & (table["Optimizer B"] == "SGD")].iloc[0]
+    assert adam_sgd["Matched seeds"] == 3
+    assert adam_sgd["Mean difference"] > 0
+    assert "under this protocol" in adam_sgd["Interpretation"]

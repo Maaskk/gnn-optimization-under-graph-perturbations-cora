@@ -29,7 +29,7 @@ def test_all_results_contains_all_project_perturbations():
 
 
 def test_final_report_and_summary_exist():
-    assert Path("reports/final_report.md").exists()
+    assert Path("reports/Final_Project_Report_GNN_Robustness.md").exists()
     assert Path("results/final_optimizer_summary.csv").exists()
 
 

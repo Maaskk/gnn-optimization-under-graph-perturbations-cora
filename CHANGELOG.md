@@ -1,13 +1,16 @@
 # Changelog
 
-## 2.0.0 - 2026-07-05
+## Final Submission
 
-- Added V2 experiment configs for fixed, tuned, cross-dataset, and inference-time robustness protocols.
-- Added deterministic seed derivation from dataset, optimizer, base seed, protocol, perturbation, and severity.
-- Added V2 feature masking, undirected edge removal, and undirected fake-edge addition perturbations.
-- Added raw-result schema, aggregation with seed counts and 95% confidence intervals, and environment metadata capture.
-- Added Makefile, CI workflow, pinned dependencies, license, citation metadata, and V1 provenance archives.
+- Completed the main Cora fixed-protocol matrix with 650 real runs.
+- Added random feature masking, undirected edge removal, and undirected fake-edge addition checks.
+- Added matched-seed statistical comparisons with bootstrap intervals, Wilcoxon tests, and Holm correction.
+- Added cross-dataset, tuned-protocol, and inference-time experiment commands.
+- Added gradient and resource diagnostics.
+- Added final report, defense deck, five-speaker script, jury Q&A, and GitHub Pages dashboard assets.
+- Added pinned dependencies, Make targets, tests, license, citation metadata, and reproducibility documentation.
 
-## 1.0.0 - 2026-06-20
+## Initial Class Project
 
-- Original single-seed Cora fixed-protocol class-project release with static GitHub Pages dashboard.
+- Built the first Cora GCN optimizer comparison and static dashboard foundation.
+- Added baseline plots, clean convergence curves, perturbation result tables, and project report material.

@@ -1,0 +1,21 @@
+Optimizer A,Optimizer B,Metric,Matched seeds,Mean difference,CI95,CI95 low,CI95 high,Wilcoxon p-value,Adjusted p-value,Interpretation
+Adam,AdamW,test_accuracy,10,0.026292,"[0.023938, 0.028923]",0.023938,0.028923,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+Adam,RMSProp,test_accuracy,10,0.001754,"[-0.001077, 0.004515]",-0.001077,0.004515,0.241121,0.482243,Evidence is insufficient to distinguish clearly under this protocol.
+Adam,AdaGrad,test_accuracy,10,0.0428,"[0.039931, 0.045538]",0.039931,0.045538,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+Adam,SGD,test_accuracy,10,0.649431,"[0.639069, 0.659447]",0.639069,0.659447,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdamW,RMSProp,test_accuracy,10,-0.024538,"[-0.027946, -0.021008]",-0.027946,-0.021008,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdamW,AdaGrad,test_accuracy,10,0.016508,"[0.013954, 0.018923]",0.013954,0.018923,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdamW,SGD,test_accuracy,10,0.623138,"[0.611907, 0.633169]",0.611907,0.633169,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+RMSProp,AdaGrad,test_accuracy,10,0.041046,"[0.036992, 0.045385]",0.036992,0.045385,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+RMSProp,SGD,test_accuracy,10,0.647677,"[0.637292, 0.658631]",0.637292,0.658631,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdaGrad,SGD,test_accuracy,10,0.606631,"[0.595731, 0.616331]",0.595731,0.616331,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+Adam,AdamW,macro_f1,10,0.022936,"[0.020904, 0.024968]",0.020904,0.024968,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+Adam,RMSProp,macro_f1,10,0.001334,"[-0.001869, 0.004245]",-0.001869,0.004245,0.386271,0.482243,Evidence is insufficient to distinguish clearly under this protocol.
+Adam,AdaGrad,macro_f1,10,0.038024,"[0.035398, 0.040508]",0.035398,0.040508,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+Adam,SGD,macro_f1,10,0.712246,"[0.706764, 0.718311]",0.706764,0.718311,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdamW,RMSProp,macro_f1,10,-0.021602,"[-0.024704, -0.018415]",-0.024704,-0.018415,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdamW,AdaGrad,macro_f1,10,0.015088,"[0.012981, 0.017434]",0.012981,0.017434,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdamW,SGD,macro_f1,10,0.68931,"[0.683154, 0.695394]",0.683154,0.695394,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+RMSProp,AdaGrad,macro_f1,10,0.03669,"[0.033041, 0.040904]",0.033041,0.040904,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+RMSProp,SGD,macro_f1,10,0.710913,"[0.705103, 0.717469]",0.705103,0.717469,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."
+AdaGrad,SGD,macro_f1,10,0.674222,"[0.668321, 0.680053]",0.668321,0.680053,0.005062,0.101241,"Mean is higher under this protocol, but adjusted evidence remains cautious."

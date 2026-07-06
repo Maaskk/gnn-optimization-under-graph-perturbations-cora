@@ -1,11 +1,11 @@
-name: CI
+name: Final Project CI
 
 on:
   push:
   pull_request:
 
 jobs:
-  test:
+  quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,14 +17,20 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
       - name: Lint
-        run: ruff check src scripts tests
+        run: make lint
       - name: Format check
-        run: ruff format --check src scripts tests
-      - name: Unit tests
-        run: pytest -q
-      - name: V2 smoke experiment
+        run: make format-check
+      - name: Tests
+        run: make test
+      - name: Isolated smoke experiment
         run: |
-          python scripts/run_v2_experiments.py --config configs/v2_fixed_cora.yaml --epochs 2 --seeds 42 --optimizers Adam --perturbations clean --max-runs 1 --label ci
-          python scripts/aggregate_v2.py
-      - name: Static site data validation
-        run: python scripts/build_v2_site_data.py
+          rm -rf results/ci_smoke
+          make smoke
+          test -f results/ci_smoke/raw/v2_fixed_cora_smoke.csv
+          test -f results/ci_smoke/aggregated/v2_aggregated_summary.csv
+      - name: Static website validation
+        run: |
+          test -f docs/index.html
+          test -f docs/assets/app.js
+          test -f docs/assets/styles.css
+          node --check docs/assets/app.js

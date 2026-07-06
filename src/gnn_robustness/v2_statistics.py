@@ -3,6 +3,9 @@ from __future__ import annotations
 import math
 import random
 from collections.abc import Mapping, Sequence
+from itertools import combinations
+
+import pandas as pd
 
 
 def _paired_differences(
@@ -133,3 +136,106 @@ def holm_correction(
             }
         )
     return rows
+
+
+def _optimizer_seed_means(
+    raw: pd.DataFrame,
+    *,
+    optimizer: str,
+    metric: str,
+    dataset: str,
+    protocol: str,
+    robustness_setting: str,
+) -> pd.Series:
+    filtered = raw[
+        (raw["dataset"] == dataset)
+        & (raw["protocol"] == protocol)
+        & (raw["robustness_setting"] == robustness_setting)
+        & (raw["optimizer"] == optimizer)
+    ]
+    return filtered.groupby("seed")[metric].mean().sort_index()
+
+
+def _interpret_difference(ci_low: float, ci_high: float, adjusted_p_value: float) -> str:
+    if ci_low <= 0 <= ci_high:
+        return "Evidence is insufficient to distinguish clearly under this protocol."
+    if adjusted_p_value <= 0.05:
+        return "Difference is statistically distinguishable under this protocol."
+    return "Mean is higher under this protocol, but adjusted evidence remains cautious."
+
+
+def build_optimizer_comparison_table(
+    raw: pd.DataFrame,
+    *,
+    optimizers: Sequence[str],
+    metrics: Sequence[str],
+    dataset: str = "Cora",
+    protocol: str = "fixed",
+    robustness_setting: str = "training_time",
+    n_boot: int = 5000,
+) -> pd.DataFrame:
+    """Build matched-seed optimizer comparison rows with bootstrap and Holm tests."""
+
+    rows: list[dict[str, object]] = []
+    p_values: dict[str, float] = {}
+    row_indices: dict[str, int] = {}
+    for metric in metrics:
+        for optimizer_a, optimizer_b in combinations(optimizers, 2):
+            first = _optimizer_seed_means(
+                raw,
+                optimizer=optimizer_a,
+                metric=metric,
+                dataset=dataset,
+                protocol=protocol,
+                robustness_setting=robustness_setting,
+            )
+            second = _optimizer_seed_means(
+                raw,
+                optimizer=optimizer_b,
+                metric=metric,
+                dataset=dataset,
+                protocol=protocol,
+                robustness_setting=robustness_setting,
+            )
+            matched = first.to_frame("first").join(second.to_frame("second"), how="inner")
+            if matched.empty:
+                continue
+            boot = paired_bootstrap_ci(
+                matched["first"].tolist(),
+                matched["second"].tolist(),
+                n_boot=n_boot,
+                seed=42 + len(rows),
+            )
+            wilcoxon = wilcoxon_signed_rank(
+                matched["first"].tolist(),
+                matched["second"].tolist(),
+            )
+            comparison = f"{metric}:{optimizer_a}_vs_{optimizer_b}"
+            p_values[comparison] = float(wilcoxon["p_value"])
+            row_indices[comparison] = len(rows)
+            rows.append(
+                {
+                    "Optimizer A": optimizer_a,
+                    "Optimizer B": optimizer_b,
+                    "Metric": metric,
+                    "Matched seeds": int(boot["n_pairs"]),
+                    "Mean difference": round(float(boot["mean_difference"]), 6),
+                    "CI95": f"[{float(boot['ci_low']):.6f}, {float(boot['ci_high']):.6f}]",
+                    "CI95 low": round(float(boot["ci_low"]), 6),
+                    "CI95 high": round(float(boot["ci_high"]), 6),
+                    "Wilcoxon p-value": round(float(wilcoxon["p_value"]), 6),
+                    "Adjusted p-value": 1.0,
+                    "Interpretation": "Pending Holm correction.",
+                }
+            )
+
+    for adjusted in holm_correction(p_values):
+        row = rows[row_indices[str(adjusted["comparison"])]]
+        adjusted_p_value = float(adjusted["adjusted_p_value"])
+        row["Adjusted p-value"] = round(adjusted_p_value, 6)
+        row["Interpretation"] = _interpret_difference(
+            float(row["CI95 low"]),
+            float(row["CI95 high"]),
+            adjusted_p_value,
+        )
+    return pd.DataFrame(rows)

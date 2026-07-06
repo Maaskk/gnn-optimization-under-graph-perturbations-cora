@@ -4,6 +4,7 @@ from gnn_robustness.v2_perturbations import (
     add_undirected_fake_edges,
     mask_active_features,
     remove_undirected_edges,
+    sample_absent_undirected_edges,
     unique_undirected_edges,
 )
 
@@ -84,3 +85,19 @@ def test_fake_edge_addition_avoids_self_loops_duplicates_and_original_edges():
     assert all(source != target for source, target in added_pairs)
     assert added_pairs.isdisjoint(original_pairs)
     assert result.edge_index.size(1) == 8
+
+
+def test_absent_edge_sampler_supports_sparse_large_graphs_without_candidate_enumeration():
+    original_pairs = {(0, 1), (2, 3), (7, 11)}
+
+    sampled = sample_absent_undirected_edges(
+        original_pairs=original_pairs,
+        num_nodes=20_000,
+        requested=8,
+        seed=1234,
+    )
+
+    assert len(sampled) == 8
+    assert sampled.isdisjoint(original_pairs)
+    assert all(source < target for source, target in sampled)
+    assert all(source != target for source, target in sampled)

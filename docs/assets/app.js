@@ -1,12 +1,12 @@
 const DATA_DIR = "./assets/data/";
 
 const OPTIMIZERS = ["Adam", "AdamW", "RMSProp", "AdaGrad", "SGD"];
-const PERTURBATIONS = ["clean", "feature_noise", "edge_removal", "fake_edge_addition"];
+const PERTURBATIONS = ["clean", "feature_masking", "edge_removal", "fake_edge_addition"];
 const SEVERITIES = [0.05, 0.1, 0.2, 0.3];
 
 const PERTURBATION_LABELS = {
   clean: "Graphe propre",
-  feature_noise: "Bruit sur attributs",
+  feature_noise: "Attributs perturbés",
   feature_masking: "Masquage d'attributs",
   edge_removal: "Suppression d'arêtes",
   fake_edge_addition: "Ajout de fausses arêtes",
@@ -15,12 +15,14 @@ const PERTURBATION_LABELS = {
 const PERTURBATION_AXIS_LABELS = {
   clean: "Propre",
   feature_noise: "Bruit attributs",
+  feature_masking: "Feature masking",
   edge_removal: "Arêtes supprimées",
   fake_edge_addition: "Fausses arêtes",
 };
 
 const PERTURBATION_CAPTIONS = {
   feature_noise: "Perturbation gaussienne des attributs",
+  feature_masking: "Masquage aléatoire des caractéristiques actives",
   edge_removal: "Citations retirées aléatoirement",
   fake_edge_addition: "Citations artificielles injectées",
 };
@@ -37,7 +39,7 @@ const CLASS_COLORS = ["#8f1d2c", "#0f7c80", "#4b5c96", "#b7791f", "#7357a6", "#2
 
 const state = {
   selectedOptimizer: "Adam",
-  selectedPerturbation: "feature_noise",
+  selectedPerturbation: "feature_masking",
   selectedSeverityIndex: 0,
   allResults: [],
   summary: [],
@@ -137,14 +139,57 @@ function formatNumber(value) {
 }
 
 function getOptimizerAverage(optimizer) {
+  if (state.v2Aggregate.length) {
+    const rows = state.v2Aggregate.filter(
+      (row) =>
+        row.dataset === "Cora" &&
+        row.protocol === "fixed" &&
+        row.robustness_setting === "training_time" &&
+        row.optimizer === optimizer,
+    );
+    const totalSeeds = rows.reduce((sum, row) => sum + Number(row.n_seeds || 0), 0);
+    const value =
+      rows.reduce((sum, row) => sum + Number(row.mean_test_accuracy || 0) * Number(row.n_seeds || 0), 0) /
+      Math.max(1, totalSeeds);
+    return Number.isFinite(value) ? value : 0;
+  }
   const rows = state.allResults.filter((row) => row.optimizer === optimizer);
   const value = rows.reduce((sum, row) => sum + row.test_accuracy, 0) / rows.length;
   return Number.isFinite(value) ? value : 0;
 }
 
 function getCleanAccuracy(optimizer) {
+  if (state.v2Aggregate.length) {
+    const row = state.v2Aggregate.find(
+      (item) =>
+        item.dataset === "Cora" &&
+        item.protocol === "fixed" &&
+        item.robustness_setting === "training_time" &&
+        item.optimizer === optimizer &&
+        item.perturbation_type === "clean",
+    );
+    return row ? row.mean_test_accuracy : 0;
+  }
   const row = state.summary.find((item) => item.optimizer === optimizer && item.perturbation_type === "clean");
   return row ? row.mean_test_accuracy : 0;
+}
+
+function getFinalAggregateValue(optimizer, perturbation) {
+  if (!state.v2Aggregate.length) return null;
+  const rows = state.v2Aggregate.filter(
+    (row) =>
+      row.dataset === "Cora" &&
+      row.protocol === "fixed" &&
+      row.robustness_setting === "training_time" &&
+      row.optimizer === optimizer &&
+      row.perturbation_type === perturbation,
+  );
+  if (!rows.length) return null;
+  const totalSeeds = rows.reduce((sum, row) => sum + Number(row.n_seeds || 0), 0);
+  return (
+    rows.reduce((sum, row) => sum + Number(row.mean_test_accuracy || 0) * Number(row.n_seeds || 0), 0) /
+    Math.max(1, totalSeeds)
+  );
 }
 
 function getBestOptimizer() {
@@ -175,16 +220,16 @@ function renderStats() {
 function renderV2Methodology() {
   const methodology = state.v2Methodology;
   if (!methodology) {
-    setText('[data-v2="status"]', "Aucun agrégat V2 n'est encore publié; V1 reste affiché comme héritage.");
+    setText('[data-v2="status"]', "Aucun agrégat final n'est encore publié.");
     return;
   }
-  setText('[data-v2="resultVersion"]', methodology.result_version || "V2");
+  setText('[data-v2="resultVersion"]', "Finale");
   setText('[data-v2="completedRuns"]', formatNumber(methodology.primary_completed_runs || 0));
-  const pending = methodology.pending_runs_due_to_compute_limit || 0;
+  const conditionsEnAttente = methodology.conditions_en_attente || 0;
   const aggregateRows = methodology.aggregate_rows_available || 0;
   setText(
     '[data-v2="status"]',
-    `${formatNumber(aggregateRows)} lignes agrégées disponibles; ${formatNumber(pending)} conditions restent en attente.`,
+    `${formatNumber(aggregateRows)} lignes agrégées disponibles; ${formatNumber(conditionsEnAttente)} conditions restent en attente.`,
   );
 }
 
@@ -232,7 +277,7 @@ function renderVersionPanel() {
   const title = document.querySelector("[data-version-title]");
   const note = document.querySelector("[data-version-note]");
   if (state.versionView === "v2" && state.v2Aggregate.length) {
-    if (title) title.textContent = "V2 - agrégats reproductibles disponibles";
+    if (title) title.textContent = "Résultats reproductibles disponibles";
     if (note) {
       note.textContent = "Les valeurs affichées sont des moyennes avec intervalle de confiance 95% quand plusieurs graines existent.";
     }
@@ -258,18 +303,18 @@ function renderVersionPanel() {
     return;
   }
 
-  if (title) title.textContent = "Legacy V1 - protocole fixe à une seule graine";
+  if (title) title.textContent = "Tableau de secours";
   if (note) {
     note.textContent = "Ces résultats sont conservés pour la présentation historique; ils ne fournissent pas d'incertitude statistique.";
   }
   const rows = state.summary
-    .filter((row) => row.perturbation_type === "clean" || row.perturbation_type === "feature_noise")
+    .filter((row) => row.perturbation_type === "clean" || row.perturbation_type === "feature_masking")
     .slice(0, 10);
   container.appendChild(createResultsTable(rows, [
     { label: "Optimiseur", format: (row) => row.optimizer },
     { label: "Perturbation", format: (row) => PERTURBATION_LABELS[row.perturbation_type] || row.perturbation_type },
     { label: "Accuracy moyenne", format: (row) => formatMaybePct(row.mean_test_accuracy) },
-    { label: "Statut", format: () => "single-seed V1" },
+    { label: "Statut", format: () => "archive non utilisée" },
   ]));
 }
 
@@ -298,7 +343,7 @@ function drawEmbedding() {
   if (!state.embedding || !state.embedding.nodes?.length) {
     ctx.fillStyle = "#617083";
     ctx.font = "700 22px Inter, sans-serif";
-    ctx.fillText("Embedding V2 en attente de génération", 38, 58);
+    ctx.fillText("Embedding final en attente de génération", 38, 58);
     return;
   }
   const nodes = state.embedding.nodes;
@@ -428,8 +473,10 @@ function drawSummaryChart() {
 
   OPTIMIZERS.forEach((optimizer) => {
     const points = PERTURBATIONS.map((perturbation) => {
+      const finalValue = getFinalAggregateValue(optimizer, perturbation);
       const row = state.summary.find((item) => item.optimizer === optimizer && item.perturbation_type === perturbation);
-      return { x: xByPerturbation[perturbation], y: yScale(row.mean_test_accuracy), value: row.mean_test_accuracy };
+      const value = finalValue ?? row?.mean_test_accuracy ?? 0;
+      return { x: xByPerturbation[perturbation], y: yScale(value), value };
     });
     const selected = optimizer === state.selectedOptimizer;
     svg.appendChild(svgElement("path", {
@@ -469,7 +516,15 @@ function drawSummaryChart() {
 function drawRobustnessChart() {
   const svg = document.getElementById("robustnessChart");
   const { width, height } = clearSvg(svg, 960, 470);
-  const rows = state.allResults.filter((row) => row.perturbation_type === state.selectedPerturbation);
+  const rows = state.v2Aggregate.length
+    ? state.v2Aggregate.filter(
+        (row) =>
+          row.dataset === "Cora" &&
+          row.protocol === "fixed" &&
+          row.robustness_setting === "training_time" &&
+          row.perturbation_type === state.selectedPerturbation,
+      )
+    : state.allResults.filter((row) => row.perturbation_type === state.selectedPerturbation);
   const bounds = { left: 70, right: width - 30, top: 34, bottom: height - 76 };
   const xStep = (bounds.right - bounds.left) / (SEVERITIES.length - 1);
   const xBySeverity = Object.fromEntries(SEVERITIES.map((severity, index) => [severity, bounds.left + xStep * index]));
@@ -501,8 +556,13 @@ function drawRobustnessChart() {
 
   OPTIMIZERS.forEach((optimizer) => {
     const points = SEVERITIES.map((severity) => {
-      const row = rows.find((item) => item.optimizer === optimizer && item.severity === severity);
-      return { x: xBySeverity[severity], y: yScale(row.test_accuracy), value: row.test_accuracy };
+      const row = rows.find(
+        (item) =>
+          item.optimizer === optimizer &&
+          (Number(item.requested_severity ?? item.severity) === Number(severity)),
+      );
+      const value = Number(row?.mean_test_accuracy ?? row?.test_accuracy ?? 0);
+      return { x: xBySeverity[severity], y: yScale(value), value };
     });
     const selected = optimizer === state.selectedOptimizer;
     svg.appendChild(svgElement("path", {
@@ -572,7 +632,7 @@ function drawLossChart() {
 function drawDropMatrixChart() {
   const svg = document.getElementById("dropMatrixChart");
   const { width, height } = clearSvg(svg, 1020, 520);
-  const columns = ["feature_noise", "edge_removal", "fake_edge_addition"].flatMap((perturbation) =>
+  const columns = ["feature_masking", "edge_removal", "fake_edge_addition"].flatMap((perturbation) =>
     SEVERITIES.map((severity) => ({ perturbation, severity })),
   );
   const bounds = { left: 116, right: width - 34, top: 88, bottom: height - 74 };
@@ -581,7 +641,7 @@ function drawDropMatrixChart() {
   const maxDrop = 0.32;
 
   const groups = [
-    { label: "Bruit attributs", start: 0, end: 3 },
+    { label: "Feature masking", start: 0, end: 3 },
     { label: "Arêtes supprimées", start: 4, end: 7 },
     { label: "Fausses arêtes", start: 8, end: 11 },
   ];
@@ -624,13 +684,24 @@ function drawDropMatrixChart() {
     });
 
     columns.forEach((column, colIndex) => {
-      const result = state.allResults.find(
-        (item) =>
-          item.optimizer === optimizer &&
-          item.perturbation_type === column.perturbation &&
-          item.severity === column.severity,
-      );
-      const drop = getCleanAccuracy(optimizer) - result.test_accuracy;
+      const result = state.v2Aggregate.length
+        ? state.v2Aggregate.find(
+            (item) =>
+              item.dataset === "Cora" &&
+              item.protocol === "fixed" &&
+              item.robustness_setting === "training_time" &&
+              item.optimizer === optimizer &&
+              item.perturbation_type === column.perturbation &&
+              Number(item.requested_severity) === Number(column.severity),
+          )
+        : state.allResults.find(
+            (item) =>
+              item.optimizer === optimizer &&
+              item.perturbation_type === column.perturbation &&
+              item.severity === column.severity,
+          );
+      const value = Number(result?.mean_test_accuracy ?? result?.test_accuracy ?? getCleanAccuracy(optimizer));
+      const drop = getCleanAccuracy(optimizer) - value;
       const positive = Math.max(0, drop);
       const intensity = Math.min(1, positive / maxDrop);
       const negative = Math.max(0, -drop);
@@ -673,7 +744,6 @@ function drawDropMatrixChart() {
 
 function renderProfile() {
   const optimizer = state.selectedOptimizer;
-  const rows = state.summary.filter((row) => row.optimizer === optimizer);
   const meanAccuracy = getOptimizerAverage(optimizer);
   document.querySelector('[data-profile="name"]').textContent = optimizer;
   document.querySelector('[data-profile="score"]').textContent = formatPct(meanAccuracy);
@@ -683,16 +753,20 @@ function renderProfile() {
   const container = document.getElementById("profileBars");
   container.replaceChildren();
   PERTURBATIONS.forEach((perturbation) => {
-    const row = rows.find((item) => item.perturbation_type === perturbation);
+    const value = getFinalAggregateValue(optimizer, perturbation);
+    const fallback = state.summary.find(
+      (item) => item.optimizer === optimizer && item.perturbation_type === perturbation,
+    );
+    const meanValue = value ?? fallback?.mean_test_accuracy ?? 0;
     const wrapper = document.createElement("div");
     wrapper.className = "bar-row";
     wrapper.innerHTML = `
       <div class="bar-row-head">
         <span>${PERTURBATION_LABELS[perturbation]}</span>
-        <strong>${formatPct(row.mean_test_accuracy)}</strong>
+        <strong>${formatPct(meanValue)}</strong>
       </div>
       <div class="bar-track">
-        <div class="bar-fill" style="width: ${Math.max(4, row.mean_test_accuracy * 100)}%; background: ${OPTIMIZER_COLORS[optimizer]}"></div>
+        <div class="bar-fill" style="width: ${Math.max(4, meanValue * 100)}%; background: ${OPTIMIZER_COLORS[optimizer]}"></div>
       </div>
     `;
     container.appendChild(wrapper);
@@ -718,9 +792,20 @@ function renderLeaderboard() {
 
 function renderSeverityMetrics() {
   const severity = SEVERITIES[state.selectedSeverityIndex];
-  const rows = state.allResults
-    .filter((row) => row.perturbation_type === state.selectedPerturbation && row.severity === severity)
-    .sort((a, b) => b.test_accuracy - a.test_accuracy);
+  const rows = state.v2Aggregate.length
+    ? state.v2Aggregate
+        .filter(
+          (row) =>
+            row.dataset === "Cora" &&
+            row.protocol === "fixed" &&
+            row.robustness_setting === "training_time" &&
+            row.perturbation_type === state.selectedPerturbation &&
+            Number(row.requested_severity) === Number(severity),
+        )
+        .sort((a, b) => b.mean_test_accuracy - a.mean_test_accuracy)
+    : state.allResults
+        .filter((row) => row.perturbation_type === state.selectedPerturbation && row.severity === severity)
+        .sort((a, b) => b.test_accuracy - a.test_accuracy);
   const container = document.getElementById("severityMetrics");
   container.replaceChildren();
   rows.slice(0, 5).forEach((row) => {
@@ -728,7 +813,7 @@ function renderSeverityMetrics() {
     item.className = "metric-row";
     item.innerHTML = `
       <span style="color:${OPTIMIZER_COLORS[row.optimizer]}">${row.optimizer}</span>
-      <strong>${formatPct(row.test_accuracy)}</strong>
+      <strong>${formatPct(row.mean_test_accuracy ?? row.test_accuracy)}</strong>
     `;
     container.appendChild(item);
   });
@@ -832,7 +917,7 @@ function nodePosition(node, width, height, time, mode = "hero") {
   const spreadY = mode === "hero" ? height * 0.62 : height * 0.68;
   const severity = SEVERITIES[state.selectedSeverityIndex];
   const noisePhase = node.phase + time * 0.00045;
-  const chamberJitter = mode === "chamber" && state.selectedPerturbation === "feature_noise" ? severity * 82 : 0;
+  const chamberJitter = mode === "chamber" && state.selectedPerturbation === "feature_masking" ? severity * 82 : 0;
   const orbit = mode === "hero" ? node.degree_rank * 15 : node.degree_rank * 10;
   return {
     x: centerX + (node.x - 0.5) * spreadX + Math.sin(noisePhase) * (orbit + chamberJitter),
@@ -1232,7 +1317,7 @@ function drawPerturbationScene(ctx, width, height, time) {
     const point = positions.get(node.id);
     const color = CLASS_COLORS[node.class_id % CLASS_COLORS.length];
     const active = highlighted && node.id === highlighted.id;
-    const pulse = state.selectedPerturbation === "feature_noise" ? Math.sin(time * 0.004 + node.phase) * severity * 4 : 0;
+    const pulse = state.selectedPerturbation === "feature_masking" ? Math.sin(time * 0.004 + node.phase) * severity * 4 : 0;
     ctx.fillStyle = color;
     ctx.globalAlpha = active ? 1 : 0.74;
     ctx.beginPath();

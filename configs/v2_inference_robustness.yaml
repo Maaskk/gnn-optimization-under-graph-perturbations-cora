@@ -3,10 +3,10 @@ version: v2
 datasets: [Cora]
 protocol: fixed
 robustness_setting: inference_time
-seeds: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]
+seeds: [42, 43, 44, 45, 46]
 optimizers: [Adam, AdamW, RMSProp, AdaGrad, SGD]
 perturbations: [feature_masking, edge_removal, fake_edge_addition]
-severities: [0.05, 0.10, 0.20, 0.30]
+severities: [0.20]
 training:
   epochs: 200
   hidden_channels: 16
@@ -17,4 +17,4 @@ training:
 tuning:
   enabled: false
 notes: >
-  Clean-trained models are evaluated under perturbed inputs with fixed weights.
+  Clean-trained models are evaluated under 20 percent perturbed inputs with fixed weights.

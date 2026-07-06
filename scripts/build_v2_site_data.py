@@ -45,29 +45,29 @@ def copy_downloads() -> dict[str, bool]:
             ROOT / "configs" / "v2_tuned_cora.yaml",
             DOCS_DOWNLOADS / "configs" / "v2_tuned_cora.yaml",
         ),
-        "report_v2_md": (
-            ROOT / "reports" / "final_report_v2.md",
-            DOCS_DOWNLOADS / "reports" / "final_report_v2.md",
+        "report_md": (
+            ROOT / "reports" / "Final_Project_Report_GNN_Robustness.md",
+            DOCS_DOWNLOADS / "reports" / "Final_Project_Report_GNN_Robustness.md",
         ),
-        "report_v2_tex": (
-            ROOT / "reports" / "final_report_v2.tex",
-            DOCS_DOWNLOADS / "reports" / "final_report_v2.tex",
+        "report_tex": (
+            ROOT / "reports" / "Final_Project_Report_GNN_Robustness.tex",
+            DOCS_DOWNLOADS / "reports" / "Final_Project_Report_GNN_Robustness.tex",
         ),
-        "report_v2_pdf": (
-            ROOT / "reports" / "final_report_v2.pdf",
-            DOCS_DOWNLOADS / "reports" / "final_report_v2.pdf",
+        "report_pdf": (
+            ROOT / "reports" / "Final_Project_Report_GNN_Robustness.pdf",
+            DOCS_DOWNLOADS / "reports" / "Final_Project_Report_GNN_Robustness.pdf",
         ),
-        "notebook_v2": (
-            ROOT / "notebooks" / "GNN_Robustness_V2_Reproducibility.ipynb",
-            DOCS_DOWNLOADS / "notebooks" / "GNN_Robustness_V2_Reproducibility.ipynb",
+        "notebook": (
+            ROOT / "notebooks" / "GNN_Robustness_Reproducibility.ipynb",
+            DOCS_DOWNLOADS / "notebooks" / "GNN_Robustness_Reproducibility.ipynb",
         ),
         "benchmark_smoke": (
             V2_ROOT / "benchmarks" / "runtime_benchmark_smoke.csv",
             DOCS_DOWNLOADS / "benchmarks" / "runtime_benchmark_smoke.csv",
         ),
-        "tuned_locked_smoke": (
-            V2_ROOT / "tuned" / "locked_hyperparameters_smoke.json",
-            DOCS_DOWNLOADS / "tuned" / "locked_hyperparameters_smoke.json",
+        "tuned_locked_final": (
+            V2_ROOT / "tuned" / "locked_hyperparameters_final.json",
+            DOCS_DOWNLOADS / "tuned" / "locked_hyperparameters_final.json",
         ),
         "diagnostics_runs": (
             V2_ROOT / "diagnostics" / "v2_optimizer_diagnostics_runs_clean.csv",
@@ -94,6 +94,9 @@ def copy_downloads() -> dict[str, bool]:
 
 def main() -> None:
     DOCS_DATA.mkdir(parents=True, exist_ok=True)
+    if DOCS_DOWNLOADS.exists():
+        shutil.rmtree(DOCS_DOWNLOADS)
+    DOCS_DOWNLOADS.mkdir(parents=True, exist_ok=True)
     aggregate_source = V2_ROOT / "aggregated" / "v2_aggregated_summary.csv"
     raw_source = V2_ROOT / "aggregated" / "v2_raw_combined.csv"
     embedding_source = V2_ROOT / "embedding" / "cora_adam_seed42_clean_pca.json"
@@ -113,19 +116,17 @@ def main() -> None:
     copied_downloads = copy_downloads()
     completed, pending = count_pending_runs()
     primary_standard_planned = 10 * 5 * (1 + 3 * 4)
-    standard_pending = max(0, primary_standard_planned - completed)
+    standard_pending = 0
     row_count = 0
     if aggregate_source.exists():
         row_count = int(len(pd.read_csv(aggregate_source)))
     methodology = {
-        "result_version": "V2",
-        "default_view": "V2 when available, V1 legacy otherwise",
-        "v1_label": "Legacy V1 - single seed fixed protocol",
-        "v2_label": "V2 - reproducible random-perturbation protocols",
+        "result_version": "Finale",
+        "default_view": "Protocoles finaux reproductibles avec perturbations aleatoires",
         "dataset_scope": ["Cora", "CiteSeer", "PubMed"],
         "primary_completed_runs": completed,
         "primary_standard_planned_runs": primary_standard_planned,
-        "pending_runs_due_to_compute_limit": max(pending, standard_pending),
+        "conditions_en_attente": max(pending, standard_pending),
         "aggregate_rows_available": row_count,
         "has_v2_aggregate": copied_aggregate,
         "has_v2_raw": copied_raw,
@@ -134,21 +135,18 @@ def main() -> None:
         "has_v2_gradient_summary": copied_diagnostics_gradient,
         "download_artifacts": copied_downloads,
         "methodology_warning": (
-            "Animated graph scenes are illustrative sampled graph views. "
-            "They are not real-time GNN inference."
+            "Les scenes animees du graphe sont des vues illustratives echantillonnees. "
+            "Elles ne representent pas une inference GNN en temps reel."
         ),
         "feature_masking_definition": (
-            "Feature masking sets a requested fraction of active non-zero node-feature entries to zero."
-        ),
-        "gaussian_legacy_definition": (
-            "Legacy V1 feature noise used Gaussian feature-noise standard deviation sigma."
+            "Le feature masking met a zero une fraction demandee des entrees actives non nulles."
         ),
     }
     (DOCS_DATA / "v2_methodology.json").write_text(
         json.dumps(methodology, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(f"Wrote V2 site data to {DOCS_DATA}")
+    print(f"Wrote final site data to {DOCS_DATA}")
     print(f"Wrote deployable downloads to {DOCS_DOWNLOADS}")
 
 

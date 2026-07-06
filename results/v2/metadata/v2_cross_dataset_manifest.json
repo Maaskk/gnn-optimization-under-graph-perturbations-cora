@@ -1,0 +1,7 @@
+{
+  "config": "configs/v2_cross_dataset.yaml",
+  "output": "results/v2/raw/v2_cross_dataset.csv",
+  "completed_runs": 300,
+  "planned_runs": 300,
+  "pending_runs": []
+}
