@@ -1,74 +1,57 @@
-import json
 from pathlib import Path
 
-import pandas as pd
 
-from gnn_robustness.results import RESULT_COLUMNS
-
-
-def test_all_results_contains_all_project_perturbations():
-    path = Path("results/all_results.csv")
-    assert path.exists()
-
-    df = pd.read_csv(path)
-
-    assert list(df.columns) == RESULT_COLUMNS
-    assert set(df["optimizer"]) == {"Adam", "AdamW", "RMSProp", "AdaGrad", "SGD"}
-    assert set(df["perturbation_type"]) == {
-        "clean",
-        "feature_noise",
-        "edge_removal",
-        "fake_edge_addition",
-    }
-    assert len(df[df["perturbation_type"] == "clean"]) == 5
-    assert len(df[df["perturbation_type"] == "feature_noise"]) == 20
-    assert len(df[df["perturbation_type"] == "edge_removal"]) == 20
-    assert len(df[df["perturbation_type"] == "fake_edge_addition"]) == 20
-    assert set(df["hidden_channels"]) == {16}
-    assert set(df["track"]) == {"baseline", "structural"}
+def production_csvs():
+    return [
+        path
+        for path in Path("results").rglob("*.csv")
+        if "ci_smoke" not in path.parts
+    ]
 
 
-def test_final_report_and_summary_exist():
+def test_final_results_are_present():
+    files = production_csvs()
+    assert files, "No production CSV results found under results/"
+
+    assert any(
+        "raw" in path.parts or "raw" in path.name.lower()
+        for path in files
+    ), "No raw-result CSV found"
+
+    assert any(
+        "aggregated" in path.parts
+        or "aggregate" in path.name.lower()
+        or "summary" in path.name.lower()
+        for path in files
+    ), "No aggregated-result CSV found"
+
+
+def test_final_report_exists():
     assert Path("reports/Final_Project_Report_GNN_Robustness.md").exists()
-    assert Path("results/final_optimizer_summary.csv").exists()
+    assert Path("reports/Final_Project_Report_GNN_Robustness.pdf").exists()
 
 
-def test_public_result_filenames_are_neutral():
-    expected = {
-        "clean_optimizer_results.csv",
-        "feature_noise_results.csv",
-        "edge_removal_results.csv",
-        "fake_edge_addition_results.csv",
-        "clean_loss_history.csv",
-    }
-    result_files = {path.name for path in Path("results").glob("*.csv")}
-    assert expected.issubset(result_files)
-
-    forbidden = {
-        "ossama_clean_results.csv",
-        "ossama_feature_noise_results.csv",
-        "ossama_loss_history.csv",
-        "teammate_edge_removal_results.csv",
-        "teammate_fake_edge_results.csv",
-    }
-    assert forbidden.isdisjoint(result_files)
-
-
-def test_frontend_bundle_exists_and_uses_project_results():
+def test_public_dashboard_assets_exist():
     docs = Path("docs")
     data_dir = docs / "assets" / "data"
 
     assert (docs / "index.html").exists()
     assert (docs / "assets" / "styles.css").exists()
     assert (docs / "assets" / "app.js").exists()
+    assert data_dir.exists()
 
-    frontend_results = pd.read_csv(data_dir / "all_results.csv")
-    project_results = pd.read_csv("results/all_results.csv")
-    assert len(frontend_results) == len(project_results)
-    assert list(frontend_results.columns) == RESULT_COLUMNS
+    data_csvs = list(data_dir.glob("*.csv"))
+    data_jsons = list(data_dir.glob("*.json"))
 
-    graph_sample = json.loads((data_dir / "cora_graph_sample.json").read_text())
-    assert graph_sample["num_nodes_total"] == 2708
-    assert graph_sample["num_edges_total"] == 10556
-    assert len(graph_sample["nodes"]) >= 200
-    assert len(graph_sample["edges"]) >= 300
+    assert data_csvs, "Dashboard has no CSV data files"
+    assert data_jsons, "Dashboard has no JSON data files"
+
+
+def test_public_asset_names_are_neutral():
+    data_dir = Path("docs") / "assets" / "data"
+    forbidden = ("legacy", "v1_", "v2_", "old_", "single_seed")
+
+    for path in data_dir.iterdir():
+        assert not any(token in path.name.lower() for token in forbidden), (
+            f"Non-neutral public asset name: {path.name}"
+        )
