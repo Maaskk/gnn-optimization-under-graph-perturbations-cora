@@ -4,7 +4,7 @@
 
 **Projet 13 - Option 4.** Dataset Cora Citation Network. Modele GCN a deux couches. Optimiseurs: Adam, AdamW, RMSProp, AdaGrad et SGD.
 
-**Generation:** 2026-07-06 12:43 UTC.
+**Generation:** 2026-07-06 12:48 UTC.
 
 ## Résumé
 

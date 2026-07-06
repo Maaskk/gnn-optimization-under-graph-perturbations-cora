@@ -6,7 +6,7 @@
   "epochs": 5,
   "condition": "clean_trained_clean_hidden_pca",
   "perturbed_prediction_condition": "feature_masking_0.20",
-  "placement_note": "Node positions are PCA coordinates of actual hidden GCN representations, not true labels.",
+  "placement_note": "Les positions des noeuds sont les coordonn\u00e9es PCA de repr\u00e9sentations cach\u00e9es r\u00e9elles du GCN, pas les \u00e9tiquettes vraies.",
   "nodes": [
     {
       "id": 0,

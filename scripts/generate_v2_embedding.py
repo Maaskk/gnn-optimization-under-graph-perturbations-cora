@@ -21,9 +21,7 @@ from gnn_robustness.v2_perturbations import mask_active_features  # noqa: E402
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Generate a real V2 hidden-embedding PCA artifact."
-    )
+    parser = argparse.ArgumentParser(description="Generate a real hidden-embedding PCA artifact.")
     parser.add_argument("--dataset", default="Cora")
     parser.add_argument("--optimizer", default="Adam")
     parser.add_argument("--seed", type=int, default=42)
@@ -64,7 +62,10 @@ def main() -> None:
         "epochs": args.epochs,
         "condition": "clean_trained_clean_hidden_pca",
         "perturbed_prediction_condition": "feature_masking_0.20",
-        "placement_note": "Node positions are PCA coordinates of actual hidden GCN representations, not true labels.",
+        "placement_note": (
+            "Les positions des noeuds sont les coordonnées PCA de représentations cachées "
+            "réelles du GCN, pas les étiquettes vraies."
+        ),
         "nodes": [
             {
                 "id": int(index),
