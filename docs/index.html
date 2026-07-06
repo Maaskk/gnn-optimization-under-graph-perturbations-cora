@@ -124,18 +124,18 @@
           <p>
             Le coeur de l'étude utilise Cora, un GCN à deux couches, cinq optimiseurs,
             dix graines et treize conditions par optimiseur. Les perturbations sont aléatoires:
-            feature masking, suppression d'arêtes et ajout de fausses arêtes.
+            masquage d'attributs, suppression d'arêtes et ajout de fausses arêtes.
           </p>
         </div>
         <div class="benchmark-grid">
           <article class="benchmark-card">
             <span>Étude principale</span>
-            <strong data-v2="resultVersion">Finale</strong>
-            <p data-v2="status">Chargement du statut expérimental.</p>
+            <strong data-result="resultVersion">Finale</strong>
+            <p data-result="status">Chargement du statut expérimental.</p>
           </article>
           <article class="benchmark-card">
             <span>Runs terminés</span>
-            <strong data-v2="completedRuns">--</strong>
+            <strong data-result="completedRuns">--</strong>
             <p>Seules les sorties réellement générées sont affichées.</p>
           </article>
           <article class="benchmark-card">
@@ -151,7 +151,7 @@
               <h3 data-version-title>Résultats avec incertitude</h3>
             </div>
             <div class="version-toggle" aria-label="Version des résultats">
-              <button class="segment active" data-version-view="v2">Final</button>
+              <button class="segment active" data-version-view="final">Final</button>
             </div>
           </div>
           <p class="panel-note" data-version-note>
@@ -292,7 +292,7 @@
           <p class="eyebrow">Chambre de perturbation interactive</p>
           <h2 id="robustness-title">Faites varier la perturbation et observez la surface du graphe réagir.</h2>
           <p>
-            La scène utilise un échantillon illustratif du graphe Cora. Le feature masking agite les
+            La scène utilise un échantillon illustratif du graphe Cora. Le masquage d'attributs agite les
             noeuds, la suppression d'arêtes marque les citations retirées, et le mode fausses
             arêtes superpose des liens artificiels.
           </p>
@@ -302,7 +302,7 @@
           <article class="chamber-visual">
             <canvas id="perturbationCanvas" aria-label="Visualisation interactive des perturbations"></canvas>
             <div class="chamber-hud">
-              <span data-hud="mode">Feature masking</span>
+              <span data-hud="mode">Masquage d'attributs</span>
               <strong data-hud="severity">5%</strong>
               <small data-hud="caption">Masquage aléatoire d’une proportion de caractéristiques actives non nulles.</small>
             </div>
@@ -316,7 +316,7 @@
               </div>
             </div>
             <div class="segmented-control" role="tablist" aria-label="Type de perturbation">
-              <button class="segment active" role="tab" aria-selected="true" data-perturbation="feature_masking">Feature masking</button>
+              <button class="segment active" role="tab" aria-selected="true" data-perturbation="feature_masking">Masquage d'attributs</button>
               <button class="segment" role="tab" aria-selected="false" data-perturbation="edge_removal">Suppression d'arêtes</button>
               <button class="segment" role="tab" aria-selected="false" data-perturbation="fake_edge_addition">Fausses arêtes</button>
             </div>
@@ -339,7 +339,7 @@
           <div class="panel-header">
             <div>
               <span class="label">Précision test selon la sévérité</span>
-              <h3 data-perturbation-title>Robustesse au bruit sur attributs</h3>
+              <h3 data-perturbation-title>Robustesse au masquage d'attributs</h3>
             </div>
             <span class="source-tag">all_results.csv</span>
           </div>

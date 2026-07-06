@@ -38,7 +38,7 @@ PAGES_URL = "https://maaskk.github.io/gnn-optimization-under-graph-perturbations
 OPTIMIZERS = ["Adam", "AdamW", "RMSProp", "AdaGrad", "SGD"]
 PERTURBATION_LABELS = {
     "clean": "Graphe propre",
-    "feature_masking": "Feature masking",
+    "feature_masking": "Masquage attributs",
     "edge_removal": "Suppression d'aretes",
     "fake_edge_addition": "Ajout de fausses aretes",
 }
@@ -184,7 +184,11 @@ def make_figures(agg: pd.DataFrame, raw: pd.DataFrame, diagnostics: pd.DataFrame
             made.append(path)
 
     for perturbation, filename, title in [
-        ("feature_masking", "feature_masking_accuracy_ci.png", "Robustesse au feature masking"),
+        (
+            "feature_masking",
+            "feature_masking_accuracy_ci.png",
+            "Robustesse au masquage d'attributs",
+        ),
         ("edge_removal", "edge_removal_accuracy_ci.png", "Robustesse a la suppression d'aretes"),
         ("fake_edge_addition", "fake_edge_accuracy_ci.png", "Robustesse aux fausses aretes"),
     ]:
@@ -397,7 +401,7 @@ Les cinq optimiseurs sont executes avec le meme budget de 200 epoques dans le pr
 
 - Graines principales: 42 a 51.
 - 200 epoques par entrainement.
-- Conditions Cora principales: graphe propre, feature masking 5%, 10%, 20%, 30%, edge removal 5%, 10%, 20%, 30%, fake edge addition 5%, 10%, 20%, 30%.
+- Conditions Cora principales: graphe propre, masquage d'attributs 5%, 10%, 20%, 30%, edge removal 5%, 10%, 20%, 30%, fake edge addition 5%, 10%, 20%, 30%.
 - Matrice principale: 5 optimiseurs x 13 conditions x 10 graines = {counts["core"]} runs reels.
 - Cross-dataset complete: {counts["cross_dataset"]} runs reels.
 - Evaluation tunee complete: {counts["tuned"]} runs reels.
@@ -405,7 +409,7 @@ Les cinq optimiseurs sont executes avec le meme budget de 200 epoques dans le pr
 
 ## Définitions des perturbations aléatoires
 
-Le feature masking met a zero une proportion demandee des entrees actives non nulles. Edge removal supprime une fraction de connexions non orientees uniques et conserve une representation symetrique. Fake edge addition ajoute uniquement des paires de noeuds non connectees auparavant, sans self-loops ni duplicats.
+Masquage aléatoire d’une proportion de caractéristiques actives non nulles. Edge removal supprime une fraction de connexions non orientees uniques et conserve une representation symetrique. Fake edge addition ajoute uniquement des paires de noeuds non connectees auparavant, sans self-loops ni duplicats.
 
 ## Méthodologie statistique
 
@@ -739,7 +743,7 @@ A ne pas dire: SGD est mauvais en general.
 
 Nous avons utilise 200 epoques par entrainement. Le budget fixe de 200 epoques assure une comparaison controlee. Le coeur de l'etude comporte 650 entrainements reels: 5 optimiseurs x 13 conditions x 10 graines.
 
-Les graines permettent d'obtenir moyenne, ecart-type et IC95%. Le feature masking masque exactement une proportion de caracteristiques actives. Pour la structure, nous supprimons des aretes ou nous ajoutons de fausses aretes sans self-loops et sans duplicats. Il s'agit de perturbations aleatoires, pas d'attaques adversariales.
+Les graines permettent d'obtenir moyenne, ecart-type et IC95%. Le masquage d'attributs suit la definition: masquage aleatoire d'une proportion de caracteristiques actives non nulles. Pour la structure, nous supprimons des aretes ou nous ajoutons de fausses aretes sans self-loops et sans duplicats. Il s'agit de perturbations aleatoires, pas d'attaques adversariales.
 
 Les conclusions sont limitees au dataset, a l'architecture et au protocole etudies.
 
@@ -753,7 +757,7 @@ A ne pas dire: resultats inventes; test utilise pour choisir les hyperparametres
 
 Sur le graphe propre, les optimiseurs adaptatifs obtiennent les meilleurs scores moyens. Sur les perturbations, Adam et RMSProp restent proches dans plusieurs conditions. Quand les intervalles se recouvrent, nous evitons de parler de dominance.
 
-Le feature masking teste la perte d'information dans les attributs. Les perturbations structurelles testent la sensibilite aux connexions du graphe. SGD sous-performe ici dans le protocole fixe, mais cela ne veut pas dire que SGD est faible dans tous les contextes.
+Le masquage d'attributs teste la perte d'information dans les attributs. Les perturbations structurelles testent la sensibilite aux connexions du graphe. SGD sous-performe ici dans le protocole fixe, mais cela ne veut pas dire que SGD est faible dans tous les contextes.
 
 Transition: Mouhcine va presenter les validations complementaires, les limites et la demonstration.
 
@@ -806,8 +810,8 @@ def jury_qa_markdown() -> str:
             "Sous ce taux d'apprentissage fixe et sans tuning principal, SGD converge moins bien. Ce n'est pas une critique generale de SGD.",
         ),
         (
-            "Pourquoi le feature masking ?",
-            "Le feature masking met a zero une proportion aleatoire de caracteristiques actives non nulles. Cette definition correspond au protocole final et garde les valeurs deja nulles intactes.",
+            "Pourquoi le masquage d'attributs ?",
+            "Masquage aléatoire d’une proportion de caractéristiques actives non nulles. Cette definition correspond au protocole final et garde les valeurs deja nulles intactes.",
         ),
         (
             "Est-ce de la robustesse adversariale ?",

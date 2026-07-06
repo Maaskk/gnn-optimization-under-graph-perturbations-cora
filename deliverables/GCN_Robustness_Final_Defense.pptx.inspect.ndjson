@@ -1,185 +1,185 @@
-{"kind":"deck","id":"pr/kzw8j9","name":"Deck"}
-{"kind":"layout","layoutId":"ba3c2db6-dbf4-40f2-8871-58afa6f09726","name":"Master","type":"master"}
-{"kind":"layout","layoutId":"537e5af2-74bf-407c-8fb3-f533701686aa","name":"Title Slide","type":"title"}
-{"kind":"slide","id":"sl/0fu353","slide":1,"title":"Projet 13 / Option 4","textShapes":10}
-{"kind":"shape","id":"sh/ovahoza1","slide":1,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/vahoza1g","slide":1,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/6tovahoz","slide":1,"text":"Robustesse des GNN sous perturbations aléatoires","textPreview":"Robustesse des GNN sous perturbations aléatoires","textChars":48,"textLines":1,"bbox":[42,62,740,128]}
-{"kind":"textbox","id":"sh/d8v6psfi","slide":1,"text":"Adam vs AdamW vs RMSProp vs AdaGrad vs SGD sur Cora Citation Network","textPreview":"Adam vs AdamW vs RMSProp vs AdaGrad vs SGD sur Cora Citation Network","textChars":68,"textLines":1,"bbox":[46,198,760,34]}
-{"kind":"shape","id":"sh/onyd0z61","slide":1,"bbox":[46,310,180,92]}
-{"kind":"textbox","id":"sh/z25kb6xk","slide":1,"text":"Runs principaux","textPreview":"Runs principaux","textChars":15,"textLines":1,"bbox":[62,324,148,22]}
-{"kind":"textbox","id":"sh/6hcrmhk3","slide":1,"text":"650","textPreview":"650","textChars":3,"textLines":1,"bbox":[62,350,148,36]}
-{"kind":"shape","id":"sh/d4vmtwra","slide":1,"bbox":[250,310,180,92]}
-{"kind":"textbox","id":"sh/oj2t83it","slide":1,"text":"Graines","textPreview":"Graines","textChars":7,"textLines":1,"bbox":[266,324,148,22]}
-{"kind":"textbox","id":"sh/2x4nap4r","slide":1,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[266,350,148,36]}
-{"kind":"shape","id":"sh/vixczed8","slide":1,"bbox":[454,310,180,92]}
-{"kind":"textbox","id":"sh/k3q5o7qp","slide":1,"text":"Époques/run","textPreview":"Époques/run","textChars":11,"textLines":1,"bbox":[470,324,148,22]}
-{"kind":"textbox","id":"sh/donyd0z6","slide":1,"text":"200","textPreview":"200","textChars":3,"textLines":1,"bbox":[470,350,148,36]}
-{"kind":"textbox","id":"sh/val87ed8","slide":1,"text":"Tableau de bord","textPreview":"Tableau de bord","textChars":15,"textLines":1,"bbox":[766,422,136,24]}
-{"kind":"image","id":"im/9knih4by","slide":1,"name":"","alt":"Tableau de bord","bbox":[776,300,116,116]}
-{"kind":"notes","id":"nt/0fu353","slide":1,"text":""}
-{"kind":"slide","id":"sl/3yuupq","slide":2,"title":"Projet 13 / Option 4","textShapes":5}
-{"kind":"shape","id":"sh/xs72x4na","slide":2,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/q1orytsv","slide":2,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/fmlkjm1c","slide":2,"text":"Contexte et question de recherche","textPreview":"Contexte et question de recherche","textChars":33,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/8z25kb6x","slide":2,"bbox":[58,199,10,10]}
-{"kind":"textbox","id":"sh/1gvy90je","slide":2,"text":"Les GNN dépendent fortement de la structure du graphe.","textPreview":"Les GNN dépendent fortement de la structure du graphe.","textChars":54,"textLines":1,"bbox":[82,190,736,36]}
-{"kind":"shape","id":"sh/qtcj6tov","slide":2,"bbox":[58,247,10,10]}
-{"kind":"textbox","id":"sh/je9cvixc","slide":2,"text":"Cora peut perdre des attributs actifs, des arêtes, ou recevoir de fausses arêtes.","textPreview":"Cora peut perdre des attributs actifs, des arêtes, ou recevoir de fausses arêtes.","textChars":81,"textLines":1,"bbox":[82,238,736,36]}
-{"kind":"shape","id":"sh/8v6psfil","slide":2,"bbox":[58,295,10,10]}
-{"kind":"textbox","id":"sh/xczed8v6","slide":2,"text":"Question: quel optimiseur reste le plus stable sous un protocole fixe?","textPreview":"Question: quel optimiseur reste le plus stable sous un protocole fixe?","textChars":70,"textLines":1,"bbox":[82,286,736,36]}
-{"kind":"notes","id":"nt/3yuupq","slide":2,"text":""}
-{"kind":"slide","id":"sl/t0g44i","slide":3,"title":"Projet 13 / Option 4","textShapes":11}
-{"kind":"shape","id":"sh/i5sneloj","slide":3,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/pwb2hwfy","slide":3,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/0bi9s36h","slide":3,"text":"Cora et architecture GCN","textPreview":"Cora et architecture GCN","textChars":24,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/7y1kre1w","slide":3,"bbox":[58,190,180,92]}
-{"kind":"textbox","id":"sh/ed8v6psf","slide":3,"text":"Noeuds","textPreview":"Noeuds","textChars":6,"textLines":1,"bbox":[74,204,148,22]}
-{"kind":"textbox","id":"sh/p4r65wju","slide":3,"text":"2708","textPreview":"2708","textChars":4,"textLines":1,"bbox":[74,230,148,36]}
-{"kind":"shape","id":"sh/wjudg7ad","slide":3,"bbox":[272,190,180,92]}
-{"kind":"textbox","id":"sh/72x4nap4","slide":3,"text":"Attributs","textPreview":"Attributs","textChars":9,"textLines":1,"bbox":[288,204,148,22]}
-{"kind":"textbox","id":"sh/ih4byhgn","slide":3,"text":"1433","textPreview":"1433","textChars":4,"textLines":1,"bbox":[288,230,148,36]}
-{"kind":"shape","id":"sh/032lszqt","slide":3,"bbox":[486,190,180,92]}
-{"kind":"textbox","id":"sh/tovahoza","slide":3,"text":"Classes","textPreview":"Classes","textChars":7,"textLines":1,"bbox":[502,204,148,22]}
-{"kind":"textbox","id":"sh/ixczed8v","slide":3,"text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[502,230,148,36]}
-{"kind":"shape","id":"sh/bi9s36hc","slide":3,"bbox":[58,339,10,10]}
-{"kind":"textbox","id":"sh/0fepkzup","slide":3,"text":"GCN à deux couches, 16 canaux cachés, ReLU et dropout 0.5.","textPreview":"GCN à deux couches, 16 canaux cachés, ReLU et dropout 0.5.","textChars":58,"textLines":1,"bbox":[82,330,776,36]}
-{"kind":"shape","id":"sh/p0bi9s36","slide":3,"bbox":[58,387,10,10]}
-{"kind":"textbox","id":"sh/i9s36hcr","slide":3,"text":"Perte cross-entropy sur le masque d'entraînement.","textPreview":"Perte cross-entropy sur le masque d'entraînement.","textChars":49,"textLines":1,"bbox":[82,378,776,36]}
-{"kind":"shape","id":"sh/bulwval8","slide":3,"bbox":[58,435,10,10]}
-{"kind":"textbox","id":"sh/0je9cvix","slide":3,"text":"Même split et même architecture pour tous les optimiseurs.","textPreview":"Même split et même architecture pour tous les optimiseurs.","textChars":58,"textLines":1,"bbox":[82,426,776,36]}
-{"kind":"notes","id":"nt/t0g44i","slide":3,"text":""}
-{"kind":"slide","id":"sl/7mpgfw","slide":4,"title":"Projet 13 / Option 4","textShapes":5}
-{"kind":"shape","id":"sh/orytsvu9","slide":4,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/z61032ls","slide":4,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/al87ed8b","slide":4,"text":"Optimiseurs comparés","textPreview":"Optimiseurs comparés","textChars":20,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/h0fepkzu","slide":4,"bbox":[58,199,10,10]}
-{"kind":"textbox","id":"sh/sfil0rqd","slide":4,"text":"Adam et AdamW: méthodes adaptatives très utilisées en deep learning.","textPreview":"Adam et AdamW: méthodes adaptatives très utilisées en deep learning.","textChars":68,"textLines":1,"bbox":[82,190,796,36]}
-{"kind":"shape","id":"sh/zupwb2hw","slide":4,"bbox":[58,247,10,10]}
-{"kind":"textbox","id":"sh/a9w3m94f","slide":4,"text":"RMSProp et AdaGrad: adaptation du pas par historique de gradients.","textPreview":"RMSProp et AdaGrad: adaptation du pas par historique de gradients.","textChars":66,"textLines":1,"bbox":[82,238,796,36]}
-{"kind":"shape","id":"sh/hwfyxobm","slide":4,"bbox":[58,295,10,10]}
-{"kind":"textbox","id":"sh/obm58z25","slide":4,"text":"SGD: référence non adaptative, interprétée uniquement dans ce protocole.","textPreview":"SGD: référence non adaptative, interprétée uniquement dans ce protocole.","textChars":72,"textLines":1,"bbox":[82,286,796,36]}
-{"kind":"notes","id":"nt/7mpgfw","slide":4,"text":""}
-{"kind":"slide","id":"sl/x59mcr","slide":5,"title":"Projet 13 / Option 4","textShapes":13}
-{"kind":"shape","id":"sh/ap4r65wj","slide":5,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/hgn29gr2","slide":5,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/svu9knih","slide":5,"text":"Protocole expérimental final","textPreview":"Protocole expérimental final","textChars":28,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/zidonyd0","slide":5,"bbox":[58,188,180,92]}
-{"kind":"textbox","id":"sh/a1gvy90j","slide":5,"text":"Optimiseurs","textPreview":"Optimiseurs","textChars":11,"textLines":1,"bbox":[74,202,148,22]}
-{"kind":"textbox","id":"sh/hoza1gvy","slide":5,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[74,228,148,36]}
-{"kind":"shape","id":"sh/s36hcrmh","slide":5,"bbox":[272,188,180,92]}
-{"kind":"textbox","id":"sh/3m94fu18","slide":5,"text":"Conditions","textPreview":"Conditions","textChars":10,"textLines":1,"bbox":[288,202,148,22]}
-{"kind":"textbox","id":"sh/a5gbq1or","slide":5,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[288,228,148,36]}
-{"kind":"shape","id":"sh/kf6dcbul","slide":5,"bbox":[486,188,180,92]}
-{"kind":"textbox","id":"sh/d0z61032","slide":5,"text":"Graines","textPreview":"Graines","textChars":7,"textLines":1,"bbox":[502,202,148,22]}
-{"kind":"textbox","id":"sh/29gr2p8n","slide":5,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[502,228,148,36]}
-{"kind":"shape","id":"sh/vu9knih4","slide":5,"bbox":[700,188,180,92]}
-{"kind":"textbox","id":"sh/knih4byh","slide":5,"text":"Runs","textPreview":"Runs","textChars":4,"textLines":1,"bbox":[716,202,148,22]}
-{"kind":"textbox","id":"sh/d8bat47y","slide":5,"text":"650","textPreview":"650","textChars":3,"textLines":1,"bbox":[716,228,148,36]}
-{"kind":"shape","id":"sh/2lszqtcj","slide":5,"bbox":[58,335,10,10]}
-{"kind":"textbox","id":"sh/v6psfil0","slide":5,"text":"Budget fixe: 200 époques par entraînement.","textPreview":"Budget fixe: 200 époques par entraînement.","textChars":42,"textLines":1,"bbox":[82,326,796,36]}
-{"kind":"shape","id":"sh/kre1w7mp","slide":5,"bbox":[58,383,10,10]}
-{"kind":"textbox","id":"sh/dcbulwva","slide":5,"text":"Les métriques sont moyennées avec écart-type et IC95.","textPreview":"Les métriques sont moyennées avec écart-type et IC95.","textChars":53,"textLines":1,"bbox":[82,374,796,36]}
-{"kind":"shape","id":"sh/h0fepkzu","slide":5,"bbox":[58,431,10,10]}
-{"kind":"textbox","id":"sh/sfil0rqd","slide":5,"text":"Le test n'est jamais utilisé pour choisir les hyperparamètres.","textPreview":"Le test n'est jamais utilisé pour choisir les hyperparamètres.","textChars":62,"textLines":1,"bbox":[82,422,796,36]}
-{"kind":"notes","id":"nt/x59mcr","slide":5,"text":""}
-{"kind":"slide","id":"sl/7pc4xb","slide":6,"title":"Projet 13 / Option 4","textShapes":5}
-{"kind":"shape","id":"sh/sfil0rqd","slide":6,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/zupwb2hw","slide":6,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/a9w3m94f","slide":6,"text":"Perturbations aléatoires","textPreview":"Perturbations aléatoires","textChars":24,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/hcrmhk3q","slide":6,"bbox":[58,187,10,10]}
-{"kind":"textbox","id":"sh/orytsvu9","slide":6,"text":"Feature masking: mise à zéro d'une proportion d'entrées actives.","textPreview":"Feature masking: mise à zéro d'une proportion d'entrées actives.","textChars":64,"textLines":1,"bbox":[82,178,796,36]}
-{"kind":"shape","id":"sh/z61032ls","slide":6,"bbox":[58,235,10,10]}
-{"kind":"textbox","id":"sh/al87ed8b","slide":6,"text":"Edge removal: suppression de connexions non orientées uniques.","textPreview":"Edge removal: suppression de connexions non orientées uniques.","textChars":62,"textLines":1,"bbox":[82,226,796,36]}
-{"kind":"shape","id":"sh/hk3q5o7q","slide":6,"bbox":[58,283,10,10]}
-{"kind":"textbox","id":"sh/oza1gvy9","slide":6,"text":"Fake edge addition: ajout de paires non connectées, sans self-loop ni duplicat.","textPreview":"Fake edge addition: ajout de paires non connectées, sans self-loop ni duplicat.","textChars":79,"textLines":1,"bbox":[82,274,796,36]}
-{"kind":"notes","id":"nt/7pc4xb","slide":6,"text":""}
-{"kind":"slide","id":"sl/a1aepv","slide":7,"title":"Projet 13 / Option 4","textShapes":6}
-{"kind":"shape","id":"sh/4zidonyd","slide":7,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/fepkzupw","slide":7,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/mtwra5gb","slide":7,"text":"Garanties scientifiques","textPreview":"Garanties scientifiques","textChars":23,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/xc3ylc7u","slide":7,"bbox":[58,179,10,10]}
-{"kind":"textbox","id":"sh/4r65wjud","slide":7,"text":"Graines appariées pour comparer les optimiseurs.","textPreview":"Graines appariées pour comparer les optimiseurs.","textChars":48,"textLines":1,"bbox":[82,170,796,36]}
-{"kind":"shape","id":"sh/f6dcbulw","slide":7,"bbox":[58,227,10,10]}
-{"kind":"textbox","id":"sh/mlkjm1cf","slide":7,"text":"IC95 et bootstrap apparié pour les différences clés.","textPreview":"IC95 et bootstrap apparié pour les différences clés.","textChars":52,"textLines":1,"bbox":[82,218,796,36]}
-{"kind":"shape","id":"sh/x0nuxc3y","slide":7,"bbox":[58,275,10,10]}
-{"kind":"textbox","id":"sh/4fu18jqh","slide":7,"text":"Test de Wilcoxon et correction de Holm quand les données le permettent.","textPreview":"Test de Wilcoxon et correction de Holm quand les données le permettent.","textChars":71,"textLines":1,"bbox":[82,266,796,36]}
-{"kind":"shape","id":"sh/6dcbulwv","slide":7,"bbox":[58,323,10,10]}
-{"kind":"textbox","id":"sh/vy90je9c","slide":7,"text":"Conclusion limitée au dataset, au GCN et au protocole étudiés.","textPreview":"Conclusion limitée au dataset, au GCN et au protocole étudiés.","textChars":62,"textLines":1,"bbox":[82,314,796,36]}
-{"kind":"notes","id":"nt/a1aepv","slide":7,"text":""}
-{"kind":"slide","id":"sl/o948kk","slide":8,"title":"Projet 13 / Option 4","textShapes":4}
-{"kind":"shape","id":"sh/cj6tovah","slide":8,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/nyd0z610","slide":8,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/udg7adsj","slide":8,"text":"Performances sur graphe propre","textPreview":"Performances sur graphe propre","textChars":30,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"textbox","id":"sh/cvixczed","slide":8,"text":"Meilleur score propre: Adam (81.2%)","textPreview":"Meilleur score propre: Adam (81.2%)","textChars":35,"textLines":1,"bbox":[720,220,190,70]}
-{"kind":"textbox","id":"sh/nap4r65w","slide":8,"text":"Les barres doivent être lues avec les intervalles du rapport.","textPreview":"Les barres doivent être lues avec les intervalles du rapport.","textChars":61,"textLines":1,"bbox":[720,306,180,70]}
-{"kind":"chart","id":"ch/58z25kb6","slide":8,"name":"","chartType":"bar","title":"Accuracy moyenne sur Cora propre","bbox":[72,170,620,290]}
-{"kind":"notes","id":"nt/o948kk","slide":8,"text":""}
-{"kind":"slide","id":"sl/2548cv","slide":9,"title":"Projet 13 / Option 4","textShapes":3}
-{"kind":"shape","id":"sh/m1cfa9w3","slide":9,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/tsvu9kni","slide":9,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/47y1kre1","slide":9,"text":"Robustesse agrégée","textPreview":"Robustesse agrégée","textChars":18,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"textbox","id":"sh/mp0bi9s3","slide":9,"text":"Adam et RMSProp restent proches: les petites différences ne sont pas appelées dominance.","textPreview":"Adam et RMSProp restent proches: les petites différences ne sont pas appelées dominance.","textChars":88,"textLines":1,"bbox":[728,220,178,120]}
-{"kind":"chart","id":"ch/f6dcbulw","slide":9,"name":"","chartType":"bar","title":"Moyenne sur propre + perturbations","bbox":[72,170,640,300]}
-{"kind":"notes","id":"nt/2548cv","slide":9,"text":""}
-{"kind":"slide","id":"sl/n8xe8j","slide":10,"title":"Projet 13 / Option 4","textShapes":2}
-{"kind":"shape","id":"sh/3itgfmlk","slide":10,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/w3m94fu1","slide":10,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/loj2t83i","slide":10,"text":"Robustesse au feature masking","textPreview":"Robustesse au feature masking","textChars":29,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"chart","id":"ch/e1w7mp0b","slide":10,"name":"","chartType":"line","title":"Accuracy moyenne par taux de masquage","bbox":[72,162,760,310]}
-{"kind":"notes","id":"nt/n8xe8j","slide":10,"text":""}
-{"kind":"slide","id":"sl/qajn2f","slide":11,"title":"Projet 13 / Option 4","textShapes":2}
-{"kind":"shape","id":"sh/czed8v6p","slide":11,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/neloj2t8","slide":11,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/ytsvu9kn","slide":11,"text":"Robustesse structurelle","textPreview":"Robustesse structurelle","textChars":23,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"chart","id":"ch/tsvu9kni","slide":11,"name":"","chartType":"line","title":"Suppression d'arêtes","bbox":[56,150,410,310]}
-{"kind":"chart","id":"ch/47y1kre1","slide":11,"name":"","chartType":"line","title":"Ajout de fausses arêtes","bbox":[500,150,410,310]}
-{"kind":"notes","id":"nt/qajn2f","slide":11,"text":""}
-{"kind":"slide","id":"sl/snoeca","slide":12,"title":"Projet 13 / Option 4","textShapes":10}
-{"kind":"shape","id":"sh/pwb2hwfy","slide":12,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/i5sneloj","slide":12,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/7qpg3ex0","slide":12,"text":"Validation complémentaire","textPreview":"Validation complémentaire","textChars":25,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/wjudg7ad","slide":12,"bbox":[62,180,220,92]}
-{"kind":"textbox","id":"sh/p4r65wju","slide":12,"text":"Cross-dataset","textPreview":"Cross-dataset","textChars":13,"textLines":1,"bbox":[78,194,188,22]}
-{"kind":"textbox","id":"sh/ed8v6psf","slide":12,"text":"300","textPreview":"300","textChars":3,"textLines":1,"bbox":[78,220,188,36]}
-{"kind":"shape","id":"sh/7y1kre1w","slide":12,"bbox":[370,180,220,92]}
-{"kind":"textbox","id":"sh/0nuxc3yl","slide":12,"text":"Protocole tuné","textPreview":"Protocole tuné","textChars":14,"textLines":1,"bbox":[386,194,188,22]}
-{"kind":"textbox","id":"sh/p8nqxs72","slide":12,"text":"100","textPreview":"100","textChars":3,"textLines":1,"bbox":[386,220,188,36]}
-{"kind":"shape","id":"sh/xobm58z2","slide":12,"bbox":[678,180,220,92]}
-{"kind":"textbox","id":"sh/83itgfml","slide":12,"text":"Inférence","textPreview":"Inférence","textChars":9,"textLines":1,"bbox":[694,194,188,22]}
-{"kind":"textbox","id":"sh/fil0rqd4","slide":12,"text":"75","textPreview":"75","textChars":2,"textLines":1,"bbox":[694,220,188,36]}
-{"kind":"shape","id":"sh/qxs72x4n","slide":12,"bbox":[74,349,10,10]}
-{"kind":"textbox","id":"sh/x0nuxc3y","slide":12,"text":"Ces validations ne remplacent pas le coeur Cora: elles testent la stabilité des conclusions.","textPreview":"Ces validations ne remplacent pas le coeur Cora: elles testent la stabilité des conclusions.","textChars":92,"textLines":1,"bbox":[98,340,756,36]}
-{"kind":"shape","id":"sh/4fu18jqh","slide":12,"bbox":[74,397,10,10]}
-{"kind":"textbox","id":"sh/fu18jqh0","slide":12,"text":"Les résultats absents ne sont pas inventés; ils restent marqués comme en attente.","textPreview":"Les résultats absents ne sont pas inventés; ils restent marqués comme en attente.","textChars":81,"textLines":1,"bbox":[98,388,756,36]}
-{"kind":"notes","id":"nt/snoeca","slide":12,"text":""}
-{"kind":"slide","id":"sl/vsx81l","slide":13,"title":"Projet 13 / Option 4","textShapes":6}
-{"kind":"shape","id":"sh/sneloj2t","slide":13,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/32lszqtc","slide":13,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/ahoza1gv","slide":13,"text":"Limites et perspectives","textPreview":"Limites et perspectives","textChars":23,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"shape","id":"sh/lkjm1cfa","slide":13,"bbox":[58,179,10,10]}
-{"kind":"textbox","id":"sh/szqtcj6t","slide":13,"text":"Perturbations aléatoires, pas d'attaques optimisées.","textPreview":"Perturbations aléatoires, pas d'attaques optimisées.","textChars":52,"textLines":1,"bbox":[82,170,796,36]}
-{"kind":"shape","id":"sh/3ex0nuxc","slide":13,"bbox":[58,227,10,10]}
-{"kind":"textbox","id":"sh/at47y1kr","slide":13,"text":"Benchmark contrôlé: Cora, GCN à deux couches, hyperparamètres fixes.","textPreview":"Benchmark contrôlé: Cora, GCN à deux couches, hyperparamètres fixes.","textChars":68,"textLines":1,"bbox":[82,218,796,36]}
-{"kind":"shape","id":"sh/loj2t83i","slide":13,"bbox":[58,275,10,10]}
-{"kind":"textbox","id":"sh/w3m94fu1","slide":13,"text":"Les temps CPU dépendent du matériel.","textPreview":"Les temps CPU dépendent du matériel.","textChars":36,"textLines":1,"bbox":[82,266,796,36]}
-{"kind":"shape","id":"sh/udg7adsj","slide":13,"bbox":[58,323,10,10]}
-{"kind":"textbox","id":"sh/nyd0z610","slide":13,"text":"Suite: autres architectures, attaques réelles, datasets plus variés.","textPreview":"Suite: autres architectures, attaques réelles, datasets plus variés.","textChars":68,"textLines":1,"bbox":[82,314,796,36]}
-{"kind":"notes","id":"nt/vsx81l","slide":13,"text":""}
-{"kind":"slide","id":"sl/333fzm","slide":14,"title":"Projet 13 / Option 4","textShapes":9}
-{"kind":"shape","id":"sh/g3ex0nux","slide":14,"bbox":[0,0,960,10]}
-{"kind":"textbox","id":"sh/nih4byhg","slide":14,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
-{"kind":"textbox","id":"sh/yxobm58z","slide":14,"text":"Conclusion + démonstration dashboard","textPreview":"Conclusion + démonstration dashboard","textChars":36,"textLines":1,"bbox":[42,58,760,96]}
-{"kind":"textbox","id":"sh/9cvixcze","slide":14,"text":"Conclusion prudente","textPreview":"Conclusion prudente","textChars":19,"textLines":1,"bbox":[58,170,300,34]}
-{"kind":"shape","id":"sh/gr2p8nqx","slide":14,"bbox":[58,229,10,10]}
-{"kind":"textbox","id":"sh/r65wjudg","slide":14,"text":"Les optimiseurs adaptatifs sont les plus stables dans ce protocole.","textPreview":"Les optimiseurs adaptatifs sont les plus stables dans ce protocole.","textChars":67,"textLines":1,"bbox":[82,220,496,36]}
-{"kind":"shape","id":"sh/ylc7u54z","slide":14,"bbox":[58,277,10,10]}
-{"kind":"textbox","id":"sh/90je9cvi","slide":14,"text":"Adam et RMSProp doivent être comparés avec les intervalles.","textPreview":"Adam et RMSProp doivent être comparés avec les intervalles.","textChars":59,"textLines":1,"bbox":[82,268,496,36]}
-{"kind":"shape","id":"sh/gfmlkjm1","slide":14,"bbox":[58,325,10,10]}
-{"kind":"textbox","id":"sh/65wjudg7","slide":14,"text":"Le dashboard donne accès aux résultats bruts et aux artefacts.","textPreview":"Le dashboard donne accès aux résultats bruts et aux artefacts.","textChars":62,"textLines":1,"bbox":[82,316,496,36]}
-{"kind":"textbox","id":"sh/obm58z25","slide":14,"text":"Tableau de bord","textPreview":"Tableau de bord","textChars":15,"textLines":1,"bbox":[650,312,136,24]}
-{"kind":"textbox","id":"sh/6xkf6dcb","slide":14,"text":"GitHub","textPreview":"GitHub","textChars":6,"textLines":1,"bbox":[790,312,136,24]}
-{"kind":"textbox","id":"sh/zed8v6ps","slide":14,"text":"Les comparaisons statistiques restent prudentes et doivent être lues avec les IC95.","textPreview":"Les comparaisons statistiques restent prudentes et doivent être lues avec les IC95.","textChars":83,"textLines":1,"bbox":[660,350,240,74]}
-{"kind":"image","id":"im/4vmtwra5","slide":14,"name":"","alt":"Tableau de bord","bbox":[660,190,116,116]}
-{"kind":"image","id":"im/mp0bi9s3","slide":14,"name":"","alt":"GitHub","bbox":[800,190,116,116]}
-{"kind":"notes","id":"nt/333fzm","slide":14,"text":""}
+{"kind":"deck","id":"pr/96aiqj","name":"Deck"}
+{"kind":"layout","layoutId":"0b3a7d66-2f95-4609-ba86-9806c9967243","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"fc8bfd73-9bd2-45a0-b62b-0cfaf9d2a7b8","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/e11b3s","slide":1,"title":"Projet 13 / Option 4","textShapes":10}
+{"kind":"shape","id":"sh/zupwb2hw","slide":1,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":1,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/h0fepkzu","slide":1,"text":"Robustesse des GNN sous perturbations aléatoires","textPreview":"Robustesse des GNN sous perturbations aléatoires","textChars":48,"textLines":1,"bbox":[42,62,740,128]}
+{"kind":"textbox","id":"sh/al87ed8b","slide":1,"text":"Adam vs AdamW vs RMSProp vs AdaGrad vs SGD sur Cora Citation Network","textPreview":"Adam vs AdamW vs RMSProp vs AdaGrad vs SGD sur Cora Citation Network","textChars":68,"textLines":1,"bbox":[46,198,760,34]}
+{"kind":"shape","id":"sh/z61032ls","slide":1,"bbox":[46,310,180,92]}
+{"kind":"textbox","id":"sh/orytsvu9","slide":1,"text":"Runs principaux","textPreview":"Runs principaux","textChars":15,"textLines":1,"bbox":[62,324,148,22]}
+{"kind":"textbox","id":"sh/hcrmhk3q","slide":1,"text":"650","textPreview":"650","textChars":3,"textLines":1,"bbox":[62,350,148,36]}
+{"kind":"shape","id":"sh/6xkf6dcb","slide":1,"bbox":[250,310,180,92]}
+{"kind":"textbox","id":"sh/zed8v6ps","slide":1,"text":"Graines","textPreview":"Graines","textChars":7,"textLines":1,"bbox":[266,324,148,22]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":1,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[266,350,148,36]}
+{"kind":"shape","id":"sh/yhgn29gr","slide":1,"bbox":[454,310,180,92]}
+{"kind":"textbox","id":"sh/58z25kb6","slide":1,"text":"Époques/run","textPreview":"Époques/run","textChars":11,"textLines":1,"bbox":[470,324,148,22]}
+{"kind":"textbox","id":"sh/gn29gr2p","slide":1,"text":"200","textPreview":"200","textChars":3,"textLines":1,"bbox":[470,350,148,36]}
+{"kind":"textbox","id":"sh/y90je9cv","slide":1,"text":"Tableau de bord","textPreview":"Tableau de bord","textChars":15,"textLines":1,"bbox":[766,422,136,24]}
+{"kind":"image","id":"im/obm58z25","slide":1,"name":"","alt":"Tableau de bord","bbox":[776,300,116,116]}
+{"kind":"notes","id":"nt/e11b3s","slide":1,"text":""}
+{"kind":"slide","id":"sl/ddfwgo","slide":2,"title":"Projet 13 / Option 4","textShapes":5}
+{"kind":"shape","id":"sh/pwb2hwfy","slide":2,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/i5sneloj","slide":2,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/7qpg3ex0","slide":2,"text":"Contexte et question de recherche","textPreview":"Contexte et question de recherche","textChars":33,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/wjudg7ad","slide":2,"bbox":[58,199,10,10]}
+{"kind":"textbox","id":"sh/p4r65wju","slide":2,"text":"Les GNN dépendent fortement de la structure du graphe.","textPreview":"Les GNN dépendent fortement de la structure du graphe.","textChars":54,"textLines":1,"bbox":[82,190,736,36]}
+{"kind":"shape","id":"sh/ed8v6psf","slide":2,"bbox":[58,247,10,10]}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":2,"text":"Cora peut perdre des attributs actifs, des arêtes, ou recevoir de fausses arêtes.","textPreview":"Cora peut perdre des attributs actifs, des arêtes, ou recevoir de fausses arêtes.","textChars":81,"textLines":1,"bbox":[82,238,736,36]}
+{"kind":"shape","id":"sh/0nuxc3yl","slide":2,"bbox":[58,295,10,10]}
+{"kind":"textbox","id":"sh/p8nqxs72","slide":2,"text":"Question: quel optimiseur reste le plus stable sous un protocole fixe?","textPreview":"Question: quel optimiseur reste le plus stable sous un protocole fixe?","textChars":70,"textLines":1,"bbox":[82,286,736,36]}
+{"kind":"notes","id":"nt/ddfwgo","slide":2,"text":""}
+{"kind":"slide","id":"sl/7fu4kd","slide":3,"title":"Projet 13 / Option 4","textShapes":11}
+{"kind":"shape","id":"sh/zed8v6ps","slide":3,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/oza1gvy9","slide":3,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/hk3q5o7q","slide":3,"text":"Cora et architecture GCN","textPreview":"Cora et architecture GCN","textChars":24,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/65wjudg7","slide":3,"bbox":[58,190,180,92]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":3,"text":"Noeuds","textPreview":"Noeuds","textChars":6,"textLines":1,"bbox":[74,204,148,22]}
+{"kind":"textbox","id":"sh/obm58z25","slide":3,"text":"2708","textPreview":"2708","textChars":4,"textLines":1,"bbox":[74,230,148,36]}
+{"kind":"shape","id":"sh/hwfyxobm","slide":3,"bbox":[272,190,180,92]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":3,"text":"Attributs","textPreview":"Attributs","textChars":9,"textLines":1,"bbox":[288,204,148,22]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":3,"text":"1433","textPreview":"1433","textChars":4,"textLines":1,"bbox":[288,230,148,36]}
+{"kind":"shape","id":"sh/7y1kre1w","slide":3,"bbox":[486,190,180,92]}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":3,"text":"Classes","textPreview":"Classes","textChars":7,"textLines":1,"bbox":[502,204,148,22]}
+{"kind":"textbox","id":"sh/p4r65wju","slide":3,"text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[502,230,148,36]}
+{"kind":"shape","id":"sh/wjudg7ad","slide":3,"bbox":[58,339,10,10]}
+{"kind":"textbox","id":"sh/7qpg3ex0","slide":3,"text":"GCN à deux couches, 16 canaux cachés, ReLU et dropout 0.5.","textPreview":"GCN à deux couches, 16 canaux cachés, ReLU et dropout 0.5.","textChars":58,"textLines":1,"bbox":[82,330,776,36]}
+{"kind":"shape","id":"sh/i5sneloj","slide":3,"bbox":[58,387,10,10]}
+{"kind":"textbox","id":"sh/pwb2hwfy","slide":3,"text":"Perte cross-entropy sur le masque d'entraînement.","textPreview":"Perte cross-entropy sur le masque d'entraînement.","textChars":49,"textLines":1,"bbox":[82,378,776,36]}
+{"kind":"shape","id":"sh/0bi9s36h","slide":3,"bbox":[58,435,10,10]}
+{"kind":"textbox","id":"sh/7ed8bat4","slide":3,"text":"Même split et même architecture pour tous les optimiseurs.","textPreview":"Même split et même architecture pour tous les optimiseurs.","textChars":58,"textLines":1,"bbox":[82,426,776,36]}
+{"kind":"notes","id":"nt/7fu4kd","slide":3,"text":""}
+{"kind":"slide","id":"sl/zvf8vp","slide":4,"title":"Projet 13 / Option 4","textShapes":5}
+{"kind":"shape","id":"sh/epkzupwb","slide":4,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/pg3ex0nu","slide":4,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/wval87ed","slide":4,"text":"Optimiseurs comparés","textPreview":"Optimiseurs comparés","textChars":20,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/7mp0bi9s","slide":4,"bbox":[58,199,10,10]}
+{"kind":"textbox","id":"sh/e1w7mp0b","slide":4,"text":"Adam et AdamW: méthodes adaptatives très utilisées en deep learning.","textPreview":"Adam et AdamW: méthodes adaptatives très utilisées en deep learning.","textChars":68,"textLines":1,"bbox":[82,190,796,36]}
+{"kind":"shape","id":"sh/psfil0rq","slide":4,"bbox":[58,247,10,10]}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":4,"text":"RMSProp et AdaGrad: adaptation du pas par historique de gradients.","textPreview":"RMSProp et AdaGrad: adaptation du pas par historique de gradients.","textChars":66,"textLines":1,"bbox":[82,238,796,36]}
+{"kind":"shape","id":"sh/7u54zido","slide":4,"bbox":[58,295,10,10]}
+{"kind":"textbox","id":"sh/ed8bat47","slide":4,"text":"SGD: référence non adaptative, interprétée uniquement dans ce protocole.","textPreview":"SGD: référence non adaptative, interprétée uniquement dans ce protocole.","textChars":72,"textLines":1,"bbox":[82,286,796,36]}
+{"kind":"notes","id":"nt/zvf8vp","slide":4,"text":""}
+{"kind":"slide","id":"sl/ob51mp","slide":5,"title":"Projet 13 / Option 4","textShapes":13}
+{"kind":"shape","id":"sh/wval87ed","slide":5,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":5,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/epkzupwb","slide":5,"text":"Protocole expérimental final","textPreview":"Protocole expérimental final","textChars":28,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/psfil0rq","slide":5,"bbox":[58,188,180,92]}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":5,"text":"Optimiseurs","textPreview":"Optimiseurs","textChars":11,"textLines":1,"bbox":[74,202,148,22]}
+{"kind":"textbox","id":"sh/7mp0bi9s","slide":5,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[74,228,148,36]}
+{"kind":"shape","id":"sh/e1w7mp0b","slide":5,"bbox":[272,188,180,92]}
+{"kind":"textbox","id":"sh/l0rqd4vm","slide":5,"text":"Conditions","textPreview":"Conditions","textChars":10,"textLines":1,"bbox":[288,202,148,22]}
+{"kind":"textbox","id":"sh/wfyxobm5","slide":5,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[288,228,148,36]}
+{"kind":"shape","id":"sh/ixczed8v","slide":5,"bbox":[486,188,180,92]}
+{"kind":"textbox","id":"sh/bi9s36hc","slide":5,"text":"Graines","textPreview":"Graines","textChars":7,"textLines":1,"bbox":[502,202,148,22]}
+{"kind":"textbox","id":"sh/032lszqt","slide":5,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[502,228,148,36]}
+{"kind":"shape","id":"sh/tovahoza","slide":5,"bbox":[700,188,180,92]}
+{"kind":"textbox","id":"sh/i9s36hcr","slide":5,"text":"Runs","textPreview":"Runs","textChars":4,"textLines":1,"bbox":[716,202,148,22]}
+{"kind":"textbox","id":"sh/bulwval8","slide":5,"text":"650","textPreview":"650","textChars":3,"textLines":1,"bbox":[716,228,148,36]}
+{"kind":"shape","id":"sh/0fepkzup","slide":5,"bbox":[58,335,10,10]}
+{"kind":"textbox","id":"sh/p0bi9s36","slide":5,"text":"Budget fixe: 200 époques par entraînement.","textPreview":"Budget fixe: 200 époques par entraînement.","textChars":42,"textLines":1,"bbox":[82,326,796,36]}
+{"kind":"shape","id":"sh/idonyd0z","slide":5,"bbox":[58,383,10,10]}
+{"kind":"textbox","id":"sh/byhgn29g","slide":5,"text":"Les métriques sont moyennées avec écart-type et IC95.","textPreview":"Les métriques sont moyennées avec écart-type et IC95.","textChars":53,"textLines":1,"bbox":[82,374,796,36]}
+{"kind":"shape","id":"sh/3q5o7qpg","slide":5,"bbox":[58,431,10,10]}
+{"kind":"textbox","id":"sh/e9cvixcz","slide":5,"text":"Le test n'est jamais utilisé pour choisir les hyperparamètres.","textPreview":"Le test n'est jamais utilisé pour choisir les hyperparamètres.","textChars":62,"textLines":1,"bbox":[82,422,796,36]}
+{"kind":"notes","id":"nt/ob51mp","slide":5,"text":""}
+{"kind":"slide","id":"sl/strm4r","slide":6,"title":"Projet 13 / Option 4","textShapes":5}
+{"kind":"shape","id":"sh/2x4nap4r","slide":6,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/donyd0z6","slide":6,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/k3q5o7qp","slide":6,"text":"Perturbations aléatoires","textPreview":"Perturbations aléatoires","textChars":24,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/val87ed8","slide":6,"bbox":[58,187,10,10]}
+{"kind":"textbox","id":"sh/6psfil0r","slide":6,"text":"Masquage aléatoire d’une proportion de caractéristiques actives non nulles.","textPreview":"Masquage aléatoire d’une proportion de caractéristiques actives non nulles.","textChars":75,"textLines":1,"bbox":[82,178,796,36]}
+{"kind":"shape","id":"sh/dcbulwva","slide":6,"bbox":[58,235,10,10]}
+{"kind":"textbox","id":"sh/kre1w7mp","slide":6,"text":"Edge removal: suppression de connexions non orientées uniques.","textPreview":"Edge removal: suppression de connexions non orientées uniques.","textChars":62,"textLines":1,"bbox":[82,226,796,36]}
+{"kind":"shape","id":"sh/v6psfil0","slide":6,"bbox":[58,283,10,10]}
+{"kind":"textbox","id":"sh/2lszqtcj","slide":6,"text":"Fake edge addition: ajout de paires non connectées, sans self-loop ni duplicat.","textPreview":"Fake edge addition: ajout de paires non connectées, sans self-loop ni duplicat.","textChars":79,"textLines":1,"bbox":[82,274,796,36]}
+{"kind":"notes","id":"nt/strm4r","slide":6,"text":""}
+{"kind":"slide","id":"sl/08sogb","slide":7,"title":"Projet 13 / Option 4","textShapes":6}
+{"kind":"shape","id":"sh/z25kb6xk","slide":7,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/onyd0z61","slide":7,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/d8v6psfi","slide":7,"text":"Garanties scientifiques","textPreview":"Garanties scientifiques","textChars":23,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/6tovahoz","slide":7,"bbox":[58,179,10,10]}
+{"kind":"textbox","id":"sh/vahoza1g","slide":7,"text":"Graines appariées pour comparer les optimiseurs.","textPreview":"Graines appariées pour comparer les optimiseurs.","textChars":48,"textLines":1,"bbox":[82,170,796,36]}
+{"kind":"shape","id":"sh/ovahoza1","slide":7,"bbox":[58,227,10,10]}
+{"kind":"textbox","id":"sh/dg7adsji","slide":7,"text":"IC95 et bootstrap apparié pour les différences clés.","textPreview":"IC95 et bootstrap apparié pour les différences clés.","textChars":52,"textLines":1,"bbox":[82,218,796,36]}
+{"kind":"shape","id":"sh/61032lsz","slide":7,"bbox":[58,275,10,10]}
+{"kind":"textbox","id":"sh/vmtwra5g","slide":7,"text":"Test de Wilcoxon et correction de Holm quand les données le permettent.","textPreview":"Test de Wilcoxon et correction de Holm quand les données le permettent.","textChars":71,"textLines":1,"bbox":[82,266,796,36]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":7,"bbox":[58,323,10,10]}
+{"kind":"textbox","id":"sh/mhk3q5o7","slide":7,"text":"Conclusion limitée au dataset, au GCN et au protocole étudiés.","textPreview":"Conclusion limitée au dataset, au GCN et au protocole étudiés.","textChars":62,"textLines":1,"bbox":[82,314,796,36]}
+{"kind":"notes","id":"nt/08sogb","slide":7,"text":""}
+{"kind":"slide","id":"sl/ny7rgz","slide":8,"title":"Projet 13 / Option 4","textShapes":4}
+{"kind":"shape","id":"sh/l87ed8ba","slide":8,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/ahoza1gv","slide":8,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/32lszqtc","slide":8,"text":"Performances sur graphe propre","textPreview":"Performances sur graphe propre","textChars":30,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"textbox","id":"sh/lkjm1cfa","slide":8,"text":"Meilleur score propre: Adam (81.2%)","textPreview":"Meilleur score propre: Adam (81.2%)","textChars":35,"textLines":1,"bbox":[720,220,190,70]}
+{"kind":"textbox","id":"sh/at47y1kr","slide":8,"text":"Les barres doivent être lues avec les intervalles du rapport.","textPreview":"Les barres doivent être lues avec les intervalles du rapport.","textChars":61,"textLines":1,"bbox":[720,306,180,70]}
+{"kind":"chart","id":"ch/gvy90je9","slide":8,"name":"","chartType":"bar","title":"Accuracy moyenne sur Cora propre","bbox":[72,170,620,290]}
+{"kind":"notes","id":"nt/ny7rgz","slide":8,"text":""}
+{"kind":"slide","id":"sl/nn5y03","slide":9,"title":"Projet 13 / Option 4","textShapes":3}
+{"kind":"shape","id":"sh/vixczed8","slide":9,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/k3q5o7qp","slide":9,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/donyd0z6","slide":9,"text":"Robustesse agrégée","textPreview":"Robustesse agrégée","textChars":18,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"textbox","id":"sh/val87ed8","slide":9,"text":"Adam et RMSProp restent proches: les petites différences ne sont pas appelées dominance.","textPreview":"Adam et RMSProp restent proches: les petites différences ne sont pas appelées dominance.","textChars":88,"textLines":1,"bbox":[728,220,178,120]}
+{"kind":"chart","id":"ch/idonyd0z","slide":9,"name":"","chartType":"bar","title":"Moyenne sur propre + perturbations","bbox":[72,170,640,300]}
+{"kind":"notes","id":"nt/nn5y03","slide":9,"text":""}
+{"kind":"slide","id":"sl/3r1szo","slide":10,"title":"Projet 13 / Option 4","textShapes":2}
+{"kind":"shape","id":"sh/gn29gr2p","slide":10,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":10,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/yhgn29gr","slide":10,"text":"Robustesse au masquage d'attributs","textPreview":"Robustesse au masquage d'attributs","textChars":34,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"chart","id":"ch/h0fepkzu","slide":10,"name":"","chartType":"line","title":"Accuracy moyenne par taux de masquage","bbox":[72,162,760,310]}
+{"kind":"notes","id":"nt/3r1szo","slide":10,"text":""}
+{"kind":"slide","id":"sl/qv7jkr","slide":11,"title":"Projet 13 / Option 4","textShapes":2}
+{"kind":"shape","id":"sh/zupwb2hw","slide":11,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":11,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/h0fepkzu","slide":11,"text":"Robustesse structurelle","textPreview":"Robustesse structurelle","textChars":23,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"chart","id":"ch/6tovahoz","slide":11,"name":"","chartType":"line","title":"Suppression d'arêtes","bbox":[56,150,410,310]}
+{"kind":"chart","id":"ch/vahoza1g","slide":11,"name":"","chartType":"line","title":"Ajout de fausses arêtes","bbox":[500,150,410,310]}
+{"kind":"notes","id":"nt/qv7jkr","slide":11,"text":""}
+{"kind":"slide","id":"sl/5lkobj","slide":12,"title":"Projet 13 / Option 4","textShapes":10}
+{"kind":"shape","id":"sh/7ed8bat4","slide":12,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/0z61032l","slide":12,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/pkzupwb2","slide":12,"text":"Validation complémentaire","textPreview":"Validation complémentaire","textChars":25,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/ih4byhgn","slide":12,"bbox":[62,180,220,92]}
+{"kind":"textbox","id":"sh/72x4nap4","slide":12,"text":"Cross-dataset","textPreview":"Cross-dataset","textChars":13,"textLines":1,"bbox":[78,194,188,22]}
+{"kind":"textbox","id":"sh/0nuxc3yl","slide":12,"text":"300","textPreview":"300","textChars":3,"textLines":1,"bbox":[78,220,188,36]}
+{"kind":"shape","id":"sh/p8nqxs72","slide":12,"bbox":[370,180,220,92]}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":12,"text":"Protocole tuné","textPreview":"Protocole tuné","textChars":14,"textLines":1,"bbox":[386,194,188,22]}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":12,"text":"100","textPreview":"100","textChars":3,"textLines":1,"bbox":[386,220,188,36]}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":12,"bbox":[678,180,220,92]}
+{"kind":"textbox","id":"sh/y1kre1w7","slide":12,"text":"Inférence","textPreview":"Inférence","textChars":9,"textLines":1,"bbox":[694,194,188,22]}
+{"kind":"textbox","id":"sh/9s36hcrm","slide":12,"text":"75","textPreview":"75","textChars":2,"textLines":1,"bbox":[694,220,188,36]}
+{"kind":"shape","id":"sh/g7adsji5","slide":12,"bbox":[74,349,10,10]}
+{"kind":"textbox","id":"sh/rytsvu9k","slide":12,"text":"Ces validations ne remplacent pas le coeur Cora: elles testent la stabilité des conclusions.","textPreview":"Ces validations ne remplacent pas le coeur Cora: elles testent la stabilité des conclusions.","textChars":92,"textLines":1,"bbox":[98,340,756,36]}
+{"kind":"shape","id":"sh/yd0z6103","slide":12,"bbox":[74,397,10,10]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":12,"text":"Les résultats absents ne sont pas inventés; ils restent marqués comme en attente.","textPreview":"Les résultats absents ne sont pas inventés; ils restent marqués comme en attente.","textChars":81,"textLines":1,"bbox":[98,388,756,36]}
+{"kind":"notes","id":"nt/5lkobj","slide":12,"text":""}
+{"kind":"slide","id":"sl/jv3dx3","slide":13,"title":"Projet 13 / Option 4","textShapes":6}
+{"kind":"shape","id":"sh/g3ex0nux","slide":13,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/nih4byhg","slide":13,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/yxobm58z","slide":13,"text":"Limites et perspectives","textPreview":"Limites et perspectives","textChars":23,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"shape","id":"sh/9cvixcze","slide":13,"bbox":[58,179,10,10]}
+{"kind":"textbox","id":"sh/gr2p8nqx","slide":13,"text":"Perturbations aléatoires, pas d'attaques optimisées.","textPreview":"Perturbations aléatoires, pas d'attaques optimisées.","textChars":52,"textLines":1,"bbox":[82,170,796,36]}
+{"kind":"shape","id":"sh/r65wjudg","slide":13,"bbox":[58,227,10,10]}
+{"kind":"textbox","id":"sh/ylc7u54z","slide":13,"text":"Benchmark contrôlé: Cora, GCN à deux couches, hyperparamètres fixes.","textPreview":"Benchmark contrôlé: Cora, GCN à deux couches, hyperparamètres fixes.","textChars":68,"textLines":1,"bbox":[82,218,796,36]}
+{"kind":"shape","id":"sh/90je9cvi","slide":13,"bbox":[58,275,10,10]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":13,"text":"Les temps CPU dépendent du matériel.","textPreview":"Les temps CPU dépendent du matériel.","textChars":36,"textLines":1,"bbox":[82,266,796,36]}
+{"kind":"shape","id":"sh/65wjudg7","slide":13,"bbox":[58,323,10,10]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":13,"text":"Suite: autres architectures, attaques réelles, datasets plus variés.","textPreview":"Suite: autres architectures, attaques réelles, datasets plus variés.","textChars":68,"textLines":1,"bbox":[82,314,796,36]}
+{"kind":"notes","id":"nt/jv3dx3","slide":13,"text":""}
+{"kind":"slide","id":"sl/a4zqv4","slide":14,"title":"Projet 13 / Option 4","textShapes":9}
+{"kind":"shape","id":"sh/kzupwb2h","slide":14,"bbox":[0,0,960,10]}
+{"kind":"textbox","id":"sh/re1w7mp0","slide":14,"text":"Projet 13 / Option 4","textPreview":"Projet 13 / Option 4","textChars":20,"textLines":1,"bbox":[42,24,360,28]}
+{"kind":"textbox","id":"sh/2t83itgf","slide":14,"text":"Conclusion + démonstration dashboard","textPreview":"Conclusion + démonstration dashboard","textChars":36,"textLines":1,"bbox":[42,58,760,96]}
+{"kind":"textbox","id":"sh/9w3m94fu","slide":14,"text":"Conclusion prudente","textPreview":"Conclusion prudente","textChars":19,"textLines":1,"bbox":[58,170,300,34]}
+{"kind":"shape","id":"sh/kb6xkf6d","slide":14,"bbox":[58,229,10,10]}
+{"kind":"textbox","id":"sh/rqd4vmtw","slide":14,"text":"Les optimiseurs adaptatifs sont les plus stables dans ce protocole.","textPreview":"Les optimiseurs adaptatifs sont les plus stables dans ce protocole.","textChars":67,"textLines":1,"bbox":[82,220,496,36]}
+{"kind":"shape","id":"sh/25kb6xkf","slide":14,"bbox":[58,277,10,10]}
+{"kind":"textbox","id":"sh/94fu18jq","slide":14,"text":"Adam et RMSProp doivent être comparés avec les intervalles.","textPreview":"Adam et RMSProp doivent être comparés avec les intervalles.","textChars":59,"textLines":1,"bbox":[82,268,496,36]}
+{"kind":"shape","id":"sh/kjm1cfa9","slide":14,"bbox":[58,325,10,10]}
+{"kind":"textbox","id":"sh/mlkjm1cf","slide":14,"text":"Le dashboard donne accès aux résultats bruts et aux artefacts.","textPreview":"Le dashboard donne accès aux résultats bruts et aux artefacts.","textChars":62,"textLines":1,"bbox":[82,316,496,36]}
+{"kind":"textbox","id":"sh/4r65wjud","slide":14,"text":"Tableau de bord","textPreview":"Tableau de bord","textChars":15,"textLines":1,"bbox":[650,312,136,24]}
+{"kind":"textbox","id":"sh/mtwra5gb","slide":14,"text":"GitHub","textPreview":"GitHub","textChars":6,"textLines":1,"bbox":[790,312,136,24]}
+{"kind":"textbox","id":"sh/fepkzupw","slide":14,"text":"Les comparaisons statistiques restent prudentes et doivent être lues avec les IC95.","textPreview":"Les comparaisons statistiques restent prudentes et doivent être lues avec les IC95.","textChars":83,"textLines":1,"bbox":[660,350,240,74]}
+{"kind":"image","id":"im/k3q5o7qp","slide":14,"name":"","alt":"Tableau de bord","bbox":[660,190,116,116]}
+{"kind":"image","id":"im/2x4nap4r","slide":14,"name":"","alt":"GitHub","bbox":[800,190,116,116]}
+{"kind":"notes","id":"nt/a4zqv4","slide":14,"text":""}

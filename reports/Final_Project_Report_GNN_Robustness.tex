@@ -11,7 +11,7 @@
 \par
 **Projet 13 - Option 4.** Dataset Cora Citation Network. Modele GCN a deux couches. Optimiseurs: Adam, AdamW, RMSProp, AdaGrad et SGD.
 \par
-**Generation:** 2026-07-06 12:48 UTC.
+**Generation:** 2026-07-06 13:04 UTC.
 \par
 \section{Résumé}
 \par
@@ -41,7 +41,7 @@ Les cinq optimiseurs sont executes avec le meme budget de 200 epoques dans le pr
 \par
 \noindent-- Graines principales: 42 a 51.\\
 \noindent-- 200 epoques par entrainement.\\
-\noindent-- Conditions Cora principales: graphe propre, feature masking 5%, 10%, 20%, 30%, edge removal 5%, 10%, 20%, 30%, fake edge addition 5%, 10%, 20%, 30%.\\
+\noindent-- Conditions Cora principales: graphe propre, masquage d&#x27;attributs 5%, 10%, 20%, 30%, edge removal 5%, 10%, 20%, 30%, fake edge addition 5%, 10%, 20%, 30%.\\
 \noindent-- Matrice principale: 5 optimiseurs x 13 conditions x 10 graines = 650 runs reels.\\
 \noindent-- Cross-dataset complete: 300 runs reels.\\
 \noindent-- Evaluation tunee complete: 100 runs reels.\\
@@ -49,7 +49,7 @@ Les cinq optimiseurs sont executes avec le meme budget de 200 epoques dans le pr
 \par
 \section{Définitions des perturbations aléatoires}
 \par
-Le feature masking met a zero une proportion demandee des entrees actives non nulles. Edge removal supprime une fraction de connexions non orientees uniques et conserve une representation symetrique. Fake edge addition ajoute uniquement des paires de noeuds non connectees auparavant, sans self-loops ni duplicats.
+Masquage aléatoire d’une proportion de caractéristiques actives non nulles. Edge removal supprime une fraction de connexions non orientees uniques et conserve une representation symetrique. Fake edge addition ajoute uniquement des paires de noeuds non connectees auparavant, sans self-loops ni duplicats.
 \par
 \section{Méthodologie statistique}
 \par
@@ -109,19 +109,19 @@ Meilleur score moyen agrege sous ce protocole: **Adam (79.0%)**. Cette phrase ne
 | CiteSeer | AdaGrad | Graphe propre | 0.0% | 68.8% | 64.9% | 5 |
 | CiteSeer | AdaGrad | Suppression d&#x27;aretes | 20.0% | 66.7% | 63.1% | 5 |
 | CiteSeer | AdaGrad | Ajout de fausses aretes | 20.0% | 63.9% | 60.5% | 5 |
-| CiteSeer | AdaGrad | Feature masking | 20.0% | 65.1% | 61.8% | 5 |
+| CiteSeer | AdaGrad | Masquage attributs | 20.0% | 65.1% | 61.8% | 5 |
 | CiteSeer | Adam | Graphe propre | 0.0% | 70.8% | 68.0% | 5 |
 | CiteSeer | Adam | Suppression d&#x27;aretes | 20.0% | 68.8% | 65.8% | 5 |
 | CiteSeer | Adam | Ajout de fausses aretes | 20.0% | 67.8% | 64.8% | 5 |
-| CiteSeer | Adam | Feature masking | 20.0% | 69.2% | 66.2% | 5 |
+| CiteSeer | Adam | Masquage attributs | 20.0% | 69.2% | 66.2% | 5 |
 | CiteSeer | AdamW | Graphe propre | 0.0% | 65.1% | 62.2% | 5 |
 | CiteSeer | AdamW | Suppression d&#x27;aretes | 20.0% | 58.1% | 56.5% | 5 |
 | CiteSeer | AdamW | Ajout de fausses aretes | 20.0% | 59.4% | 56.8% | 5 |
-| CiteSeer | AdamW | Feature masking | 20.0% | 61.5% | 59.1% | 5 |
+| CiteSeer | AdamW | Masquage attributs | 20.0% | 61.5% | 59.1% | 5 |
 | CiteSeer | RMSProp | Graphe propre | 0.0% | 70.0% | 67.0% | 5 |
 | CiteSeer | RMSProp | Suppression d&#x27;aretes | 20.0% | 69.2% | 66.3% | 5 |
 | CiteSeer | RMSProp | Ajout de fausses aretes | 20.0% | 67.2% | 64.0% | 5 |
-| CiteSeer | RMSProp | Feature masking | 20.0% | 68.7% | 65.7% | 5 |
+| CiteSeer | RMSProp | Masquage attributs | 20.0% | 68.7% | 65.7% | 5 |
 | CiteSeer | SGD | Graphe propre | 0.0% | 17.4% | 8.7% | 5 |
 | CiteSeer | SGD | Suppression d&#x27;aretes | 20.0% | 17.8% | 9.3% | 5 |
 \par
@@ -132,19 +132,19 @@ Meilleur score moyen agrege sous ce protocole: **Adam (79.0%)**. Cette phrase ne
 | Cora | AdaGrad | Graphe propre | 0.0% | 78.7% | 5 |
 | Cora | AdaGrad | Suppression d&#x27;aretes | 20.0% | 77.4% | 5 |
 | Cora | AdaGrad | Ajout de fausses aretes | 20.0% | 74.6% | 5 |
-| Cora | AdaGrad | Feature masking | 20.0% | 77.2% | 5 |
+| Cora | AdaGrad | Masquage attributs | 20.0% | 77.2% | 5 |
 | Cora | Adam | Graphe propre | 0.0% | 80.6% | 5 |
 | Cora | Adam | Suppression d&#x27;aretes | 20.0% | 79.1% | 5 |
 | Cora | Adam | Ajout de fausses aretes | 20.0% | 76.7% | 5 |
-| Cora | Adam | Feature masking | 20.0% | 79.1% | 5 |
+| Cora | Adam | Masquage attributs | 20.0% | 79.1% | 5 |
 | Cora | AdamW | Graphe propre | 0.0% | 79.9% | 5 |
 | Cora | AdamW | Suppression d&#x27;aretes | 20.0% | 77.5% | 5 |
 | Cora | AdamW | Ajout de fausses aretes | 20.0% | 73.5% | 5 |
-| Cora | AdamW | Feature masking | 20.0% | 77.8% | 5 |
+| Cora | AdamW | Masquage attributs | 20.0% | 77.8% | 5 |
 | Cora | RMSProp | Graphe propre | 0.0% | 78.2% | 5 |
 | Cora | RMSProp | Suppression d&#x27;aretes | 20.0% | 76.3% | 5 |
 | Cora | RMSProp | Ajout de fausses aretes | 20.0% | 74.6% | 5 |
-| Cora | RMSProp | Feature masking | 20.0% | 77.8% | 5 |
+| Cora | RMSProp | Masquage attributs | 20.0% | 77.8% | 5 |
 | Cora | SGD | Graphe propre | 0.0% | 27.7% | 5 |
 | Cora | SGD | Suppression d&#x27;aretes | 20.0% | 27.6% | 5 |
 \par
@@ -154,19 +154,19 @@ Meilleur score moyen agrege sous ce protocole: **Adam (79.0%)**. Cette phrase ne
 | --- | --- | --- | --- | --- | --- |
 | Cora | AdaGrad | Suppression d&#x27;aretes | 20.0% | 75.2% | 5 |
 | Cora | AdaGrad | Ajout de fausses aretes | 20.0% | 73.1% | 5 |
-| Cora | AdaGrad | Feature masking | 20.0% | 74.6% | 5 |
+| Cora | AdaGrad | Masquage attributs | 20.0% | 74.6% | 5 |
 | Cora | Adam | Suppression d&#x27;aretes | 20.0% | 79.5% | 5 |
 | Cora | Adam | Ajout de fausses aretes | 20.0% | 78.2% | 5 |
-| Cora | Adam | Feature masking | 20.0% | 79.8% | 5 |
+| Cora | Adam | Masquage attributs | 20.0% | 79.8% | 5 |
 | Cora | AdamW | Suppression d&#x27;aretes | 20.0% | 75.9% | 5 |
 | Cora | AdamW | Ajout de fausses aretes | 20.0% | 74.1% | 5 |
-| Cora | AdamW | Feature masking | 20.0% | 76.9% | 5 |
+| Cora | AdamW | Masquage attributs | 20.0% | 76.9% | 5 |
 | Cora | RMSProp | Suppression d&#x27;aretes | 20.0% | 78.8% | 5 |
 | Cora | RMSProp | Ajout de fausses aretes | 20.0% | 77.3% | 5 |
-| Cora | RMSProp | Feature masking | 20.0% | 78.8% | 5 |
+| Cora | RMSProp | Masquage attributs | 20.0% | 78.8% | 5 |
 | Cora | SGD | Suppression d&#x27;aretes | 20.0% | 17.6% | 5 |
 | Cora | SGD | Ajout de fausses aretes | 20.0% | 16.5% | 5 |
-| Cora | SGD | Feature masking | 20.0% | 16.9% | 5 |
+| Cora | SGD | Masquage attributs | 20.0% | 16.9% | 5 |
 \par
 \section{Diagnostics gradients et ressources}
 \par

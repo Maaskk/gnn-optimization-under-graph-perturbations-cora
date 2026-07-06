@@ -48,7 +48,7 @@ const state = {
   graph: { nodes: [], edges: [] },
   v2Methodology: null,
   v2Aggregate: [],
-  versionView: "v2",
+  versionView: "final",
   embedding: null,
   embeddingColor: "true_label",
   spaceNodes: [],
@@ -122,7 +122,7 @@ async function loadV2Aggregate() {
 
 async function loadEmbedding() {
   try {
-    const response = await fetch(`${DATA_DIR}v2_embedding_cora_adam_seed42.json`);
+    const response = await fetch(`${DATA_DIR}embedding_cora_adam_seed42.json`);
     if (!response.ok) return;
     state.embedding = await response.json();
   } catch {
@@ -220,15 +220,15 @@ function renderStats() {
 function renderV2Methodology() {
   const methodology = state.v2Methodology;
   if (!methodology) {
-    setText('[data-v2="status"]', "Aucun agrégat final n'est encore publié.");
+    setText('[data-result="status"]', "Aucun agrégat final n'est encore publié.");
     return;
   }
-  setText('[data-v2="resultVersion"]', "Finale");
-  setText('[data-v2="completedRuns"]', formatNumber(methodology.primary_completed_runs || 0));
+  setText('[data-result="resultVersion"]', "Finale");
+  setText('[data-result="completedRuns"]', formatNumber(methodology.primary_completed_runs || 0));
   const conditionsEnAttente = methodology.conditions_en_attente || 0;
   const aggregateRows = methodology.aggregate_rows_available || 0;
   setText(
-    '[data-v2="status"]',
+    '[data-result="status"]',
     `${formatNumber(aggregateRows)} lignes agrégées disponibles; ${formatNumber(conditionsEnAttente)} conditions restent en attente.`,
   );
 }
@@ -276,7 +276,7 @@ function renderVersionPanel() {
 
   const title = document.querySelector("[data-version-title]");
   const note = document.querySelector("[data-version-note]");
-  if (state.versionView === "v2" && state.v2Aggregate.length) {
+  if (state.versionView === "final" && state.v2Aggregate.length) {
     if (title) title.textContent = "Résultats reproductibles disponibles";
     if (note) {
       note.textContent = "Les valeurs affichées sont des moyennes avec intervalle de confiance 95% quand plusieurs graines existent.";
@@ -382,7 +382,7 @@ function bindEmbeddingControls() {
 function bindVersionControls() {
   document.querySelectorAll("[data-version-view]").forEach((button) => {
     button.addEventListener("click", () => {
-      state.versionView = button.dataset.versionView || "v2";
+      state.versionView = button.dataset.versionView || "final";
       renderVersionPanel();
     });
   });
@@ -641,7 +641,7 @@ function drawDropMatrixChart() {
   const maxDrop = 0.32;
 
   const groups = [
-    { label: "Feature masking", start: 0, end: 3 },
+    { label: "Masquage", start: 0, end: 3 },
     { label: "Arêtes supprimées", start: 4, end: 7 },
     { label: "Fausses arêtes", start: 8, end: 11 },
   ];

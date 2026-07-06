@@ -55,7 +55,7 @@ def test_frontend_explains_accuracy_benchmark_and_adds_visual_depth():
     assert "v2_methodology.json" in js
     assert "embeddingCanvas" in html
     assert "loadEmbedding" in js
-    assert "v2_embedding_cora_adam_seed42.json" in js
+    assert "embedding_cora_adam_seed42.json" in js
     assert "PCA des embeddings cachés" in html
     assert "v2AggregateTable" in html
     assert "data-version-view" in html

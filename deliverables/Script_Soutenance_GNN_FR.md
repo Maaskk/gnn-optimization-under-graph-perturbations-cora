@@ -26,7 +26,7 @@ A ne pas dire: SGD est mauvais en general.
 
 Nous avons utilise 200 epoques par entrainement. Le budget fixe de 200 epoques assure une comparaison controlee. Le coeur de l'etude comporte 650 entrainements reels: 5 optimiseurs x 13 conditions x 10 graines.
 
-Les graines permettent d'obtenir moyenne, ecart-type et IC95%. Le feature masking masque exactement une proportion de caracteristiques actives. Pour la structure, nous supprimons des aretes ou nous ajoutons de fausses aretes sans self-loops et sans duplicats. Il s'agit de perturbations aleatoires, pas d'attaques adversariales.
+Les graines permettent d'obtenir moyenne, ecart-type et IC95%. Le masquage d'attributs suit la definition: masquage aleatoire d'une proportion de caracteristiques actives non nulles. Pour la structure, nous supprimons des aretes ou nous ajoutons de fausses aretes sans self-loops et sans duplicats. Il s'agit de perturbations aleatoires, pas d'attaques adversariales.
 
 Les conclusions sont limitees au dataset, a l'architecture et au protocole etudies.
 
@@ -40,7 +40,7 @@ A ne pas dire: resultats inventes; test utilise pour choisir les hyperparametres
 
 Sur le graphe propre, les optimiseurs adaptatifs obtiennent les meilleurs scores moyens. Sur les perturbations, Adam et RMSProp restent proches dans plusieurs conditions. Quand les intervalles se recouvrent, nous evitons de parler de dominance.
 
-Le feature masking teste la perte d'information dans les attributs. Les perturbations structurelles testent la sensibilite aux connexions du graphe. SGD sous-performe ici dans le protocole fixe, mais cela ne veut pas dire que SGD est faible dans tous les contextes.
+Le masquage d'attributs teste la perte d'information dans les attributs. Les perturbations structurelles testent la sensibilite aux connexions du graphe. SGD sous-performe ici dans le protocole fixe, mais cela ne veut pas dire que SGD est faible dans tous les contextes.
 
 Transition: Mouhcine va presenter les validations complementaires, les limites et la demonstration.
 

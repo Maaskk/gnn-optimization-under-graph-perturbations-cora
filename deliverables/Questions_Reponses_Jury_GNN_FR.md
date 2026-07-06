@@ -28,9 +28,9 @@ Ils couvrent Adam, AdamW, RMSProp, AdaGrad et SGD, donc des familles adaptatives
 
 Sous ce taux d'apprentissage fixe et sans tuning principal, SGD converge moins bien. Ce n'est pas une critique generale de SGD.
 
-## Pourquoi le feature masking ?
+## Pourquoi le masquage d'attributs ?
 
-Le feature masking met a zero une proportion aleatoire de caracteristiques actives non nulles. Cette definition correspond au protocole final et garde les valeurs deja nulles intactes.
+Masquage aléatoire d’une proportion de caractéristiques actives non nulles. Cette definition correspond au protocole final et garde les valeurs deja nulles intactes.
 
 ## Est-ce de la robustesse adversariale ?
 

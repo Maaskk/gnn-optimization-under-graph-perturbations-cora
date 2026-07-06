@@ -39,7 +39,7 @@ const OPT_COLORS = {
 };
 const PERT_LABELS = {
   clean: "Propre",
-  feature_masking: "Feature masking",
+  feature_masking: "Masquage",
   edge_removal: "Arêtes supprimées",
   fake_edge_addition: "Fausses arêtes",
 };
@@ -346,7 +346,7 @@ async function main() {
   decorate(slide);
   title(slide, "Perturbations aléatoires");
   bullets(slide, [
-    "Feature masking: mise à zéro d'une proportion d'entrées actives.",
+    "Masquage aléatoire d’une proportion de caractéristiques actives non nulles.",
     "Edge removal: suppression de connexions non orientées uniques.",
     "Fake edge addition: ajout de paires non connectées, sans self-loop ni duplicat.",
   ], 58, 178, 820);
@@ -399,7 +399,7 @@ async function main() {
 
   slide = presentation.slides.add();
   decorate(slide);
-  title(slide, "Robustesse au feature masking");
+  title(slide, "Robustesse au masquage d'attributs");
   addLineChart(
     slide,
     { left: 72, top: 162, width: 760, height: 310 },

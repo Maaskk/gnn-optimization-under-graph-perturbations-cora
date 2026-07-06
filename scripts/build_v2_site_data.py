@@ -103,7 +103,7 @@ def main() -> None:
     copied_aggregate = copy_if_exists(aggregate_source, DOCS_DATA / "v2_aggregated_summary.csv")
     copied_raw = copy_if_exists(raw_source, DOCS_DATA / "v2_raw_combined.csv")
     copied_embedding = copy_if_exists(
-        embedding_source, DOCS_DATA / "v2_embedding_cora_adam_seed42.json"
+        embedding_source, DOCS_DATA / "embedding_cora_adam_seed42.json"
     )
     diagnostics_summary = V2_ROOT / "diagnostics" / "v2_optimizer_diagnostics_summary_clean.csv"
     diagnostics_gradient = V2_ROOT / "diagnostics" / "v2_gradient_summary_clean.csv"

@@ -329,7 +329,7 @@ def add_cover(doc: Document) -> None:
         ("Dataset", "Cora Citation Network"),
         ("Model", "2-layer Graph Convolutional Network"),
         ("Optimizers", "Adam, AdamW, RMSProp, AdaGrad, SGD"),
-        ("Perturbations", "Feature noise, edge removal, fake edge addition"),
+        ("Perturbations", "Feature masking, edge removal, fake edge addition"),
         ("Prepared by", "Oussama Ashad and Mouhcine"),
         ("Date de remise", "20 juin 2026"),
         ("Repository", "github.com/Maaskk/gnn-optimization-under-graph-perturbations-cora"),
@@ -429,7 +429,7 @@ def build_report() -> Document:
         ["Best aggregate macro F1", "Adam", "0.694"],
         [
             "Hardest perturbation",
-            "Feature noise",
+            "Feature masking",
             "All adaptive optimizers fall near 0.52-0.54 at 30% noise",
         ],
         ["Weakest optimizer in fixed protocol", "SGD", "Near random-guess baseline"],
@@ -504,7 +504,7 @@ def build_report() -> Document:
     add_heading(doc, "4.3 Perturbation design", 2)
     add_para(
         doc,
-        "Three perturbation families are tested. Feature noise adds Gaussian noise N(0, severity) to node features. Edge removal deletes a random fraction of citation edges. Fake edge addition injects random non-existing citation links. Each optimizer is evaluated on one clean condition plus twelve perturbed conditions, for 65 total experiment rows.",
+        "Three perturbation families are tested. Feature masking randomly masks a proportion of active non-zero node features. Edge removal deletes a random fraction of citation edges. Fake edge addition injects random non-existing citation links. Each optimizer is evaluated on one clean condition plus twelve perturbed conditions, for 65 total experiment rows.",
     )
 
     add_heading(doc, "5. Results", 1)
@@ -574,7 +574,7 @@ def build_report() -> Document:
     doc.add_page_break()
     add_data_table(
         doc,
-        ["Optimizer", "Clean", "Edge removal", "Fake edges", "Feature noise"],
+        ["Optimizer", "Clean", "Edge removal", "Fake edges", "Feature masking"],
         agg_rows,
         widths=[Inches(1.25), Inches(1.0), Inches(1.3), Inches(1.2), Inches(1.3)],
         font_size=8.7,
@@ -584,12 +584,12 @@ def build_report() -> Document:
     add_figure(
         doc,
         FIGURES / "feature_noise_test_accuracy.png",
-        "Figure 3 - Feature noise causes the largest accuracy collapse.",
+        "Figure 3 - Feature masking causes the largest accuracy collapse.",
         width=5.9,
     )
     add_para(
         doc,
-        "Feature noise is the hardest condition: by 30% severity, Adam, AdamW, RMSProp, and AdaGrad all converge around the 0.516-0.533 accuracy band. This suggests the disturbance challenges the feature representation and the two-layer GCN itself, not only the optimizer.",
+        "Feature masking is the hardest condition: by 30% severity, Adam, AdamW, RMSProp, and AdaGrad all converge around the 0.516-0.533 accuracy band. This suggests the disturbance challenges the feature representation and the two-layer GCN itself, not only the optimizer.",
     )
     add_figure(
         doc,
@@ -633,7 +633,7 @@ def build_report() -> Document:
     )
     add_para(
         doc,
-        "The heatmap makes the robustness pattern explicit. Feature noise generates the largest red block across adaptive optimizers. Edge removal stays pale, indicating small losses. Fake edges form an intermediate degradation pattern that grows with severity.",
+        "The heatmap makes the robustness pattern explicit. Feature masking generates the largest red block across adaptive optimizers. Edge removal stays pale, indicating small losses. Fake edges form an intermediate degradation pattern that grows with severity.",
     )
 
     add_heading(doc, "6. Discussion", 1)
@@ -713,7 +713,7 @@ def build_report() -> Document:
         ],
         ["Full result table", "results/all_results.csv"],
         ["Clean results", "results/clean_optimizer_results.csv"],
-        ["Feature noise results", "results/feature_noise_results.csv"],
+        ["Feature masking results", "results/feature_noise_results.csv"],
         ["Edge removal results", "results/edge_removal_results.csv"],
         ["Fake edge results", "results/fake_edge_addition_results.csv"],
         ["Loss history", "results/clean_loss_history.csv"],
