@@ -1,0 +1,51 @@
+name: Final Project CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: make format-check
+
+      - name: Tests
+        run: make test
+
+      - name: Isolated smoke experiment
+        run: |
+          rm -rf results/ci_smoke
+          make smoke
+          test -f results/ci_smoke/raw/v2_fixed_cora_smoke.csv
+          test -f results/ci_smoke/aggregated/v2_aggregated_summary.csv
+
+      - name: Validate static website files
+        run: |
+          test -f docs/index.html
+          test -f docs/assets/app.js
+          test -f docs/assets/styles.css
+          test -f docs/assets/data/v2_aggregated_summary.csv
+          test -f docs/assets/data/v2_raw_combined.csv
+
+      - name: JavaScript syntax
+        run: node --check docs/assets/app.js
