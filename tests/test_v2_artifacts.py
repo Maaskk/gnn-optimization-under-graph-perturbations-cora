@@ -20,6 +20,7 @@ def test_v2_required_project_artifacts_exist():
         "CHANGELOG.md",
         "docs/REPRODUCIBILITY.md",
         "scripts/benchmark_v2_runtime.py",
+        "scripts/collect_v2_diagnostics.py",
         "scripts/tune_v2_hyperparameters.py",
         "scripts/build_v2_pdf_report.py",
         "src/gnn_robustness/v2_statistics.py",
@@ -61,4 +62,5 @@ def test_makefile_exposes_benchmark_and_tuning_entry_points():
     makefile = Path("Makefile").read_text(encoding="utf-8")
 
     assert "benchmark-v2" in makefile
+    assert "diagnostics-v2" in makefile
     assert "tune-v2" in makefile

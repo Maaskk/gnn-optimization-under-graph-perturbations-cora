@@ -1,54 +1,78 @@
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage{hyperref}
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{booktabs}
-\title{GCN Optimizer Robustness Under Random Graph Perturbations: V2 Report}
-\author{Project 13 - Option 4}
-\date{2026}
+\usepackage{longtable}
+\usepackage{hyperref}
+\title{Robustesse des GNN face aux perturbations du graphe}
+\author{Projet 13 -- Option 4 -- Cora Citation Network}
+\date{Version V2 reproductible}
 \begin{document}
 \maketitle
 \tableofcontents
-\section{Abstract}
-This V2 report upgrades the original single-seed Cora optimizer comparison into a reproducible experimental design. It separates legacy V1 results from V2 raw outputs, defines random perturbations precisely, records environment metadata, and reports uncertainty when enough completed seeds exist. No result is interpreted as adversarial robustness or as a universal optimizer ranking.
-\section{Introduction and Research Question}
-The research question is how optimizer choice affects a two-layer GCN when random graph or feature perturbations are applied. Conclusions are scoped to the dataset, model, seed set, hyperparameter protocol, and perturbation regime.
-\section{Related Work}
-GCNs aggregate information over graph neighborhoods. Optimizers differ in adaptive updates, convergence behavior, and implicit regularization. Random perturbation stress tests are distinct from adversarial attack studies.
-\section{Experimental Design}
-V2 uses config-driven runs in \texttt{configs/}. Every raw row records dataset, optimizer, base seed, resolved seed, protocol, robustness setting, perturbation type, requested severity, actual perturbation count/rate, metrics, timing, and environment metadata path.
-\section{Datasets and GCN Architecture}
-Supported datasets are Cora, CiteSeer, and PubMed from PyTorch Geometric Planetoid. The fixed protocol uses a two-layer GCN with 16 hidden channels and dropout 0.5. The GCN layers do not cache adjacency.
-\section{Fixed Protocol and Tuned Protocol}
-The fixed protocol favors comparability. The tuned protocol uses validation metrics only and a deterministic grid over learning rate and weight decay. SGD includes momentum 0.9.
-\section{Random Perturbation Definitions}
-Feature masking zeros a requested fraction of active non-zero feature entries. Edge removal removes unique undirected connections. Fake edge addition inserts previously unconnected undirected node pairs with no self-loops or duplicates. V1 Gaussian feature noise is legacy behavior.
-\section{Training-Time Versus Inference-Time Corruption}
-Training-time corruption trains and evaluates on perturbed inputs. Inference-time corruption trains on the clean graph and evaluates fixed weights on perturbed inputs.
-\section{Statistical Methodology}
-V2 reports means, sample standard deviations, 95 percent confidence interval half-widths, seed counts, clean-to-perturbed accuracy drops, and normalized robustness AUC scores across available severities. Matched optimizer comparisons should use paired bootstrap intervals, Wilcoxon signed-rank tests, and Holm correction before using significance wording.
-\section{Results}
-Raw rows are stored under \texttt{results/v2/raw/}; aggregate summaries are stored under \texttt{results/v2/aggregated/}. Smoke rows validate the pipeline but are not the full scientific matrix. The completed local smoke run contains four real Cora rows: Adam clean, Adam 20 percent feature masking, RMSProp clean, and RMSProp 20 percent feature masking, all for one seed and 3 epochs. The standard Cora fixed-protocol primary matrix contains 650 planned rows; 646 remain pending after the smoke execution. Runtime benchmarking is implemented separately with one warm-up excluded, repeated local measurements, and median, mean, standard deviation, and IQR outputs. Tuned-protocol selection writes validation-only trials and locked hyperparameters without using the test split.
-\section{Cross-Dataset Validation}
-The cross-dataset config covers Cora, CiteSeer, and PubMed with representative 20 percent perturbation settings. Missing rows are pending compute, not inferred.
+\newpage
+
+\section{Résumé}
+Le protocole principal V2 est complet: 650 exécutions réelles sur Cora, soit 10 graines, 5 optimiseurs, un graphe propre et 3 familles de perturbations à 5\%, 10\%, 20\% et 30\%. Sous le protocole fixe, Adam obtient la meilleure moyenne globale de test accuracy (0.7898), suivi de RMSProp (0.7881), AdamW (0.7635), AdaGrad (0.7470) et SGD (0.1404). Cette conclusion est limitée au GCN, au dataset, aux graines et aux hyperparamètres étudiés.
+
+\section{Question de recherche}
+La question est: pour un même GCN à deux couches sur Cora, comment le choix de l'optimiseur influence-t-il la précision, le macro F1, la convergence, le temps d'entraînement et la robustesse face à des perturbations aléatoires du graphe?
+
+\section{Méthodologie}
+Le protocole fixe utilise 200 époques, 16 hidden channels, dropout 0.5, learning rate 0.01 et weight decay 0.0005. Les perturbations V2 sont feature masking, edge removal et fake edge addition. Elles sont aléatoires, reproductibles et non adversariales. Chaque ligne brute conserve le commit Git, la graine résolue, la sévérité demandée, la sévérité réellement appliquée, les métriques de performance, le temps et les métadonnées matériel.
+
+\section{Résultats clean}
+\begin{longtable}{lrrrr}
+\toprule
+Optimiseur & Accuracy & IC95 & Macro F1 & Graines\\
+\midrule
+Adam & 0.8111 & 0.0032 & 0.8004 & 10\\
+RMSProp & 0.8058 & 0.0067 & 0.7964 & 10\\
+AdamW & 0.7871 & 0.0052 & 0.7800 & 10\\
+AdaGrad & 0.7706 & 0.0081 & 0.7640 & 10\\
+SGD & 0.1516 & 0.0130 & 0.0757 & 10\\
+\bottomrule
+\end{longtable}
+
+\section{Résultats globaux}
+\begin{longtable}{lrrrr}
+\toprule
+Optimiseur & Accuracy & Macro F1 & Temps moyen (s) & Époque validation\\
+\midrule
+Adam & 0.7898 & 0.7791 & 7.76 & 141.1\\
+RMSProp & 0.7881 & 0.7777 & 10.63 & 107.5\\
+AdamW & 0.7635 & 0.7561 & 21.86 & 94.9\\
+AdaGrad & 0.7470 & 0.7410 & 12.03 & 151.4\\
+SGD & 0.1404 & 0.0668 & 8.37 & 67.2\\
+\bottomrule
+\end{longtable}
+
+\section{Diagnostics gradients et mémoire}
+Les diagnostics propres utilisent 10 graines par optimiseur. Le GPU peak vaut 0 MB car les expériences ont été exécutées sur CPU. Le peak RSS CPU moyen est d'environ 323 MB pour tous les optimiseurs. Les courbes de gradients sont disponibles dans \texttt{results/v2/diagnostics/v2\_gradient\_summary\_clean.csv}.
+
+\begin{longtable}{lrrr}
+\toprule
+Optimiseur & Époque validation & Gradient L2 final & Peak RSS CPU MB\\
+\midrule
+RMSProp & 112.9 & 0.2239 & 323.38\\
+Adam & 155.4 & 0.1426 & 322.97\\
+AdamW & 99.8 & 0.0406 & 323.24\\
+AdaGrad & 177.1 & 0.1183 & 323.78\\
+SGD & 70.4 & 0.0433 & 323.92\\
+\bottomrule
+\end{longtable}
+
 \section{Discussion}
-V2 separates fixed-protocol comparability from tuned-protocol optimizer-specific performance. It also separates learning from corrupted data from clean-trained inference robustness.
-\section{Threats to Validity and Limitations}
-Full V2 matrices are CPU-expensive; timing is machine-dependent; Planetoid splits are limited; random perturbations are not adversarial attacks; smoke runs are not final evidence.
-\section{Reproducibility}
-\begin{verbatim}
-make setup
-make test
-make coverage
-make lint
-make format-check
-make smoke-v2
-make benchmark-v2
-make tune-v2
-make aggregate-v2
-make build-site
-\end{verbatim}
-\section{References}
-Kipf and Welling, Semi-Supervised Classification with Graph Convolutional Networks. PyTorch Geometric Planetoid datasets. PyTorch optimizer documentation.
-\section{Appendix}
-Primary configs are \texttt{v1\_legacy\_fixed\_cora.yaml}, \texttt{v2\_fixed\_cora.yaml}, \texttt{v2\_tuned\_cora.yaml}, \texttt{v2\_cross\_dataset.yaml}, and \texttt{v2\_inference\_robustness.yaml}.
+Adam est le choix le plus équilibré dans ce protocole fixe. RMSProp est très proche et parfois meilleur à forte sévérité. AdamW atteint un loss faible mais un gap train/validation plus élevé. AdaGrad reste plus conservateur. SGD ne converge pas correctement sous le protocole fixe sans momentum.
+
+\section{Limites}
+Les perturbations ne sont pas adversariales. Les résultats dépendent de Cora, du split Planetoid, du modèle, des hyperparamètres et du CPU local. Les résultats cross-dataset, inference-time et tuned-protocol sont supportés par le dépôt mais séparés des conclusions principales.
+
+\section{Reproductibilité}
+Les commandes principales sont \texttt{make experiment-v2-cora}, \texttt{make aggregate-v2}, \texttt{make diagnostics-v2} et \texttt{make build-site}. Les résultats sont stockés dans \texttt{results/v2/raw/}, \texttt{results/v2/aggregated/} et \texttt{results/v2/diagnostics/}.
+
+\section{Références}
+Kipf et Welling, Semi-Supervised Classification with Graph Convolutional Networks. Kingma et Ba, Adam. Loshchilov et Hutter, Decoupled Weight Decay Regularization. PyTorch Geometric Planetoid documentation.
+
 \end{document}

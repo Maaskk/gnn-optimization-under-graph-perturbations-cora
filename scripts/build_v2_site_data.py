@@ -69,6 +69,22 @@ def copy_downloads() -> dict[str, bool]:
             V2_ROOT / "tuned" / "locked_hyperparameters_smoke.json",
             DOCS_DOWNLOADS / "tuned" / "locked_hyperparameters_smoke.json",
         ),
+        "diagnostics_runs": (
+            V2_ROOT / "diagnostics" / "v2_optimizer_diagnostics_runs_clean.csv",
+            DOCS_DOWNLOADS / "diagnostics" / "v2_optimizer_diagnostics_runs_clean.csv",
+        ),
+        "diagnostics_gradient_history": (
+            V2_ROOT / "diagnostics" / "v2_gradient_history_clean.csv",
+            DOCS_DOWNLOADS / "diagnostics" / "v2_gradient_history_clean.csv",
+        ),
+        "diagnostics_gradient_summary": (
+            V2_ROOT / "diagnostics" / "v2_gradient_summary_clean.csv",
+            DOCS_DOWNLOADS / "diagnostics" / "v2_gradient_summary_clean.csv",
+        ),
+        "diagnostics_optimizer_summary": (
+            V2_ROOT / "diagnostics" / "v2_optimizer_diagnostics_summary_clean.csv",
+            DOCS_DOWNLOADS / "diagnostics" / "v2_optimizer_diagnostics_summary_clean.csv",
+        ),
     }
     copied: dict[str, bool] = {}
     for key, (source, target) in targets.items():
@@ -85,6 +101,14 @@ def main() -> None:
     copied_raw = copy_if_exists(raw_source, DOCS_DATA / "v2_raw_combined.csv")
     copied_embedding = copy_if_exists(
         embedding_source, DOCS_DATA / "v2_embedding_cora_adam_seed42.json"
+    )
+    diagnostics_summary = V2_ROOT / "diagnostics" / "v2_optimizer_diagnostics_summary_clean.csv"
+    diagnostics_gradient = V2_ROOT / "diagnostics" / "v2_gradient_summary_clean.csv"
+    copied_diagnostics_summary = copy_if_exists(
+        diagnostics_summary, DOCS_DATA / "v2_optimizer_diagnostics_summary.csv"
+    )
+    copied_diagnostics_gradient = copy_if_exists(
+        diagnostics_gradient, DOCS_DATA / "v2_gradient_summary.csv"
     )
     copied_downloads = copy_downloads()
     completed, pending = count_pending_runs()
@@ -106,6 +130,8 @@ def main() -> None:
         "has_v2_aggregate": copied_aggregate,
         "has_v2_raw": copied_raw,
         "has_v2_embedding": copied_embedding,
+        "has_v2_diagnostics_summary": copied_diagnostics_summary,
+        "has_v2_gradient_summary": copied_diagnostics_gradient,
         "download_artifacts": copied_downloads,
         "methodology_warning": (
             "Animated graph scenes are illustrative sampled graph views. "

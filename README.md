@@ -35,6 +35,7 @@ V2 adds:
 - raw-result rows with resolved seeds, git commit, hyperparameters, actual perturbation counts, and environment metadata
 - aggregation with seed counts, standard deviation, 95% confidence intervals, clean-to-perturbed drops, and robustness AUC scores
 - matched-seed statistical utilities for paired bootstrap intervals, Wilcoxon signed-rank tests, and Holm correction
+- clean-run optimizer diagnostics with gradient L2 curves and CPU/GPU memory summaries
 
 ## Supported Datasets
 
@@ -86,11 +87,12 @@ make tune-v2
 make experiment-v2-cora
 make experiment-v2-cross-dataset
 make aggregate-v2
+make diagnostics-v2
 make build-site
 make reproduce-v2-standard
 ```
 
-The smoke command runs a bounded local subset. It validates the pipeline but is not the full scientific matrix.
+The primary fixed Cora V2 matrix has been completed locally: 650 generated rows, 10 seeds, 5 optimizers, clean plus 12 perturbation settings. The smoke command remains available as a fast pipeline check and is not the scientific matrix.
 
 The GitHub Actions CI recipe is stored at `docs/ci/github-actions-ci.yml`. It mirrors the local quality gates and smoke experiment; installing it under `.github/workflows/` requires a GitHub token or browser session with workflow permission.
 
@@ -100,10 +102,10 @@ The GitHub Actions CI recipe is stored at `docs/ci/github-actions-ci.yml`. It mi
 | --- | --- |
 | `configs/` | V1/V2 experiment configurations |
 | `src/gnn_robustness/` | Data loading, model, perturbations, training, V2 configs, aggregation, metadata |
-| `scripts/` | V1 scripts, V2 runner, aggregation, static site data build |
+| `scripts/` | V1 scripts, V2 runner, aggregation, diagnostics, static site data build |
 | `scripts/benchmark_v2_runtime.py` | Local-machine timing protocol with warm-up and repeated measurements |
 | `scripts/tune_v2_hyperparameters.py` | Validation-only finite-grid tuning before locked test evaluation |
-| `results/` | V1 outputs plus `results/v2/raw/` and `results/v2/aggregated/` |
+| `results/` | V1 outputs plus `results/v2/raw/`, `results/v2/aggregated/`, and `results/v2/diagnostics/` |
 | `reports/` | V1 reports plus V2 Markdown/LaTeX report sources |
 | `docs/` | Static GitHub Pages dashboard |
 | `docs/ci/github-actions-ci.yml` | GitHub Actions CI recipe for tests, linting, formatting, smoke run, and site validation |
@@ -112,7 +114,7 @@ The GitHub Actions CI recipe is stored at `docs/ci/github-actions-ci.yml`. It mi
 
 ## Current Limitations
 
-- Full V2 10-seed matrices can be CPU-expensive and may not be completed in one local session.
+- The primary fixed Cora 10-seed matrix is complete; optional inference-time, tuned-protocol, and full cross-dataset matrices remain CPU-expensive extensions.
 - Timing results are local-machine dependent and should not be treated as a primary scientific conclusion.
 - The animated graph on the website is an illustrative sampled Cora graph unless replaced by generated V2 embedding artifacts.
 - V1 conclusions are single-seed fixed-protocol observations, not universal optimizer claims.
@@ -125,4 +127,5 @@ The GitHub Actions CI recipe is stored at `docs/ci/github-actions-ci.yml`. It mi
 - `configs/v2_fixed_cora.yaml`
 - `results/v2/raw/`
 - `results/v2/aggregated/`
+- `results/v2/diagnostics/`
 - `docs/REPRODUCIBILITY.md`

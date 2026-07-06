@@ -1,0 +1,6 @@
+optimizer,n_seeds,mean_clean_test_accuracy,std_clean_test_accuracy,mean_macro_f1,mean_training_time_seconds,mean_best_validation_epoch,mean_final_gradient_l2_norm,mean_gradient_l2_norm,mean_peak_rss_mb,mean_cpu_memory_delta_mb,max_peak_rss_mb,max_gpu_peak_memory_mb
+AdaGrad,10,0.7836,0.015167,0.773996,15.309522,177.1,0.118276,0.104266,323.776172,0.0,327.039062,0.0
+Adam,10,0.8055,0.00841,0.79648,18.343297,155.4,0.142608,0.127216,322.971484,0.0,326.859375,0.0
+AdamW,10,0.79,0.007055,0.784389,17.07004,99.8,0.040647,0.082444,323.241797,0.0,326.496094,0.0
+RMSProp,10,0.8086,0.00756,0.797449,16.051223,112.9,0.223925,0.190558,323.378516,0.0,326.636719,0.0
+SGD,10,0.1278,0.023668,0.064688,16.264464,70.4,0.043322,0.042584,323.916016,0.0,327.183594,0.0

@@ -1,0 +1,12 @@
+{
+  "config": "configs/v2_fixed_cora.yaml",
+  "completed_runs": 50,
+  "planned_runs": 50,
+  "epochs": 200,
+  "outputs": {
+    "runs": "results/v2/diagnostics/v2_optimizer_diagnostics_runs_clean.csv",
+    "history": "results/v2/diagnostics/v2_gradient_history_clean.csv",
+    "gradient_summary": "results/v2/diagnostics/v2_gradient_summary_clean.csv",
+    "optimizer_summary": "results/v2/diagnostics/v2_optimizer_diagnostics_summary_clean.csv"
+  }
+}

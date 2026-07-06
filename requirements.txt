@@ -13,3 +13,4 @@ pytest==9.1.0
 ruff==0.9.9
 black==25.1.0
 coverage==7.15.0
+psutil==7.2.2

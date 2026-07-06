@@ -1,6 +1,6 @@
 {
   "config": "configs/v2_fixed_cora.yaml",
-  "output": "results/v2/raw/v2_fixed_cora_smoke.csv",
+  "output": "results/v2/smoke/raw/v2_fixed_cora_smoke.csv",
   "completed_runs": 4,
   "planned_runs": 4,
   "pending_runs": []

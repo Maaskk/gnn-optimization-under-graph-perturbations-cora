@@ -9,6 +9,7 @@ make setup
 ```
 
 The V2 runner writes hardware and software metadata to `results/v2/metadata/environment.json`.
+The clean optimizer diagnostics write gradient and memory summaries to `results/v2/diagnostics/`.
 
 Run the lightweight quality gates with:
 
@@ -43,10 +44,11 @@ This validates the pipeline with a bounded local run. It is not the full scienti
 ```bash
 make experiment-v2-cora
 make aggregate-v2
+make diagnostics-v2
 make build-site
 ```
 
-The full matrix is substantially larger than the smoke run:
+The full fixed Cora primary matrix has been completed locally and should contain 650 generated rows:
 
 - Cora
 - 10 seeds
@@ -54,7 +56,20 @@ The full matrix is substantially larger than the smoke run:
 - clean plus feature masking, edge removal, and fake edge addition
 - severities 0.05, 0.10, 0.20, 0.30
 
-Do not fill pending rows manually. Only generated raw rows should be aggregated or reported as completed.
+Do not fill missing rows manually. Only generated raw rows should be aggregated or reported as completed. Optional inference-time, tuned-protocol, and full cross-dataset studies are separate from the completed primary Cora matrix.
+
+## Optimizer Diagnostics
+
+```bash
+make diagnostics-v2
+```
+
+This command runs clean Cora training for every optimizer and seed, logs the L2 gradient norm at every epoch, and records CPU/GPU memory summaries. The outputs are:
+
+- `results/v2/diagnostics/v2_optimizer_diagnostics_runs_clean.csv`
+- `results/v2/diagnostics/v2_gradient_history_clean.csv`
+- `results/v2/diagnostics/v2_gradient_summary_clean.csv`
+- `results/v2/diagnostics/v2_optimizer_diagnostics_summary_clean.csv`
 
 ## Runtime Benchmarking
 

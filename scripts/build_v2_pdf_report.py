@@ -19,7 +19,7 @@ from reportlab.platypus import (
     TableStyle,
 )
 
-PROJECT_TITLE = "GCN Optimizer Robustness Under Random Graph Perturbations"
+PROJECT_TITLE = "Robustesse des GNN face aux perturbations du graphe"
 PROJECT_SUBTITLE = "Projet 13 - Option 4 - Cora Citation Network"
 
 
@@ -43,8 +43,12 @@ def read_markdown_sections(path: Path) -> list[tuple[str, list[str]]]:
 
 
 def clean_inline_markdown(text: str) -> str:
-    escaped = html.escape(text.replace("**", ""))
+    escaped = html.escape(text.replace("**", ""), quote=False)
     return re.sub(r"`([^`]+)`", r"<font name='Courier'>\1</font>", escaped)
+
+
+def clean_table_cell(text: str) -> str:
+    return html.escape(text.replace("**", "").replace("`", ""), quote=False)
 
 
 def markdown_lines_to_flowables(lines: list[str], styles) -> list:
@@ -66,7 +70,14 @@ def markdown_lines_to_flowables(lines: list[str], styles) -> list:
             return
         filtered = [row for row in table_buffer if not all(set(cell) <= {"-", ":"} for cell in row)]
         if filtered:
-            table = Table(filtered, repeatRows=1)
+            formatted = [
+                [
+                    Paragraph(cell, styles["TableHeader" if row_index == 0 else "TableCell"])
+                    for cell in row
+                ]
+                for row_index, row in enumerate(filtered)
+            ]
+            table = Table(formatted, repeatRows=1)
             table.setStyle(
                 TableStyle(
                     [
@@ -112,12 +123,21 @@ def markdown_lines_to_flowables(lines: list[str], styles) -> list:
             flush_table()
             continue
         if line.startswith("|"):
-            row = [clean_inline_markdown(cell.strip()) for cell in line.strip("|").split("|")]
+            row = [clean_table_cell(cell.strip()) for cell in line.strip("|").split("|")]
             table_buffer.append(row)
             continue
         if line.startswith("- "):
             flush_table()
             bullet_buffer.append(line.removeprefix("- ").strip())
+            continue
+        if line.startswith("### "):
+            flush_bullets()
+            flush_table()
+            flowables.append(
+                Paragraph(
+                    clean_inline_markdown(line.removeprefix("### ").strip()), styles["Subheading"]
+                )
+            )
             continue
         flush_bullets()
         flush_table()
@@ -132,7 +152,7 @@ def page_decorator(canvas, doc):
     canvas.saveState()
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(colors.HexColor("#617083"))
-    canvas.drawString(2 * cm, 1.2 * cm, "V2 reproducibility report - random perturbations")
+    canvas.drawString(2 * cm, 1.2 * cm, "Rapport V2 - perturbations aléatoires")
     canvas.drawRightString(A4[0] - 2 * cm, 1.2 * cm, f"Page {doc.page}")
     canvas.restoreState()
 
@@ -172,10 +192,38 @@ def build_pdf(markdown_path: Path, output_path: Path) -> None:
     )
     styles.add(
         ParagraphStyle(
+            name="Subheading",
+            parent=styles["Heading2"],
+            fontSize=12,
+            leading=15,
+            textColor=colors.HexColor("#14213d"),
+            spaceBefore=8,
+            spaceAfter=5,
+        )
+    )
+    styles.add(
+        ParagraphStyle(
             name="BulletBody",
             parent=styles["Body"],
             leftIndent=12,
             firstLineIndent=-8,
+        )
+    )
+    styles.add(
+        ParagraphStyle(
+            name="TableCell",
+            parent=styles["Body"],
+            fontSize=8,
+            leading=10,
+            textColor=colors.black,
+        )
+    )
+    styles.add(
+        ParagraphStyle(
+            name="TableHeader",
+            parent=styles["TableCell"],
+            fontName="Helvetica-Bold",
+            textColor=colors.white,
         )
     )
     styles.add(
@@ -210,12 +258,13 @@ def build_pdf(markdown_path: Path, output_path: Path) -> None:
         Paragraph(PROJECT_TITLE, styles["CoverTitle"]),
         Paragraph(PROJECT_SUBTITLE, styles["Heading2"]),
         Spacer(1, 1.2 * cm),
-        Paragraph("Version 2 scientific report", styles["Heading3"]),
+        Paragraph("Rapport scientifique V2", styles["Heading3"]),
         Paragraph(
-            "Random perturbations, reproducible configs, honest V1/V2 provenance.", styles["Body"]
+            "Perturbations aléatoires, configurations reproductibles et provenance V1/V2 claire.",
+            styles["Body"],
         ),
         PageBreak(),
-        Paragraph("Table of Contents", styles["SectionHeading"]),
+        Paragraph("Table des matières", styles["SectionHeading"]),
     ]
     for title, _ in sections:
         story.append(Paragraph(clean_inline_markdown(title), styles["Body"]))
