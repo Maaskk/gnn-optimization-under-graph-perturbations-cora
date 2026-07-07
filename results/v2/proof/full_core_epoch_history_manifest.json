@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-07-07T18:51:19.473506+00:00",
+  "source_shard_root": "results/v2/proof_shards",
+  "output_dir": "results/v2/proof",
+  "optimizers": [
+    "Adam",
+    "AdamW",
+    "RMSProp",
+    "AdaGrad",
+    "SGD"
+  ],
+  "expected_runs": 650,
+  "observed_runs": 650,
+  "epochs_per_run": 200,
+  "expected_epoch_rows": 130000,
+  "observed_epoch_rows": 130000,
+  "shards": [
+    {
+      "optimizer": "Adam",
+      "runs": 130,
+      "epoch_rows": 26000,
+      "min_epochs_per_run": 200,
+      "max_epochs_per_run": 200
+    },
+    {
+      "optimizer": "AdamW",
+      "runs": 130,
+      "epoch_rows": 26000,
+      "min_epochs_per_run": 200,
+      "max_epochs_per_run": 200
+    },
+    {
+      "optimizer": "RMSProp",
+      "runs": 130,
+      "epoch_rows": 26000,
+      "min_epochs_per_run": 200,
+      "max_epochs_per_run": 200
+    },
+    {
+      "optimizer": "AdaGrad",
+      "runs": 130,
+      "epoch_rows": 26000,
+      "min_epochs_per_run": 200,
+      "max_epochs_per_run": 200
+    },
+    {
+      "optimizer": "SGD",
+      "runs": 130,
+      "epoch_rows": 26000,
+      "min_epochs_per_run": 200,
+      "max_epochs_per_run": 200
+    }
+  ]
+}

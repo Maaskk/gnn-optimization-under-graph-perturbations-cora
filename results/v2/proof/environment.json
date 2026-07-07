@@ -1,0 +1,13 @@
+{
+  "os": "macOS-12.7.4-x86_64-i386-64bit",
+  "python": "3.12.13",
+  "processor": "i386",
+  "machine": "x86_64",
+  "cpu_count": 4,
+  "torch": "2.2.2",
+  "cuda_available": false,
+  "cuda_device_count": 0,
+  "device": "cpu",
+  "torch_geometric": "2.8.0",
+  "git_commit": "75b61138df7ce8ded794de7c2229bbe1cc9db857"
+}

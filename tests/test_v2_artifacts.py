@@ -78,3 +78,27 @@ def test_makefile_exposes_benchmark_and_tuning_entry_points():
         "reproduce-final:",
     ]:
         assert target.replace("make ", "") in makefile
+
+
+def test_executed_proof_notebook_and_full_epoch_history_exist():
+    notebook = Path("notebooks/00_Preuve_Experimentale_GNN_Executee.ipynb")
+    epoch_history = Path("results/v2/proof/full_core_epoch_history.csv")
+    run_results = Path("results/v2/proof/full_core_run_results.csv")
+    manifest_path = Path("results/v2/proof/full_core_epoch_history_manifest.json")
+
+    assert notebook.exists()
+    assert epoch_history.exists()
+    assert run_results.exists()
+    assert manifest_path.exists()
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest["observed_runs"] == 650
+    assert manifest["observed_epoch_rows"] == 130000
+    assert manifest["epochs_per_run"] == 200
+    assert sum(1 for _ in epoch_history.open(encoding="utf-8")) == 130001
+    assert sum(1 for _ in run_results.open(encoding="utf-8")) == 651
+
+    notebook_data = json.loads(notebook.read_text(encoding="utf-8"))
+    code_cells = [cell for cell in notebook_data["cells"] if cell.get("cell_type") == "code"]
+    assert code_cells
+    assert all(cell.get("execution_count") is not None for cell in code_cells)

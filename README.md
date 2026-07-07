@@ -23,6 +23,24 @@ L'étude porte uniquement sur des perturbations aléatoires. Elle ne met pas en 
 
 Des validations complémentaires sont générées séparément pour les tests multi-datasets, le tuning basé uniquement sur la validation et la robustesse à l'inférence.
 
+## Preuve expérimentale exécutée
+
+Le notebook principal de défense est `notebooks/00_Preuve_Experimentale_GNN_Executee.ipynb`.
+Il est exécuté avec sorties visibles et vérifie directement:
+
+- `650` runs principaux Cora;
+- `200` époques par run;
+- `130000` lignes epoch-par-epoch dans `results/v2/proof/full_core_epoch_history.csv`;
+- `650` lignes finales dans `results/v2/proof/full_core_run_results.csv`;
+- le recalcul des agrégats depuis les fichiers bruts;
+- les fichiers de validation complémentaires et les tests automatiques.
+
+La génération complète de l'historique se fait avec:
+
+```bash
+.venv/bin/python scripts/collect_full_core_epoch_history.py --output-dir results/v2/proof
+```
+
 ## Perturbations
 
 - `feature_masking`: Masquage aléatoire d’une proportion de caractéristiques actives non nulles.

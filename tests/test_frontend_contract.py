@@ -62,6 +62,8 @@ def test_frontend_explains_accuracy_benchmark_and_adds_visual_depth():
     assert "loadAggregate" in js
     assert "./assets/downloads/configs/fixed_cora.yaml" in html
     assert "Rapport PDF" in html
+    assert "00_Preuve_Experimentale_GNN_Executee.ipynb" in html
+    assert "Notebook preuve exécutée" in html
     assert "../configs/" not in html
     assert "../reports/" not in html
     assert "../notebooks/" not in html
