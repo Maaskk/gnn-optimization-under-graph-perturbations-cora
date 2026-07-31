@@ -11,6 +11,16 @@ Le projet a été développé et présenté par Mohamed Amine Kar-any, Hamza
 Elhaddaji, Ossama Ashad, Iliass Ouchida et Mouhcine Ayar. Les profils GitHub et
 les responsabilités sont documentés dans [CONTRIBUTORS.md](CONTRIBUTORS.md).
 
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/mohamed-kar1"><img src="https://github.com/mohamed-kar1.png?size=96" width="72" alt="Mohamed Amine Kar-any"><br><sub><b>Mohamed Amine</b></sub></a></td>
+    <td align="center"><a href="https://github.com/HamzaElhaddaji"><img src="https://github.com/HamzaElhaddaji.png?size=96" width="72" alt="Hamza Elhaddaji"><br><sub><b>Hamza</b></sub></a></td>
+    <td align="center"><a href="https://github.com/Maaskk"><img src="https://github.com/Maaskk.png?size=96" width="72" alt="Ossama Ashad"><br><sub><b>Ossama</b></sub></a></td>
+    <td align="center"><a href="https://github.com/Iliassouchida"><img src="https://github.com/Iliassouchida.png?size=96" width="72" alt="Iliass Ouchida"><br><sub><b>Iliass</b></sub></a></td>
+    <td align="center"><a href="https://github.com/Mouhcine005"><img src="https://github.com/Mouhcine005.png?size=96" width="72" alt="Mouhcine Ayar"><br><sub><b>Mouhcine</b></sub></a></td>
+  </tr>
+</table>
+
 ## Question de recherche
 
 Sur le réseau de citations Cora, comment Adam, AdamW, RMSProp, AdaGrad et SGD se comparent-ils avec la même architecture GCN à deux couches lorsque des perturbations aléatoires sont appliquées aux attributs ou à la structure du graphe?
