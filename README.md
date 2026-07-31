@@ -5,6 +5,12 @@ Ce dépôt contient le projet académique final du Projet 13, Option 4:
 
 Tableau de bord: <https://maaskk.github.io/gnn-optimization-under-graph-perturbations-cora/>
 
+## Équipe
+
+Le projet a été développé et présenté par Mohamed Amine Kar-any, Hamza
+Elhaddaji, Ossama Ashad, Iliass Ouchida et Mouhcine Ayar. Les profils GitHub et
+les responsabilités sont documentés dans [CONTRIBUTORS.md](CONTRIBUTORS.md).
+
 ## Question de recherche
 
 Sur le réseau de citations Cora, comment Adam, AdamW, RMSProp, AdaGrad et SGD se comparent-ils avec la même architecture GCN à deux couches lorsque des perturbations aléatoires sont appliquées aux attributs ou à la structure du graphe?
