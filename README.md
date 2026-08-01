@@ -10,9 +10,10 @@ Tableau de bord: <https://maaskk.github.io/gnn-optimization-under-graph-perturba
 Le projet a été développé et présenté par Mohamed Amine Kar-any, Hamza
 Elhaddaji, Ossama Ashad, Iliass Ouchida et Mouhcine Ayar. Les profils GitHub et
 les responsabilités sont documentés dans [CONTRIBUTORS.md](CONTRIBUTORS.md).
-Les contributions futures suivent [CONTRIBUTING.md](CONTRIBUTING.md), avec des
-tâches indépendantes dans
-[docs/TEAM_CONTRIBUTION_PLAN.md](docs/TEAM_CONTRIBUTION_PLAN.md).
+Le travail académique des cinq membres est terminé. Les rôles réalisés sont
+documentés dans
+[docs/TEAM_CONTRIBUTION_PLAN.md](docs/TEAM_CONTRIBUTION_PLAN.md), tandis que les
+éventuelles contributions futures suivent [CONTRIBUTING.md](CONTRIBUTING.md).
 
 <table>
   <tr>

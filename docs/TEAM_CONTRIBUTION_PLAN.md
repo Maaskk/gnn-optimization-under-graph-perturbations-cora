@@ -1,27 +1,23 @@
-# Genuine contribution plan
+# Completed team work
 
-This plan gives teammates who are not yet represented in GitHub's automatic
-default-branch contributor graph a small, useful task they can author and submit
-themselves. The tasks were checked against the repository on 2026-08-01 and do
-not duplicate an existing implementation or test.
+Mohamed, Hamza, Ossama, Iliass and Mouhcine completed and submitted their parts
+of the academic GNN project. No team member is being asked to implement a second
+task merely to change GitHub's contributor display.
 
-| Teammate | Suggested task | Files likely involved | Difficulty | Acceptance criteria | Validation command | Already completed by someone else? |
-| --- | --- | --- | --- | --- | --- | --- |
-| Mohamed Amine Kar-any (`@mohamed-kar1`) | Add a manifest and CSV consistency validator for the 650-run proof artifacts | `scripts/validate_proof_artifacts.py`, `tests/test_proof_artifact_validation.py`, `docs/REPRODUCIBILITY.md` | Medium | Detect mismatched run counts, epoch counts, missing optimizer/condition combinations, and malformed manifests; return a non-zero exit code with an actionable error; document usage | `.venv/bin/pytest -q tests/test_proof_artifact_validation.py && .venv/bin/python scripts/validate_proof_artifacts.py --manifest results/v2/proof/full_core_epoch_history_manifest.json --runs results/v2/proof/full_core_run_results.csv --epochs results/v2/proof/full_core_epoch_history.csv` | No. Existing tests assert fixed file counts but there is no reusable command-line consistency validator. |
-| Hamza Elhaddaji (`@HamzaElhaddaji`) | Add cross-configuration protocol contract tests | `tests/test_v2_config_cross_contract.py`, optionally `src/gnn_robustness/v2_config.py` | Small to medium | Load all four v2 YAML configurations; verify shared optimizer names, seed policy, perturbation names, severity bounds, split rules, and that only the tuned protocol contains tuning grids; failures identify the config and field | `.venv/bin/pytest -q tests/test_v2_config_cross_contract.py && make lint && make format-check` | No. Current tests cover individual fields but not consistency across all v2 protocols. |
-| Iliass Ouchida (`@Iliassouchida`) | Add an accessibility and reduced-motion contract for the public dashboard | `docs/index.html`, `docs/assets/styles.css`, `docs/assets/app.js`, `tests/test_frontend_contract.py` | Medium | Add a keyboard-visible skip link, clear focus styles, a reduced-motion path that disables nonessential animation, and accessible canvas fallbacks or labels; retain the current visual design; cover every requirement with tests | `.venv/bin/pytest -q tests/test_frontend_contract.py && make lint && make format-check` | No. Existing frontend tests cover the visual system and interactions, not keyboard navigation or reduced motion. |
+| Teammate | Completed project responsibility | Status | Project evidence |
+| --- | --- | --- | --- |
+| Mohamed Amine Kar-any (`@mohamed-kar1`) | Research framing and controlled-comparison introduction | Completed and submitted | `deliverables/Script_Soutenance_GNN_FR.md`, section 1 |
+| Hamza Elhaddaji (`@HamzaElhaddaji`) | Cora dataset, GCN architecture and optimizer comparison | Completed and submitted | `deliverables/Script_Soutenance_GNN_FR.md`, section 2 |
+| Ossama Ashad (`@Maaskk`) | Experimental protocol, perturbations, seeds and confidence intervals | Completed and submitted | `deliverables/Script_Soutenance_GNN_FR.md`, section 3 |
+| Iliass Ouchida (`@Iliassouchida`) | Results interpretation and scientific limitations | Completed and submitted | `deliverables/Script_Soutenance_GNN_FR.md`, section 4 |
+| Mouhcine Ayar (`@Mouhcine005`) | Complementary validation, limitations and demonstration | Completed and submitted | `deliverables/Script_Soutenance_GNN_FR.md`, section 5 |
 
-## Pull request expectations
+## GitHub attribution note
 
-Every task should arrive as a separate pull request authored by the teammate who
-implemented it. The pull request must include:
+GitHub's automatic contributor graph is based on commits attributed to linked
+GitHub accounts on the default branch. It is not the authoritative record of
+who completed the academic project. `CONTRIBUTORS.md` and the submitted project
+deliverables record the complete five-person team.
 
-- the issue or task identifier;
-- a short explanation of the gap being fixed;
-- the exact validation commands and their results;
-- any scientific or usability limitation that remains;
-- no unrelated generated artifacts.
-
-The maintainer should review the actual diff and merge only after the acceptance
-criteria pass. Completing these tasks provides real project value and genuine
-authored history; it is not a badge-only exercise.
+Future pull requests remain welcome under `CONTRIBUTING.md`, but they are
+optional project improvements, not unfinished team assignments.

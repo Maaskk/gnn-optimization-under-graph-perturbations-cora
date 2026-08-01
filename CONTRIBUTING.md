@@ -55,8 +55,10 @@ Frontend changes must run the frontend contract tests:
 
 ## Authorship and review
 
-Each contributor must author their own commit and submit their own branch or pull
-request. A maintainer may suggest, review, and merge the work, but must not
-impersonate the contributor. The complete team and current contribution tasks
-are documented in [CONTRIBUTORS.md](CONTRIBUTORS.md) and
+For future repository changes, each contributor must author their own commit and
+submit their own branch or pull request. A maintainer may suggest, review, and
+merge the work, but must not impersonate the contributor. This is not a request
+for the academic team to repeat work that has already been completed and
+submitted. The complete team and its completed project responsibilities are
+documented in [CONTRIBUTORS.md](CONTRIBUTORS.md) and
 [docs/TEAM_CONTRIBUTION_PLAN.md](docs/TEAM_CONTRIBUTION_PLAN.md).
